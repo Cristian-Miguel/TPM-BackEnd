@@ -7,9 +7,9 @@ const UserLogin = async ( req = request, res = response ) => {
         const SP_VERIFY = `CALL SP_VERIFICAR_INICIO_SESION( "${req.body.Email}", "${req.body.Password}" );`
         const isUser = await QueryManager.Listar_Informacion( SP_VERIFY )
         if( isUser[0][0].isValid == 1 ){
-        const SP_INFO = `CALL SP_OBTENER_INFO_USUARIO( "${req.body.Email}" );`
-        const Info = await QueryManager.Listar_Informacion( SP_INFO )
-        const token = await Obtener_JWT(Info[0][0].idUsuario, req.body.Email, Info[0][0].idRol)
+            const SP_INFO = `CALL SP_OBTENER_INFO_USUARIO( "${req.body.Email}" );`
+            const Info = await QueryManager.Listar_Informacion( SP_INFO )
+            const token = await Obtener_JWT(Info[0][0].idUsuario, req.body.Email, Info[0][0].idRol)
             return res.status(200).json({
                 token: token,
                 msg: 'Valid credentials'
@@ -27,6 +27,16 @@ const UserLogin = async ( req = request, res = response ) => {
     
 }
 
+const singIn = async ( req = request, res = response ) => {
+    try{
+
+    }catch(error){
+        console.log(error)
+        return res.status(500).json({ error: 'Contact the administrador' })
+    }
+}
+
 module.exports = {
     UserLogin,
+    singIn,
 }
