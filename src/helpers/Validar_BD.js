@@ -30,8 +30,16 @@ const Existe_Email = async( Email = '' ) => {
     ) throw new Error('Email not found in the DB')
 }
 
+const isRFC = async ( RFC = '' ) => {
+    if( RFC !== '' ) {
+        let regex = new RegExp('[A-Z]{3,4}[0-9]{2}([0]{1}[1-9]{1}|[1]{1}[0-2]{1})(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})[A-z0-9]{3}')
+        if(regex.exec(RFC) !== null) throw new Error('RFC invalido');
+    }
+}
+
 module.exports = {
     Existe_Role,
     Existe_Usuario,
     Existe_Email,
+    isRFC,
 }

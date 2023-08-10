@@ -6,9 +6,18 @@ class Server {
 
     constructor() {
         this.app = express()
-        this.port = server_config.get( 'app.port' ) || process.env.PORT  
-        this.middlewares ()
+        this.port = process.env.PORT || server_config.get( 'app.port' )
+        this.server = require( 'http' ).createServer( this.app )
+        this.io = require( 'socket.io' )( this.server )
+
+        this.paths = {
+            main: '',
+            auth: '/api/auth'
+        }
+
+        this.middlewares()
         this.routes()
+        this.socket()
     }
 
     middlewares () {
@@ -39,8 +48,17 @@ class Server {
         // this.app.use( '/Carrusel_Imagenes',  require( '../Routes/Carrusel_Imagen_Routes' ) )
     }
 
+    socket () {
+        this.io.on('connection', (socket) => {
+            console.log("cliente conectador", socket.id)
+            socket.on('disconnect', () => {
+                console.log('Cliente desconectado', socket.id)
+            })
+        });
+    }
+
     listen () {
-        this.app.listen( this.port, () => {
+        this.server.listen( this.port, () => {
             const datetime = new Date()
             const message = "Server enable at Port: " + this.port + " at date " + datetime
             console.log( message );

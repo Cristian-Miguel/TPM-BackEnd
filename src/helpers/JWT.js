@@ -1,9 +1,9 @@
 const jwt = require( 'jsonwebtoken' )
 const server_config = require( 'config' );
 
-const Obtener_JWT = ( uid = '', Email = '', idRol = '' ) => {
+const Obtener_JWT = ( Email = '', idRol = '' ) => {
     return new Promise( (resolve, reject) => {
-        const payload = { uid, Email, idRol }
+        const payload = { Email, idRol }
         jwt.sign( 
             payload,
             server_config.get('security.JWT_SECRET'), 

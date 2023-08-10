@@ -13,11 +13,11 @@ const Validar_Token = async ( req = request, res = response, next ) => {
     }
     try {
         const secret = server_config.get('security.JWT_SECRET')
-        const { uid, Email }  = jwt.verify( token, secret )
+        const { Email }  = jwt.verify( token, secret )
         const Exist = await QueryManager.Listar_Informacion( `CALL SP_EXISTE_EMAIL( "${Email}" );` )//* check if the user exist
         if( Exist[0][0].inTable == 1 ) {
             const Info = await QueryManager.Listar_Informacion( `CALL SP_OBTENER_INFO_USUARIO("${Email}" );` ) //* check if id it's the same
-            if( Info[0][0].idUsuario != uid ) {
+            if( Info[0][0].Email != Email) {
                 return res.status(401).json({
                     msg: 'User denied'
                 })

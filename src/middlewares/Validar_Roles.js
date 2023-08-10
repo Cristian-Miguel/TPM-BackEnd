@@ -8,12 +8,11 @@ const Acceso_Rol = ( ...AllRoles ) => {
         try {
             const token = req.header('authorization')
             const secret = server_config.get('security.JWT_SECRET')
-            const { uid, Email, idRol }  = jwt.verify( token, secret )
+            const { Email, idRol }  = jwt.verify( token, secret )
             const Exist = await QueryManager.Listar_Informacion( `CALL SP_EXISTE_EMAIL( "${Email}" );` )//* check if the user exist
             if( Exist[0][0].inTable == 1 ) {
                 const Info = await QueryManager.Listar_Informacion( `CALL SP_OBTENER_INFO_USUARIO( "${Email}" );` ) //* check if id it's the same
-                // console.log(idRol);
-                if( Info[0][0].idUsuario != uid ) {
+                if( Info[0][0].Email != Email ) {
                     return res.status(401).json({
                         msg: 'Usuario denegado'
                     })
