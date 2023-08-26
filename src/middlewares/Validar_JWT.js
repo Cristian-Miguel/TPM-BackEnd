@@ -36,7 +36,22 @@ const Validar_Token = async ( req = request, res = response, next ) => {
     }
 }
 
+const Validar_Token_Socket = async ( token = '' ) => {
+    try {
+        const secret = server_config.get('security.JWT_SECRET')
+        const { Email }  = jwt.verify( token, secret )
+        const Exist = await QueryManager.Listar_Informacion( `CALL SP_EXISTE_EMAIL( "${Email}" );` )//* check if the user exist
+        if( Exist[0][0].inTable == 1 ) {
+            return Email;
+        } else return null
+
+    } catch (error) {
+       return null
+    }
+}
+
 
 module.exports = {
     Validar_Token,
+    Validar_Token_Socket,
 }

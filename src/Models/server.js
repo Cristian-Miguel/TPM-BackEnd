@@ -1,6 +1,7 @@
 const express = require( 'express' )
 const server_config = require( 'config' )
 const cors = require( 'cors' )
+const { socketController } = require( '../helpers/Sockets' )
 
 class Server {
 
@@ -9,11 +10,6 @@ class Server {
         this.port = process.env.PORT || server_config.get( 'app.port' )
         this.server = require( 'http' ).createServer( this.app )
         this.io = require( 'socket.io' )( this.server )
-
-        this.paths = {
-            main: '',
-            auth: '/api/auth'
-        }
 
         this.middlewares()
         this.routes()
@@ -42,19 +38,14 @@ class Server {
         // this.app.use( '/Restaurante',  require( '../Routes/Restaurante_Routes' ) )
         // this.app.use( '/Tour',  require( '../Routes/Tour_Routes' ) )
         // this.app.use( '/Reserva',  require( '../Routes/Reserva_Routes' ) )
-        // this.app.use( '/Chat',  require( '../Routes/Chat_Routes' ) )
+        this.app.use( '/Chat',  require( '../Routes/Chat_Routes' ) )
         // this.app.use( '/Favoritos',  require( '../Routes/Favoritos_Routes' ) )
         // this.app.use( '/Calificacion',  require( '../Routes/Calificacion_Routes' ) )
         // this.app.use( '/Carrusel_Imagenes',  require( '../Routes/Carrusel_Imagen_Routes' ) )
     }
 
     socket () {
-        this.io.on('connection', (socket) => {
-            console.log("cliente conectador", socket.id)
-            socket.on('disconnect', () => {
-                console.log('Cliente desconectado', socket.id)
-            })
-        });
+        this.io.on('connection', ( socket ) => socketController(socket, this.io) )
     }
 
     listen () {

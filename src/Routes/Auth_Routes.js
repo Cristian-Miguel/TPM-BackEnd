@@ -10,7 +10,7 @@ router.post(
     [
         check( 'Email', 'Email is invalid or is Empty' ).isEmail(),
         check( 'Email' ).custom( Existe_Email ),
-        check('Password', 'Password ').not().isEmpty(),
+        check( 'Password', 'Password ' ).not().isEmpty(),
         check( 'Password', 'Password don\'t have 50 caracters' ).isLength({ min: 49, max: 51}),
         Validar_Datos
     ],
@@ -33,7 +33,7 @@ router.post(
         check( 'RFC', 'El campo no es un RFC').custom( isRFC ), 
         Validar_Datos
     ],
-    Auth_Controller.UserLogin
+    Auth_Controller.singIn
 )
 
 router.post(
