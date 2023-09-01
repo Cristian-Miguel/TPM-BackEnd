@@ -7,7 +7,7 @@ const UserLogin = async ( req = request, res = response ) => {
     try {
         const SP_VERIFY = `CALL SP_VERIFICAR_INICIO_SESION( "${req.body.Email}", "${req.body.Password}" );`
         const isUser = await QueryManager.Listar_Informacion( SP_VERIFY )
-        if( isUser[0][0].isValid == 1 ){
+        if( isUser[0][0].isValid == 1 ) {
             const SP_INFO = `CALL SP_OBTENER_INFO_USUARIO( "${req.body.Email}" );`
             const Info = await QueryManager.Listar_Informacion( SP_INFO )
             const token = await Obtener_JWT( req.body.Email, Info[0][0].idRol)
@@ -51,13 +51,22 @@ const google_SingIn = async ( req = request, res = response ) => {
         const { Auth } = req.body
         const googleUser = await googleVerify(Auth.toString())
         const json = JSON.parse(googleUser);
-        const SP = `CALL SP_CREAR_USUARIO_GOOGLE(${json});`
-        await QueryManager.Listar_Informacion( SP )
-        const token = await Obtener_JWT( googleUser.Email , 2 )
-        return res.status(200).json({
-            token: token,
-            msg: 'Credenciales validas'
-        })
+        //verificar el correo si ya existe
+        const existeCorreo = await QueryManager.Listar_Informacion( `SP_EXISTE_EMAIL("${googleUser.Email}");` )
+        if( existeCorreo[0][0].inTable === 1 ) {
+            return res.status(401).json({
+                msg: 'Usuario ya existe'
+            })
+        } else {
+            const SP = `CALL SP_CREAR_USUARIO_GOOGLE(${json});`
+            await QueryManager.Listar_Informacion( SP )
+            const token = await Obtener_JWT( googleUser.Email , 2 )
+            return res.status(200).json({
+                token: token,
+                msg: 'Credenciales validas'
+            })
+        }
+        
     }catch(error){
         console.log(error)
         return res.status(500).json({ error: 'Contacta al administrador' })
