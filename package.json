@@ -1,9 +1,11 @@
 {
   "name": "backendtmp",
-  "version": "2.0.1",
+  "version": "0.5.1",
   "description": "proyecto back-end de la materia tecnologias de programacion para moviles",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Apolo Develoment",

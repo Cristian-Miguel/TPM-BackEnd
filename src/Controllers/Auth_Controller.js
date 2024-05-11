@@ -40,7 +40,7 @@ const singIn = async ( req = request, res = response ) => {
             token: token,
             msg: 'Credenciales validas'
         })
-    }catch(error){
+    } catch(error) {
         console.log(error)
         return res.status(500).json({ error: 'Contacta al administrador' })
     }
