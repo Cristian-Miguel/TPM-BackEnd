@@ -1,0 +1,412 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model tbl_address_service {
+  id_address_service    Int             @id @default(autoincrement())
+  uuid_address_service  String          @unique @default(uuid())
+  street                String          @db.VarChar(255)
+  city                  String          @db.VarChar(255)
+  state                 String          @db.VarChar(255)
+  postal_code           String          @db.VarChar(10)
+  country               String          @db.VarChar(255)
+  id_service            Int
+  date_created          DateTime
+  last_update           DateTime        @updatedAt
+  tbl_service           tbl_service     @relation(fields: [id_service], references: [id_service])
+}
+
+model tbl_address_user {
+  id_address_user   Int              @id @default(autoincrement())
+  uuid_address_user String           @unique @default(uuid())
+  street            String           @db.VarChar(255)
+  city              String           @db.VarChar(255)
+  state             String           @db.VarChar(255)
+  postal_code       String           @db.VarChar(10)
+  country           String           @db.VarChar(255)
+  id_user           Int
+  date_created      DateTime
+  last_update       DateTime         @updatedAt
+  tbl_user          tbl_user         @relation(fields: [id_user], references: [id_user])
+}
+
+model tbl_amenities {
+  id_amenities          Int                     @id @default(autoincrement())
+  name                  String
+  type_service          type_amenities
+  tbl_amenities_service tbl_amenities_service[]
+}
+
+model tbl_amenities_service {
+  id_amenities_service  Int             @id @default(autoincrement())
+  id_service            Int
+  id_amenities          Int
+  tbl_service           tbl_service     @relation(fields: [id_service], references: [id_service])
+  tbl_amenities         tbl_amenities   @relation(fields: [id_amenities], references: [id_amenities])
+}
+
+model tbl_chat {
+  id_chat           Int         @id @default(autoincrement())
+  uuid_chat         String      @unique @default(uuid())
+  id_user_sender    Int         
+  id_user_receiver  Int         
+  content           String      @db.LongText
+  date_created      DateTime
+  last_update       DateTime    @updatedAt
+  sender            tbl_user    @relation(name: "tbl_chatSender", fields: [id_user_sender], references: [id_user])
+  receiver          tbl_user    @relation(name: "tbl_chatReceiver", fields: [id_user_receiver], references: [id_user])
+  tbl_message       tbl_message[]
+}
+
+model tbl_client {
+  id_client Int @id @default(autoincrement())
+  client_type client_type
+  id_user String @unique
+  tbl_reservation tbl_reservation []
+}
+
+model tbl_favorite {
+  id_favorite     Int             @id @default(autoincrement())
+  uuid_favorite   String          @unique @default(uuid())
+  type_service    String          @db.VarChar(255)
+  id_service      Int             
+  id_user         Int
+  date_created    DateTime
+  last_update     DateTime        @updatedAt
+  tbl_user        tbl_user        @relation(fields: [id_user], references: [id_user])
+  tbl_service     tbl_service     @relation(fields: [id_service], references: [id_service])
+}
+
+model tbl_hotel {
+  id_hotel            Int               @id @default(autoincrement())
+  uuid_hotel          String            @default(uuid())
+  name                String            @db.VarChar(100)
+  description         String            @db.VarChar(150)
+  main_image          String?           @db.LongText
+  id_categoria        String            @db.VarChar(45)
+  rating              Decimal
+  id_user             Int
+  date_created        DateTime
+  last_update         DateTime          @updatedAt
+  phone_number        String?           @db.VarChar(20)
+  email               String?           @unique @db.VarChar(255)
+  website             String?           @db.VarChar(255)
+  open_hour           DateTime          @db.Time
+  close_hour          DateTime          @db.Time
+  tbl_user            tbl_user          @relation(fields: [id_user], references: [id_user])
+  tbl_hotel_room      tbl_hotel_room[]
+}
+
+model tbl_hotel_room {
+  id_hotel_room    Int                 @id @default(autoincrement())
+  id_room_category Int
+  number_room      String              @db.VarChar(255)
+  id_hotel         Int
+  tbl_hotel        tbl_hotel           @relation(fields: [id_hotel], references: [id_hotel])
+  tbl_hotel_room_category tbl_hotel_room_category @relation(fields: [id_room_category], references: [id_hotel_room_category])
+}
+
+model tbl_hotel_room_category {
+  id_hotel_room_category Int      @id @default(autoincrement())
+  description            String   @db.VarChar(255)
+  number_beds            Int
+  max_people             Int
+  cost                   Decimal 
+  discount_cash          Decimal? @db.Decimal
+  discount_percentage    Decimal? @db.Decimal
+  tbl_hotel_room         tbl_hotel_room[]
+}
+
+model tbl_message {
+  id_message  Int       @id @default(autoincrement())
+  id_chat     Int
+  message     String    @db.LongText
+  date_sended DateTime  @db.DateTime()
+  reviced     Boolean
+  watched     Boolean
+  tbl_chat    tbl_chat  @relation( fields: [id_chat], references: [id_chat])
+}
+
+model tbl_package {
+  id_package          Int           @id @default(autoincrement())
+  uuid_package        String        @unique @default(uuid())
+  name                String        @db.VarChar(75)
+  description         String        @db.VarChar(150)
+  cost                Decimal       @db.Decimal(10, 2)
+  package_number      Int
+  main_image          String       @db.LongText
+  descount_cash       String?       @db.VarChar(45)
+  id_user             Int
+  tbl_user            tbl_user      @relation(fields: [id_user], references: [id_user])
+  tbl_package_service tbl_package_service[]
+}
+
+model tbl_package_service {
+  id_package_service        Int       @id @default(autoincrement())
+  id_service                Int
+  id_package                Int
+  tbl_service               tbl_service @relation(fields: [id_service], references: [id_service])
+  tbl_package               tbl_package @relation(fields: [id_package], references: [id_package]) 
+}
+
+model tbl_payment {
+  id_payment        Int       @id @default(autoincrement())
+  uuid_payment      String    @unique @default(uuid())
+  type_payment      String
+  cost              Decimal
+  status            String
+  date_create       DateTime
+  last_update       DateTime  @updatedAt
+  id_reservation    Int
+  tbl_reservartion  tbl_reservation[]
+}
+
+model tbl_promos {
+  id_promotion        Int     @id @default(autoincrement())
+  id_service          Int
+  code_promotion      String  @db.VarChar(100)
+  cash_descount       Decimal @db.Decimal(10,2)
+  percentage_descount Decimal
+  active              Boolean
+  tbl_service         tbl_service @relation(fields: [id_service], references: [id_service])
+}
+
+model tbl_rating_service {
+  id_rating_service   Int             @id @default(autoincrement())
+  uuid_rating_service String    
+  type_service        String          @db.VarChar(255)
+  id_service          Int             
+  rating              Decimal         @db.Decimal(2, 1)
+  comment             String          @db.VarChar(150)
+  id_user             Int
+  date_created        DateTime
+  last_update         DateTime        @updatedAt
+  tbl_user            tbl_user        @relation(fields: [id_user], references: [id_user])
+  tbl_service         tbl_service     @relation(fields: [id_service], references: [id_service])
+}
+
+model tbl_reservation {
+  id_reservation    Int           @id @default(autoincrement())
+  uuid_reservation  String        @unique @default(uuid())
+  id_service        Int
+  type_service      String        @db.VarChar(255)
+  id_payment        Int
+  confirmation      Int
+  id_client         Int
+  type_client       String        @db.VarChar(255)
+  date_created      DateTime 
+  last_update       DateTime      @updatedAt
+  date_in           DateTime
+  date_out          DateTime
+  number_people     Int
+  tbl_payment       tbl_payment   @relation(fields: [id_payment], references: [id_payment])
+  tbl_client        tbl_client?   @relation(fields: [id_client],  references: [id_client], onDelete: NoAction, onUpdate: NoAction)
+  tbl_service       tbl_service?  @relation(fields: [id_service], references: [id_service], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tbl_restaurant {
+  id_restaurant        Int           @id @default(autoincrement())
+  uuid_restaurant      String        @unique @default(uuid())
+  name                 String        @db.VarChar(100)
+  description          String        @db.VarChar(150)
+  main_image           String        @db.LongText
+  rating               Decimal       @db.Decimal(2, 1)
+  id_user              Int
+  id_restaurant_category Int
+  date_created         DateTime
+  last_update          DateTime      @updatedAt
+  email                String?       @unique @db.VarChar(255)
+  phone_number         String?       @db.VarChar(255)
+  webside              String?       @db.VarChar(255)
+  open_hour            DateTime      @db.Time
+  close_hour           DateTime      @db.Time
+  tbl_user             tbl_user      @relation(fields: [id_user], references: [id_user])
+  tbl_restaurant_category tbl_restaurant_category @relation(fields: [id_restaurant_category], references: [id_restaurant_category])
+  tbl_restaurant_table    tbl_restaurant_table[]
+}
+
+model tbl_restaurant_category {
+  id_restaurant_category Int      @id @default(autoincrement())
+  description            String   @db.VarChar(255)
+  tbl_restaurant         tbl_restaurant[]
+}
+
+model tbl_restaurant_table{
+  id_restaurant_table Int       @id @default(autoincrement())
+  number_people       Int
+  cost                Decimal   @db.Decimal(10,2)
+  date_reservation    DateTime  @db.DateTime()
+  type_reservation    type_reservation
+  discount_cash       Decimal    @db.Decimal(10,2)
+  discount_percentage Decimal
+  id_restaurant       Int
+  tbl_restaurant      tbl_restaurant @relation(fields: [id_restaurant], references: [id_restaurant])
+}
+
+model tbl_rol {
+  id_rol      Int         @id @default(autoincrement())
+  name        rol_type
+  description String      @db.VarChar(255)
+  tbl_user    tbl_user[]
+}
+
+model tbl_set_image_service{
+  id_image_service  Int         @id @default(autoincrement())
+  id_service        Int
+  image             String      @db.LongText
+  tbl_service       tbl_service @relation(fields: [id_service], references: [id_service])
+}
+
+model tbl_service {
+  id_service            Int @id @default(autoincrement())
+  service_type          service_type
+  id_relation_product   String @unique
+  tbl_favorite          tbl_favorite[]
+  tbl_reservation       tbl_reservation[]
+  tbl_rating_service    tbl_rating_service[]
+  tbl_address_service   tbl_address_service[]
+  tbl_amenities_service tbl_amenities_service[]
+  tbl_promos            tbl_promos[]
+  tbl_package_service   tbl_package_service[]
+  tbl_set_image_service tbl_set_image_service[]
+}
+
+model tbl_tour {
+  id_tour           Int           @id @default(autoincrement())
+  name              String        @db.VarChar(75)
+  description       String        @db.VarChar(150)
+  main_image        String        @db.LongText
+  rating            Decimal       @db.Decimal(2, 1)
+  id_user           Int
+  date_created      DateTime
+  last_update       DateTime      @updatedAt
+  tbl_user          tbl_user      @relation(fields: [id_user], references: [id_user])
+  tbl_tour_journey  tbl_tour_journey[]
+}
+
+model tbl_tour_journey {
+  id_tour_journey     Int       @id @default(autoincrement())
+  id_tour             Int
+  hour_to_start       DateTime  @db.Time()
+  number_people       Int
+  day_of_week         String
+  tbl_tour            tbl_tour  @relation(fields: [id_tour], references: [id_tour])
+
+}
+
+model tbl_tourist {
+  id_tourist      Int       @id @default(autoincrement())
+  uuid_tourist    String    @unique @default(uuid())
+  first_name      String    @db.VarChar(255)
+  last_name       String    @db.VarChar(255)
+  birth_day       DateTime  @db.Date
+  email           String    @unique
+  date_register   DateTime  @db.Timestamp()
+}
+
+model tbl_trip {
+  id_trip             Int                   @id @default(autoincrement())
+  uuid_trip           String                @unique @default(uuid())
+  name                String                @db.VarChar(100)
+  description         String                @db.VarChar(150)
+  main_image          String                @db.LongText
+  rating              Decimal               @db.Decimal(2, 1)
+  id_user             Int
+  origin              String                @db.VarChar(255)
+  destination         String                @db.VarChar(255)
+  date_created        DateTime
+  last_update         DateTime              @updatedAt
+  tbl_user            tbl_user              @relation(fields: [id_user], references: [id_user])
+  tbl_trip_transport  tbl_trip_transport[]
+}
+
+model tbl_trip_category_transport {
+  id_trip_category_transport  Int       @id @default(autoincrement())
+  description                 String
+  tbl_trip_transport          tbl_trip_transport[]
+}
+
+model tbl_trip_transport {
+  id_trip_transport           Int                         @id @default(autoincrement())
+  id_trip                     Int
+  id_trip_category            Int
+  seat_number                 String
+  cost                        Decimal                     @db.Decimal(10,2)
+  tbl_trip_category_transport tbl_trip_category_transport @relation(fields: [id_trip_category], references: [id_trip_category_transport])
+  tbl_trip                    tbl_trip                    @relation(fields: [id_trip], references: [id_trip])
+}
+
+model tbl_user {
+  id_user             Int                 @id @default(autoincrement())
+  uuid_user           String              @unique @default(uuid())
+  email               String              @unique
+  username            String              @unique
+  image_profile       String              @db.LongText
+  password            String
+  first_name          String
+  last_name           String
+  birth_day           DateTime            @db.Date
+  token               String
+  refresh_token       String
+  last_logger         DateTime
+  user_create         DateTime
+  google_sign         Boolean
+  last_update         DateTime            @updatedAt
+  id_rol              Int
+  tbl_rol             tbl_rol             @relation(fields: [id_rol], references: [id_rol])
+  tbl_hotel           tbl_hotel[]
+  tbl_restaurant      tbl_restaurant[]
+  tbl_trip            tbl_trip[]
+  tbl_tour            tbl_tour[]
+  tbl_package         tbl_package[]
+  tbl_favorite        tbl_favorite[]
+  tbl_chatSender      tbl_chat[]          @relation("tbl_chatSender")
+  tbl_chatReceiver    tbl_chat[]          @relation("tbl_chatReceiver")
+  tbl_rating_service  tbl_rating_service[]
+  tbl_address_user    tbl_address_user[]
+}
+
+enum type_amenities{
+  POOL
+  GARDEN
+  NATURE_WALK
+  GYM
+}
+
+enum client_type{
+  TOURIST
+  USER
+}
+
+enum rol_type {
+  USER
+  SELLER
+  ADMINISTRATOR
+}
+
+enum service_type {
+  HOTEL
+  RESTAURANT
+  TRIP
+  TOUR
+  PACKAGE
+}
+
+enum type_reservation{
+  ONE_PERSON
+  COUPLE
+  FAMILY
+  GROUP
+  ALL
+}

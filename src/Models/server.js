@@ -1,6 +1,9 @@
-const express = require( 'express' )
-const server_config = require( 'config' )
+// const bodyParser = require('body-parser');
 const cors = require( 'cors' )
+const express = require( 'express' )
+const helmet = require( 'helmet' )
+const morgan = require('morgan');
+const server_config = require( 'config' )
 const { socketController } = require( '../helpers/Sockets' )
 
 class Server {
@@ -20,6 +23,15 @@ class Server {
 
         //CORS
         this.app.use( cors() )
+
+        //Helmet
+        this.app.use( helmet() )
+
+        //BodyParse
+        // this.app.use( bodyParser.json() )
+
+        //Morgan
+        this.app.use( morgan() )
 
         //Reading and parsing from body
         this.app.use( express.json() )
@@ -43,7 +55,7 @@ class Server {
         // this.app.use( '/Calificacion',  require( '../Routes/Calificacion_Routes' ) )
         // this.app.use( '/Carrusel_Imagenes',  require( '../Routes/Carrusel_Imagen_Routes' ) )
     }
-
+    
     socket () {
         this.io.on('connection', ( socket ) => socketController(socket, this.io) )
     }
