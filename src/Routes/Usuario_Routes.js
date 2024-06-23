@@ -1,11 +1,11 @@
 const { Router } = require( 'express' )
 const { check } = require( 'express-validator' )
 const router = Router()
-const { getInfoUsuario, updateUsuario, deleteUsuario } = require( '../Controllers/Usuarios_Controller' )
+const { getInfoUsuario, updateUsuario, deleteUsuario } = require( '../controllers/Usuarios_Controller' )
 const { Validar_Token } = require('../middlewares/Validar_JWT')
 const { Acceso_Rol } = require('../middlewares/Validar_Roles')
-const { Exist_User } = require('../helpers/Validar_BD')
-const { Validar_Datos } = require( '../middlewares/Validar_datos' )
+const { Exist_User } = require('../helpers/Custom_Json_Validation')
+const { Validar_Datos } = require( '../middlewares/Data_Validate' )
 
 //--------- Routes ---------\\
 router.get( '/info', [

@@ -1,4 +1,5 @@
 const { Checar_Validacion } = require( '../Models/Obtener_Validacion' )
+const { prisma } = require('../database')
 
 const Existe_Role = async ( Role = '' ) => {
     if( Role == '' ) throw new Error('Insert Rol')
@@ -20,14 +21,19 @@ const Existe_Usuario = async ( Id_User = '' ) => {
     ) throw new Error('Id User not found in the DB')
 }
 
-const Existe_Email = async( Email = '' ) => {
-    if( Email == '' ) throw new Error('Insert Email')
-    else if(
-        !await Checar_Validacion(
-            'SP_EXISTE_EMAIL' ,
-            `( "${Email}" );`,
-        )
-    ) throw new Error('Email not found in the DB')
+const exist_email = async( email = '' ) => {
+
+    const emailDB = await prisma.tbl_user.findUnique({
+        select:{
+            email: true
+        },
+        where: {
+            email: email
+        }
+    });
+
+    if( emailDB === null || emailDB == null ) 
+        throw new Error('Email not found in the DB')
 }
 
 const isRFC = async ( RFC = '' ) => {
@@ -40,6 +46,6 @@ const isRFC = async ( RFC = '' ) => {
 module.exports = {
     Existe_Role,
     Existe_Usuario,
-    Existe_Email,
+    exist_email,
     isRFC,
 }

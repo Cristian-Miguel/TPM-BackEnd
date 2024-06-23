@@ -1,4 +1,4 @@
-const QueryManager = require( '../Models/QuerryManager' )
+const QueryManager = require( './QuerryManager' )
 
 async function Checar_Validacion ( Name_SP, data ) {
     const SP = `CALL ${Name_SP} ${data} `

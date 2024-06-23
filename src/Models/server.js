@@ -4,13 +4,14 @@ const express = require( 'express' )
 const helmet = require( 'helmet' )
 const morgan = require('morgan');
 const server_config = require( 'config' )
+const dotenv = require('dotenv')
 const { socketController } = require( '../helpers/Sockets' )
 
 class Server {
 
     constructor() {
         this.app = express()
-        this.port = process.env.PORT || server_config.get( 'app.port' )
+        this.port = server_config.get( 'app.port' )
         this.server = require( 'http' ).createServer( this.app )
         this.io = require( 'socket.io' )( this.server )
 
@@ -27,11 +28,8 @@ class Server {
         //Helmet
         this.app.use( helmet() )
 
-        //BodyParse
-        // this.app.use( bodyParser.json() )
-
         //Morgan
-        this.app.use( morgan() )
+        this.app.use( morgan('combined') )
 
         //Reading and parsing from body
         this.app.use( express.json() )
@@ -42,15 +40,15 @@ class Server {
     }
 
     routes () {
-        this.app.use( '/Auth', require( '../Routes/Auth_Routes' ) )
-        this.app.use( '/Usuario', require( '../Routes/Usuario_Routes' ) )
+        this.app.use( '/api/auth', require( '../routes/Auth_Routes' ) )
+        // this.app.use( '/Usuario', require( '../routes/Usuario_Routes' ) )
         // this.app.use( '/Hotel', require( '../Routes/Hotel_Routes' ) )
         // this.app.use( '/Viaje',  require( '../Routes/Viaje_Routes' ) )
         // this.app.use( '/Paquete',  require( '../Routes/Paquete_Routes' ) )
         // this.app.use( '/Restaurante',  require( '../Routes/Restaurante_Routes' ) )
         // this.app.use( '/Tour',  require( '../Routes/Tour_Routes' ) )
         // this.app.use( '/Reserva',  require( '../Routes/Reserva_Routes' ) )
-        this.app.use( '/Chat',  require( '../Routes/Chat_Routes' ) )
+        // this.app.use( '/Chat',  require( '../routes/Chat_Routes' ) )
         // this.app.use( '/Favoritos',  require( '../Routes/Favoritos_Routes' ) )
         // this.app.use( '/Calificacion',  require( '../Routes/Calificacion_Routes' ) )
         // this.app.use( '/Carrusel_Imagenes',  require( '../Routes/Carrusel_Imagen_Routes' ) )

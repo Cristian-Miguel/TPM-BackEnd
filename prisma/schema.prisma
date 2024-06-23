@@ -19,7 +19,7 @@ model tbl_address_service {
   street                String          @db.VarChar(255)
   city                  String          @db.VarChar(255)
   state                 String          @db.VarChar(255)
-  postal_code           String          @db.VarChar(10)
+  postal_code           Int             
   country               String          @db.VarChar(255)
   id_service            Int
   date_created          DateTime
@@ -33,7 +33,7 @@ model tbl_address_user {
   street            String           @db.VarChar(255)
   city              String           @db.VarChar(255)
   state             String           @db.VarChar(255)
-  postal_code       String           @db.VarChar(10)
+  postal_code       Int             
   country           String           @db.VarChar(255)
   id_user           Int
   date_created      DateTime
@@ -350,20 +350,20 @@ model tbl_trip_transport {
 model tbl_user {
   id_user             Int                 @id @default(autoincrement())
   uuid_user           String              @unique @default(uuid())
-  email               String              @unique
-  username            String              @unique
-  image_profile       String              @db.LongText
-  password            String
-  first_name          String
-  last_name           String
+  email               String              @unique @db.VarChar(255)
+  username            String              @unique @db.VarChar(255)
+  image_profile       String?             @db.LongText
+  password            String              @db.VarChar(50)
+  first_name          String              @db.VarChar(255)
+  last_name           String              @db.VarChar(255)
   birth_day           DateTime            @db.Date
-  token               String
-  refresh_token       String
-  last_logger         DateTime
-  user_create         DateTime
-  google_sign         Boolean
+  token               String              @db.LongText
+  refresh_token       String?             @db.LongText
+  last_logger         DateTime            @db.DateTime()
+  user_create         DateTime            @db.DateTime()
+  google_sign         Boolean             @default(false)
   last_update         DateTime            @updatedAt
-  id_rol              Int
+  id_rol              Int                 
   tbl_rol             tbl_rol             @relation(fields: [id_rol], references: [id_rol])
   tbl_hotel           tbl_hotel[]
   tbl_restaurant      tbl_restaurant[]

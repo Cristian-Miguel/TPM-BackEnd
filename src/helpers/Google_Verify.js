@@ -13,7 +13,7 @@ async function googleVerify( token = '' ) {
     Nombre: given_name, 
     Apellidos: family_name,
     Email: email,
-    Imgen: picture,
+    Imagen: picture,
     Password: 1,
     idRol: 2,
     google_signin: 1,

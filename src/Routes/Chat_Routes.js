@@ -1,9 +1,9 @@
 const { Router } = require( 'express' )
 const { check } = require( 'express-validator' )
 const { Validar_Token } = require('../middlewares/Validar_JWT')
-const { ListaUsuariosMensaje, ListaMensajesPrivado, InsertarMensaje } = require('../Controllers/Chat_Controller')
-const { Validar_Datos } = require( '../middlewares/Validar_datos' )
-const { Existe_Email } = require('../helpers/Validar_BD')
+const { ListaUsuariosMensaje, ListaMensajesPrivado, InsertarMensaje } = require('../controllers/Chat_Controller')
+const { Validar_Datos } = require( '../middlewares/Data_Validate' )
+const { Existe_Email } = require('../helpers/Custom_Json_Validation')
 const router = Router()
 
 //--------- Routes ---------\\
