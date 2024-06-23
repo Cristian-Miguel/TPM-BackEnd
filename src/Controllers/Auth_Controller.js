@@ -2,11 +2,12 @@ const { response, request } = require( 'express' )//it's redundant
 const { get_JWT } = require('../helpers/JWT')
 const { googleVerify } = require('../helpers/Google_Verify')
 const { prisma } = require('../database')
-const QueryManager = require( '../Models/QuerryManager' )
+const Response_Code_Message = require('../helpers/constant/Response_Code_Message.js');
+const winston = require('winston');
+require('../helpers/Logger.js');
 
 const sign_in = async ( req = request, res = response ) => {
     try {
-        await prisma.$connect
 
         const user = await prisma.tbl_user.findUnique({
             select:{
@@ -37,27 +38,30 @@ const sign_in = async ( req = request, res = response ) => {
 
             return res.status(200).json({
                 token: token,
-                msg: 'Valid sign in'
+                msg: Response_Code_Message.CODE_200
             })
 
         } else {
+
+            const auth_logger = winston.loggers.get('AuthLogger');
+            auth_logger.info('User unauthenticate');
+
             return res.status(401).json({
-                error: 'Error in your authentication'
+                error: Response_Code_Message.CODE_401
             })
         }
 
     } catch (error) {
 
-        console.log(error)
+        // console.log(error)
+        const auth_logger = winston.loggers.get('AuthLogger');
+        auth_logger.error(`Error in the sign in: ${error}`);
 
         return response.status(500).json({
-            error: 'Contacta al administrador'
+            error: Response_Code_Message.CODE_500()
         })
 
-    } finally {
-        await prisma.$disconnect
     }
-    
 }
 
 const sign_up = async ( req = request, res = response ) => {
@@ -115,11 +119,14 @@ const sign_up = async ( req = request, res = response ) => {
 
         return res.status(201).json({
             token: token,
-            msg: 'User created correctly'
+            msg: Response_Code_Message.CODE_201
         })
     } catch(error) {
 
-        console.log(error)
+        // console.log(error)
+        const auth_logger = winston.loggers.get('AuthLogger');
+        auth_logger.error(`Error in the sign up: ${error}`);
+        
         return res.status(500).json({ error: 'Contacta al administrador' })
 
     }
@@ -131,14 +138,14 @@ const google_sign_up = async ( req = request, res = response ) => {
         const googleUser = await googleVerify(Auth.toString())
         const json = JSON.parse(googleUser);
         //verificar el correo si ya existe
-        const existeCorreo = await QueryManager.Listar_Informacion( `SP_EXISTE_EMAIL("${googleUser.Email}");` )
+        // const existeCorreo = await QueryManager.Listar_Informacion( `SP_EXISTE_EMAIL("${googleUser.Email}");` )
         if( existeCorreo[0][0].inTable === 1 ) {
             return res.status(401).json({
                 msg: 'Usuario ya existe'
             })
         } else {
             const SP = `CALL SP_CREAR_USUARIO_GOOGLE(${json});`
-            await QueryManager.Listar_Informacion( SP )
+            // await QueryManager.Listar_Informacion( SP )
             const token = await Obtener_JWT( googleUser.Email , 2 )
             return res.status(200).json({
                 token: token,
@@ -157,10 +164,10 @@ const google_sign_in = async ( req = request, res = response ) => {
         const { Auth } = req.body
         const googleUser = await googleVerify(Auth)
         const SP = `CALL SP_VERIFICAR_INICIO_SESION_GOOGLE(${googleUser.Email},${googleUser.google_signin});`
-        const isUser = await QueryManager.Listar_Informacion( SP )
+        // const isUser = await QueryManager.Listar_Informacion( SP )
         if( isUser[0][0].isValid == 1 ){
             const SP_INFO = `CALL SP_OBTENER_INFO_USUARIO( "${req.body.Email}" );`
-            const Info = await QueryManager.Listar_Informacion( SP_INFO )
+            // const Info = await QueryManager.Listar_Informacion( SP_INFO )
             const token = await Obtener_JWT( req.body.Email, Info[0][0].idRol)
             return res.status(200).json({
                 token: token,

@@ -33,7 +33,7 @@ const exist_email = async( email = '' ) => {
     });
 
     if( emailDB === null || emailDB == null ) 
-        throw new Error('Email not found in the DB')
+        throw new Error('Email was registrate or not found in the DB')
 }
 
 const isRFC = async ( RFC = '' ) => {

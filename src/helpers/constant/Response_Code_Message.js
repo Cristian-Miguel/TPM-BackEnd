@@ -7,8 +7,8 @@ class Response_Code_Message {
     static get CODE_102(){ return "" };
     static get CODE_103(){ return "" };
 
-    static get CODE_200(){ return "" };
-    static get CODE_201(){ return "" };
+    static get CODE_200(){ return "Succesful transaction" };
+    static get CODE_201(){ return "The component was created successful." };
     static get CODE_202(){ return "" };
     static get CODE_203(){ return "" };
     static get CODE_204(){ return "" };
@@ -26,7 +26,7 @@ class Response_Code_Message {
     static get CODE_308(){ return "" };
 
     static get CODE_400(){ return "" };
-    static get CODE_401(){ return "" };
+    static get CODE_401(){ return "Error in your authentication" };
     static get CODE_402(){ return "" };
     static get CODE_403(){ return "" };
     static get CODE_404(){ return "" };
@@ -55,7 +55,7 @@ class Response_Code_Message {
     static get CODE_431(){ return "" };
     static get CODE_451(){ return "" };
 
-    static get CODE_500(){ return "" };
+    static get CODE_500(){ return "Contact with the administrator" };
     static get CODE_501(){ return "" };
     static get CODE_502(){ return "" };
     static get CODE_503(){ return "" };
