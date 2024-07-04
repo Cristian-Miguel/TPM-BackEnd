@@ -37,6 +37,7 @@ const sign_in = async ( req = request, res = response ) => {
             const token = await get_JWT( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
 
             return res.status(200).json({
+                success: true,
                 token: token,
                 msg: Response_Code_Message.CODE_200
             })
@@ -47,6 +48,7 @@ const sign_in = async ( req = request, res = response ) => {
             auth_logger.info('User unauthenticate');
 
             return res.status(401).json({
+                success: false,
                 error: Response_Code_Message.CODE_401
             })
         }
@@ -58,6 +60,7 @@ const sign_in = async ( req = request, res = response ) => {
         auth_logger.error(`Error in the sign in: ${error}`);
 
         return response.status(500).json({
+            success: false,
             error: Response_Code_Message.CODE_500()
         })
 
@@ -118,6 +121,7 @@ const sign_up = async ( req = request, res = response ) => {
         const token = result.token;
 
         return res.status(201).json({
+            success: true,
             token: token,
             msg: Response_Code_Message.CODE_201
         })
@@ -127,8 +131,10 @@ const sign_up = async ( req = request, res = response ) => {
         const auth_logger = winston.loggers.get('AuthLogger');
         auth_logger.error(`Error in the sign up: ${error}`);
         
-        return res.status(500).json({ error: 'Contacta al administrador' })
-
+        return response.status(500).json({
+            success: false,
+            error: Response_Code_Message.CODE_500()
+        })
     }
 }
 

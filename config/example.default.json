@@ -1,0 +1,25 @@
+{
+    "app": {
+        "port": 1
+    },
+    "security":{
+      "JWT_SECRET" : ""
+    },
+    "google":{
+      "CLIENT_ID": ""
+    },
+    "db": {
+      "username": "",
+      "password": "",
+      "database": "",
+      "host": "",
+      "dialect": ""
+    },
+    "email": {
+      "service": "",
+      "auth": {
+        "user": "",
+        "pass": ""
+      }
+    }
+  }
