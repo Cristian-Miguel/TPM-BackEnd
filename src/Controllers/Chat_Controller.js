@@ -1,7 +1,7 @@
 const { response, request } = require( 'express' )//it's redundant
 const { Obtener_JWT } = require('../helpers/JWT')
 const QueryManager = require( '../Models/QuerryManager' );
-const { Validar_Token_Socket } = require('../middlewares/Validar_JWT');
+const { Validar_Token_Socket } = require('../middlewares/Validate_JWT');
 
 const ListaUsuariosMensaje = async ( req = request, res = response ) => {
     try {

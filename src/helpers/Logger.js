@@ -38,3 +38,22 @@ winston.loggers.add('UserLogger', {
     ],
     defaultMeta: {service: 'UserService'}
 })
+
+winston.loggers.add('ProductsLogger', {
+    level:'info',
+    format: combine(
+        errors({ stack: true }),
+        timestamp(),
+        json(),
+        prettyPrint()
+    ),
+    transports:[
+        new winston.transports.Console(),
+        new winston.transports.File({
+            maxsize: 512000,
+            maxFiles: 5, 
+            filename:`${__dirname}/../../logs/products-api.log` 
+        })
+    ],
+    defaultMeta: {service: 'ProductsService'}
+})

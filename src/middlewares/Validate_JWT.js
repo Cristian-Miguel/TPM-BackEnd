@@ -3,7 +3,7 @@ const jwt = require( 'jsonwebtoken' )
 const server_config = require( 'config' );
 const QueryManager = require( '../Models/QuerryManager' )
 
-const Validar_Token = async ( req = request, res = response, next ) => {
+const Validate_Token = async ( req = request, res = response, next ) => {
     const token = req.header('authorization')
 
     if( !token ) {
@@ -36,7 +36,7 @@ const Validar_Token = async ( req = request, res = response, next ) => {
     }
 }
 
-const Validar_Token_Socket = async ( token = '' ) => {
+const Validate_Token_Socket = async ( token = '' ) => {
     try {
         const secret = server_config.get('security.JWT_SECRET')
         const { Email }  = jwt.verify( token, secret )
@@ -52,6 +52,6 @@ const Validar_Token_Socket = async ( token = '' ) => {
 
 
 module.exports = {
-    Validar_Token,
-    Validar_Token_Socket,
+    Validate_Token,
+    Validate_Token_Socket,
 }

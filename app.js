@@ -1,5 +1,5 @@
-const Server = require('./src/Models/server')
+const Server = require('./src/config/server');
 
-const server = new Server()
+const server = new Server();
 
-server.listen()
+server.listen();

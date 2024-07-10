@@ -1,6 +1,6 @@
 const { Router, request } = require('express')
 const { check, body } = require( 'express-validator' )
-const { data_validate } = require( '../middlewares/Data_Validate' )
+const { Data_Validate } = require( '../middlewares/Data_Validate' )
 const { exist_email } = require('../helpers/Custom_Json_Validation')
 const router = Router()
 const Auth_Controller = require( '../controllers/Auth_Controller' )
@@ -13,7 +13,7 @@ router
             check( 'email' ).custom( exist_email ),
             check( 'password', 'Password ' ).not().isEmpty(),
             check( 'password', 'Password don\'t have 50 caracters' ).isLength({ min: 49, max: 51}),
-            data_validate
+            Data_Validate
         ],
         Auth_Controller.sign_in
     )
@@ -44,7 +44,7 @@ router
             check( 'zip_code', 'The field is empty' ).not().isEmpty(),
             check( 'zip_code', 'The field isn\'t a integer' ).isInt(),
             
-            data_validate
+            Data_Validate
         ],
         Auth_Controller.sign_up
     )
@@ -53,7 +53,7 @@ router
         '/google_sign_up',
         [
             check('Auth', 'El token de google es necesario').not().isEmpty(),
-            data_validate
+            Data_Validate
         ],
         Auth_Controller.google_sign_up
     )
@@ -62,7 +62,7 @@ router
         '/google_sign_in',
         [
             check('Auth', 'El token de google es necesario').not().isEmpty(),
-            data_validate
+            Data_Validate
         ],
         Auth_Controller.google_sign_in
     )
