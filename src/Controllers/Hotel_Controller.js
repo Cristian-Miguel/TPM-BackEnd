@@ -58,7 +58,28 @@ const hotel_create = async ( { body }, res = response ) => {
 const hotel_delete = async ( { body }, res = response ) => {
     try {
         
-        
+        const result = await prisma.$transaction(async (prisma) => {
+
+            const hotel = await prisma.tbl_hotel.delete({
+                where: {
+                    uuid_hotel: body.uuid_hotle
+                }
+            });
+
+            const service = await prisma.tbl_service.delete({
+                where: {
+                    id_relation_product:   hotel.uuid_hotel
+                }
+            });
+
+            return hotel;
+        });
+
+        return res.status(200).json({
+            success: true,
+            uuid: result.id_relation_product,
+            msg: Response_Code_Message.CODE_200
+        });
 
     } catch (error) {
         const auth_logger = winston.loggers.get('ProductsLogger');
@@ -66,15 +87,45 @@ const hotel_delete = async ( { body }, res = response ) => {
         
         return response.status(500).json({
             success: false,
-            error: Response_Code_Message.CODE_500()
+            error: Response_Code_Message.CODE_500(),
+            stack: error
         })
     }
 }
 
-const hotel_update = async ( req = request, res = response ) => {
+const hotel_update = async ( { body }, res = response ) => {
     try {
-        
-        const body = req.body;
+
+        const result = await prisma.$transaction(async (prisma) => {
+            const hotel = await prisma.tbl_hotel.update({
+                data: {
+                    name:           body.name,
+                    description:    body.description,
+                    main_image:     body.main_image,
+                    id_categoria:   body.category,
+                    rating:         0.0,
+                    id_user:        body.user,
+                    date_create:    new Date().toISOString(),
+                    last_update:    new Date().toISOString(),
+                    phone_number:   body.phone_number,
+                    email:          body.email,
+                    website:        body.webside,
+                    open_hour:      body.open_hour,
+                    close_hour:     body.close_hour,
+                },
+                where: {
+                    uuid_hotel: body.uuid_hotel
+                }
+            });
+
+            return hotel;
+        });
+
+        return res.status(201).json({
+            success: true,
+            uuid: result.id_relation_product,
+            msg: Response_Code_Message.CODE_201
+        });
 
     } catch (error) {
         const auth_logger = winston.loggers.get('ProductsLogger');
