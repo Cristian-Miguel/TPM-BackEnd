@@ -5,7 +5,7 @@ const helmet = require( 'helmet' )
 const morgan = require('morgan');
 const server_config = require( 'config' )
 const dotenv = require('dotenv')
-const { socketController } = require( '../helpers/Sockets' )
+const { socketController } = require( '../../../../helpers/Sockets' )
 
 class Server {
 
@@ -40,7 +40,7 @@ class Server {
     }
 
     routes () {
-        this.app.use( '/api/auth', require( '../routes/Auth_Routes' ) )
+        this.app.use( '/api/auth', require( '../../../../routes/Auth_Routes' ) )
         // this.app.use( '/Usuario', require( '../routes/Usuario_Routes' ) )
         // this.app.use( '/Hotel', require( '../Routes/Hotel_Routes' ) )
         // this.app.use( '/Viaje',  require( '../Routes/Viaje_Routes' ) )
