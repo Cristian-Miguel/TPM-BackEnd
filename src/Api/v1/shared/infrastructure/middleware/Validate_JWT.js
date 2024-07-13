@@ -1,7 +1,7 @@
 const { response, request } = require( 'express' )//it's redundant
 const jwt = require( 'jsonwebtoken' )
 const server_config = require( 'config' );
-const QueryManager = require( '../Models/QuerryManager' )
+const QueryManager = require( '../../../../../Models/QuerryManager' )
 
 const Validate_Token = async ( req = request, res = response, next ) => {
     const token = req.header('authorization')
@@ -17,7 +17,7 @@ const Validate_Token = async ( req = request, res = response, next ) => {
         const Exist = await QueryManager.Listar_Informacion( `CALL SP_EXISTE_EMAIL( "${Email}" );` )//* check if the user exist
         if( Exist[0][0].inTable == 1 ) {
             const Info = await QueryManager.Listar_Informacion( `CALL SP_OBTENER_INFO_USUARIO("${Email}" );` ) //* check if id it's the same
-            if( Info[0][0].Email != Email) {
+            if( Info[0][0].Email != Email ) {
                 return res.status(401).json({
                     msg: 'User denied'
                 })

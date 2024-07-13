@@ -1,6 +1,6 @@
 const { Router, request } = require('express')
 const { check, body } = require( 'express-validator' )
-const { Data_Validate } = require( '../middlewares/Data_Validate' )
+const { Data_Validate } = require( '../Api/v1/shared/infrastructure/middleware/Data_Validate' )
 const { exist_email } = require('../helpers/Custom_Json_Validation')
 const router = Router()
 const Auth_Controller = require( '../controllers/Auth_Controller' )

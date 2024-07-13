@@ -1,46 +1,51 @@
-// const bodyParser = require('body-parser');
-const cors = require( 'cors' )
-const express = require( 'express' )
-const helmet = require( 'helmet' )
+const cors = require( 'cors' );
+const express = require( 'express' );
+const helmet = require( 'helmet' );
 const morgan = require('morgan');
-const server_config = require( 'config' )
-const dotenv = require('dotenv')
-const { socketController } = require( '../../../../helpers/Sockets' )
+const server_config = require( 'config' );
+const dotenv = require('dotenv');
+const { socketController } = require( '../../../../../helpers/Sockets' );
 
 class Server {
 
     constructor() {
-        this.app = express()
-        this.port = server_config.get( 'app.port' )
-        this.server = require( 'http' ).createServer( this.app )
-        this.io = require( 'socket.io' )( this.server )
+        this.app = express();
+        this.port = server_config.get( 'app.port' );
+        this.server = require( 'http' ).createServer( this.app );
+        this.io = require( 'socket.io' )( this.server );
 
-        this.middlewares()
-        this.routes()
-        this.socket()
+        this.routes = {
+            basicAuth: 'v1/api/auth',
+            googleAuth: 'v1/api/auth_google',
+            facebookAuth: 'v1/api/auth_facebook',
+        }
+
+        this.middlewares();
+        this.routes();
+        this.socket();
     }
 
     middlewares () {
 
         //CORS
-        this.app.use( cors() )
+        this.app.use( cors() );
 
         //Helmet
-        this.app.use( helmet() )
+        this.app.use( helmet() );
 
         //Morgan
-        this.app.use( morgan('combined') )
+        this.app.use( morgan('combined') );
 
         //Reading and parsing from body
-        this.app.use( express.json() )
+        this.app.use( express.json() );
 
         //Dir public, is for the html files
-        this.app.use( express.static('public') )
+        this.app.use( express.static('public') );
 
     }
 
     routes () {
-        this.app.use( '/api/auth', require( '../../../../routes/Auth_Routes' ) )
+        this.app.use( this.routes.basicAuth, require( '../../../Auth/infrastructure/routes/BasicAuthRoute' ) );
         // this.app.use( '/Usuario', require( '../routes/Usuario_Routes' ) )
         // this.app.use( '/Hotel', require( '../Routes/Hotel_Routes' ) )
         // this.app.use( '/Viaje',  require( '../Routes/Viaje_Routes' ) )
@@ -55,12 +60,12 @@ class Server {
     }
     
     socket () {
-        this.io.on('connection', ( socket ) => socketController(socket, this.io) )
+        this.io.on('connection', ( socket ) => socketController(socket, this.io) );
     }
 
     listen () {
         this.server.listen( this.port, () => {
-            const datetime = new Date()
+            const datetime = new Date();
             const message = "Server enable at Port: " + this.port + " at date " + datetime
             console.log( message );
         })

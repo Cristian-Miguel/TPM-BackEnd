@@ -1,13 +1,11 @@
 
-
 class AuthService {
-    constructor(AuthUserRepository, jwt, config ){
+    constructor(AuthUserRepository, jwt ){
         this.AuthUserRepository = AuthUserRepository;
         this.jwt = jwt;
-        this.config = config;
     }
 
-    async signUp({ email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol }){
+    async signUp({ email, username, image_profile, password, first_name, last_name, birth_day, street,city, state, country, postal_code }){
         
         const user = await this.AuthUserRepository.CreateUser(
             email, 
@@ -18,18 +16,31 @@ class AuthService {
             last_name, 
             birth_day, 
             0, 
-            token, 
-            token, 
+            "", 
+            "", 
             1
         );
 
-        const token = await get_JWT( uuid_user, user.email, user.username, user.image_profile, user.id_rol );
+        const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
 
-        return 
+        await this.AuthUserRepository.CreateAddress( user.id_user, street,city, state, country, postal_code );
+
+        await this.AuthUserRepository.UpdateToken( user.uuid_user, token );
+
+        return token
     }
 
     async signIn({ email, password }){
 
+        const user = await this.AuthUserRepository.FindByEmailPassword( email, password );
+
+        const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
+        
+        await this.AuthUserRepository.UpdateTokenAndLoginDate( user.uuid_user, token );
+        
+        return token;   
     }
 
 }
+
+module.exports = AuthService;

@@ -1,7 +1,7 @@
 
 class AuthUserRepository {
 
-    async CreateAddress(  ) {
+    async CreateAddress( id_user, street,city, state, country, postal_code ) {
         throw new Error('Method not implemented.');
     }
 
@@ -13,7 +13,7 @@ class AuthUserRepository {
         throw new Error('Method not implemented.');
     }
 
-    async UpdateToken( token ){
+    async UpdateToken( uuid, token ){
         throw new Error('Method not implemented.');
     }
 
