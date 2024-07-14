@@ -1,5 +1,5 @@
 const AuthUserRepository = require('./AuthUserRepository');
-const prisma = require('../../../shared/infrastructure/database/PrismaCliente');
+const prisma = require( '../../../shared/domain/database/PrismaCliente' );
 
 class PrismaAuthUserRepository extends AuthUserRepository {
 

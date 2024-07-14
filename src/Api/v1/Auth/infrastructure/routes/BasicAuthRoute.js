@@ -1,7 +1,7 @@
 const { Router, request } = require('express');
 const { check, body } = require( 'express-validator' );
-const { Data_Validate } = require( '../middlewares/Data_Validate' );
-const { exist_email } = require('../helpers/Custom_Json_Validation');
+const { DataValidate } = require( '../../../shared/infrastructure/middleware/DataValidate' );
+const { exist_email } = require( '../helpers/Custom_Json_Validation' );
 const router = Router();
 const BasicAuthController = require( '../../application/controller/BasicAuthController' );
 
@@ -13,7 +13,7 @@ router
             check( 'email' ).custom( exist_email ),
             check( 'password', 'Password ' ).not().isEmpty(),
             check( 'password', 'Password don\'t have 50 caracters' ).isLength({ min: 49, max: 51}),
-            Data_Validate
+            DataValidate
         ],
         BasicAuthController.signIn
     )
@@ -43,7 +43,7 @@ router
             check( 'zip_code', 'The field is empty' ).not().isEmpty(),
             check( 'zip_code', 'The field isn\'t a integer' ).isInt(),
             
-            Data_Validate
+            DataValidate
         ],
         BasicAuthController.signUp
     );

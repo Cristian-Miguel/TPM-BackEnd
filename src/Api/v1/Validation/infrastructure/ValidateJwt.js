@@ -107,7 +107,7 @@ class ValidateJwt {
                     error: 'User doen\'t exits'
                 });
             }
-
+ 
         } catch (error) {
             
             const tokenLogger = winston.loggers.get('TokenLogger');

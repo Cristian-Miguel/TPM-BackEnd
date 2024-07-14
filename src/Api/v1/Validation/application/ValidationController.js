@@ -30,6 +30,30 @@ class ValidationController {
         }
     }
 
+    async getUserInfoByUuid( uuid ) {
+        try {
+            
+            return await validationService.getUserBasicInfoByUuid( uuid );
+
+        } catch (error) {
+            
+            return null;
+
+        }
+    }
+
+    async getIdRolByIdRol( id_rol ) {
+        try {
+            
+            return await validationService.getRolById( id_rol );
+
+        } catch (error) {
+            
+            return null;
+
+        }
+    }
+
 }
 
 module.exports = ValidationController;
