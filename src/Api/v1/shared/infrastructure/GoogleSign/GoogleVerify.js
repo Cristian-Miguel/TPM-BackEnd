@@ -1,12 +1,12 @@
-const {OAuth2Client} = require('google-auth-library');
-const server_config = require( 'config' )
+const { OAuth2Client } = require( 'google-auth-library' );
+const serverConfig = require( 'config' )
 
-const client = new OAuth2Client(server_config.get( 'google.CLIENT_ID' ));
+const client = new OAuth2Client( serverConfig.get( 'google.CLIENT_ID' ) );
 
 async function googleVerify( token = '' ) {
   const ticket = await client.verifyIdToken({
       idToken: token,
-      audience: server_config.get( 'google.CLIENT_ID' ),  
+      audience: serverConfig.get( 'google.CLIENT_ID' ),  
   });
   const { given_name, family_name, email, picture  } = ticket.getPayload();
   return {

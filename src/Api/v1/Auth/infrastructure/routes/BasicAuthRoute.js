@@ -1,7 +1,7 @@
-const { Router, request } = require('express');
-const { check, body } = require( 'express-validator' );
+const { Router } = require('express');
+const { check } = require( 'express-validator' );
 const { DataValidate } = require( '../../../shared/infrastructure/middleware/DataValidate' );
-const { exist_email } = require( '../helpers/Custom_Json_Validation' );
+const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
 const router = Router();
 const BasicAuthController = require( '../../application/controller/BasicAuthController' );
 
@@ -10,7 +10,7 @@ router
         '/sign_in', 
         [
             check( 'email', 'Email is invalid or is Empty' ).isEmail(),
-            check( 'email' ).custom( exist_email ),
+            check( 'email' ).custom( ValidationCustomJsonField.existRole ),
             check( 'password', 'Password ' ).not().isEmpty(),
             check( 'password', 'Password don\'t have 50 caracters' ).isLength({ min: 49, max: 51}),
             DataValidate
@@ -25,7 +25,7 @@ router
 
             check( 'email', 'The field is empty' ).not().isEmpty(),
             check( 'email', 'invalid email' ).isEmail(),
-            check( 'email', 'The email exist' ).not().custom( exist_email ),
+            check( 'email', 'The email exist' ).not().custom( ValidationCustomJsonField.existRole ),
 
             check( 'password', 'The field is empty or doesn\'t have 50 characters' ).isLength({ min: 50, max: 51 }),
 

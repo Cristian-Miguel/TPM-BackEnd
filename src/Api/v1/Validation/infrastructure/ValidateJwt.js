@@ -107,6 +107,8 @@ class ValidateJwt {
                     error: 'User doen\'t exits'
                 });
             }
+
+            return userInfo;
  
         } catch (error) {
             
