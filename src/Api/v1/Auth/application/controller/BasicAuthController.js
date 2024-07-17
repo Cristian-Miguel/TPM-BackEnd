@@ -4,7 +4,7 @@ const AuthUserRepository = require('../../domain/repositories/AuthUserRepository
 const AuthService = require('../../domain/services/AuthUserService.js');
 const ResponseCodeMessage = require('../../../shared/infrastructure/constant/ResponseCodeMessage.js');
 const winston = require('winston');
-require('../helpers/Logger.js');
+require( '../../../shared/infrastructure/Log/Logger' );
 
 const authService = new AuthService(AuthUserRepository, get_JWT);
 

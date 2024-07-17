@@ -21,7 +21,7 @@ class UserRepository {
         throw new Error('Method not implemented.');
     }
 
-    async getUserPagination( page, skip, size ) {
+    async getUserPagination( page, size, orderBy, filter ) {
         throw new Error('Method not implemented.');
     }
 

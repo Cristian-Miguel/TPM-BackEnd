@@ -127,7 +127,6 @@ const sign_up = async ( req = request, res = response ) => {
         })
     } catch(error) {
 
-        // console.log(error)
         const auth_logger = winston.loggers.get('AuthLogger');
         auth_logger.error(`Error in the sign up: ${error}`);
         
