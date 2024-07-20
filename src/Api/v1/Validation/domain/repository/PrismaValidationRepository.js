@@ -1,5 +1,5 @@
 const ValidationRepository = require('./ValidationRepository');
-const prisma = require('../../../shared/domain/database/PrismaCliente');
+const prisma = require('../../../Shared/domain/database/PrismaCliente');
 
 class PrismaValidationRepository extends ValidationRepository {
 

@@ -1,10 +1,10 @@
 const { Router } = require('express');
-const { check } = require( 'express-validator' );
-const { DataValidate } = require( '../../../shared/infrastructure/middleware/DataValidate' );
+const { check, param } = require( 'express-validator' );
+const { DataValidate } = require( '../../../Shared/infrastructure/middleware/DataValidate' );
 const ValidateRoles = require( '../../../Validation/infrastructure/ValidateRoles' );
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
 const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
-const { AdminRol, UserRol, SellerRol } = require( '../../../shared/infrastructure/constant/SystemConstants' );
+const { AdminRol, UserRol, SellerRol } = require( '../../../Shared/infrastructure/constant/SystemConstants' );
 const router = Router();
 const UserController = require( '../../../User/application/controller/UserController' );
 
@@ -72,28 +72,34 @@ router
     )
 
     .post(
-        '/delete',
+        '/delete/:id',
         [
-            ValidateRoles.accessRol( AdminRol ),
             ValidateJwt.validateToken,
-            check(),
+            ValidateRoles.accessRol( AdminRol ),
+            param( 'id' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
         UserController.deleteUser
     )
 
     .get(
-        '/{email}',
+        '/:email',
         [
-
+            ValidateJwt.validateToken,
+            ValidateRoles.accessRol( AdminRol ),
+            param( 'email' ).isEmail().withMessage( 'The param isn\'t an email' ),
+            DataValidate
         ],
         UserController.getUserByEmail
     )
 
     .get(
-        '/{id}',
+        '/:id',
         [
-
+            ValidateJwt.validateToken,
+            ValidateRoles.accessRol( AdminRol ),
+            param( 'id' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
+            DataValidate
         ],
         UserController.getUserByUuid
     )
@@ -101,7 +107,15 @@ router
     .post(
         '/pagination',
         [
-
+            ValidateJwt.validateToken,
+            ValidateRoles.accessRol( AdminRol, SellerRol, UserRol ),
+            check( 'page', 'Page is required' ).not().isEmpty(),
+            check( 'page', 'Page is required' ).isNumeric(),
+            check( 'size', 'Size is required' ).not().isEmpty(),
+            check( 'size', 'Size is required' ).isNumeric(),
+            check( 'orderBy', 'OrderBy must be an array' ).not().isArray(),
+            check( 'filter', 'Filter must be an array' ).not().isArray(),
+            DataValidate
         ],
         UserController.getUsersByPagination
     )

@@ -2,9 +2,9 @@ const { response, request } = require( 'express' )//it's redundant
 const jwt = require( 'jsonwebtoken' )
 const serverConfig = require( 'config' );
 const ValidateController = require( '../application/ValidationController' );
-const ResponseCodeMessage = require( '../../shared/infrastructure/constant/ResponseCodeMessage' );
+const ResponseCodeMessage = require( '../../Shared/infrastructure/constant/ResponseCodeMessage' );
 const winston = require('winston');
-require('../../shared/infrastructure/Log/Logger'); 
+require('../../Shared/infrastructure/Log/Logger'); 
 
 const validateController = new ValidateController();
 

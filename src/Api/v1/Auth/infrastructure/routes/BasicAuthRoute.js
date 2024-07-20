@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const { check } = require( 'express-validator' );
-const { DataValidate } = require( '../../../shared/infrastructure/middleware/DataValidate' );
+const { DataValidate } = require( '../../../Shared/infrastructure/middleware/DataValidate' );
 const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
 const router = Router();
 const BasicAuthController = require( '../../application/controller/BasicAuthController' );

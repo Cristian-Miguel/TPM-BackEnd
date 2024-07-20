@@ -24,6 +24,7 @@ model tbl_address_service {
   id_service            Int
   date_created          DateTime
   last_update           DateTime        @updatedAt
+  active                Boolean         @db.Bit(1) @default(true)
   tbl_service           tbl_service     @relation(fields: [id_service], references: [id_service])
 }
 
@@ -38,12 +39,14 @@ model tbl_address_user {
   id_user           Int
   date_created      DateTime
   last_update       DateTime         @updatedAt
+  active            Boolean          @db.Bit(1) @default(true)
   tbl_user          tbl_user         @relation(fields: [id_user], references: [id_user])
 }
 
 model tbl_amenities {
   id_amenities          Int                     @id @default(autoincrement())
   name                  String
+  active                Boolean                 @db.Bit(1) @default(true)
   type_service          type_amenities
   tbl_amenities_service tbl_amenities_service[]
 }
@@ -52,6 +55,7 @@ model tbl_amenities_service {
   id_amenities_service  Int             @id @default(autoincrement())
   id_service            Int
   id_amenities          Int
+  active                Boolean         @db.Bit(1) @default(true)
   tbl_service           tbl_service     @relation(fields: [id_service], references: [id_service])
   tbl_amenities         tbl_amenities   @relation(fields: [id_amenities], references: [id_amenities])
 }
@@ -64,6 +68,7 @@ model tbl_chat {
   content           String      @db.LongText
   date_created      DateTime
   last_update       DateTime    @updatedAt
+  active            Boolean     @db.Bit(1) @default(true)
   sender            tbl_user    @relation(name: "tbl_chatSender", fields: [id_user_sender], references: [id_user])
   receiver          tbl_user    @relation(name: "tbl_chatReceiver", fields: [id_user_receiver], references: [id_user])
   tbl_message       tbl_message[]
@@ -94,7 +99,7 @@ model tbl_hotel {
   name                String            @db.VarChar(100)
   description         String            @db.VarChar(150)
   main_image          String?           @db.LongText
-  id_categoria        String            @db.VarChar(45)
+  id_category         String            @db.VarChar(45)
   rating              Decimal
   id_user             Int
   date_created        DateTime
@@ -104,6 +109,7 @@ model tbl_hotel {
   website             String?           @db.VarChar(255)
   open_hour           DateTime          @db.Time
   close_hour          DateTime          @db.Time
+  active              Boolean           @db.Bit(1) @default(true)
   tbl_user            tbl_user          @relation(fields: [id_user], references: [id_user])
   tbl_hotel_room      tbl_hotel_room[]
 }
@@ -113,6 +119,7 @@ model tbl_hotel_room {
   id_room_category Int
   number_room      String              @db.VarChar(255)
   id_hotel         Int
+  active           Boolean             @db.Bit(1) @default(true)
   tbl_hotel        tbl_hotel           @relation(fields: [id_hotel], references: [id_hotel])
   tbl_hotel_room_category tbl_hotel_room_category @relation(fields: [id_room_category], references: [id_hotel_room_category])
 }
@@ -122,7 +129,8 @@ model tbl_hotel_room_category {
   description            String   @db.VarChar(255)
   number_beds            Int
   max_people             Int
-  cost                   Decimal 
+  cost                   Decimal
+  active                 Boolean           @db.Bit(1) @default(true)
   discount_cash          Decimal? @db.Decimal
   discount_percentage    Decimal? @db.Decimal
   tbl_hotel_room         tbl_hotel_room[]
@@ -145,17 +153,19 @@ model tbl_package {
   description         String        @db.VarChar(150)
   cost                Decimal       @db.Decimal(10, 2)
   package_number      Int
-  main_image          String       @db.LongText
+  main_image          String        @db.LongText
   descount_cash       String?       @db.VarChar(45)
   id_user             Int
+  active              Boolean       @db.Bit(1) @default(true)
   tbl_user            tbl_user      @relation(fields: [id_user], references: [id_user])
   tbl_package_service tbl_package_service[]
 }
 
 model tbl_package_service {
-  id_package_service        Int       @id @default(autoincrement())
+  id_package_service        Int         @id @default(autoincrement())
   id_service                Int
   id_package                Int
+  active                    Boolean     @db.Bit(1) @default(true)
   tbl_service               tbl_service @relation(fields: [id_service], references: [id_service])
   tbl_package               tbl_package @relation(fields: [id_package], references: [id_package]) 
 }
@@ -178,7 +188,7 @@ model tbl_promos {
   code_promotion      String  @db.VarChar(100)
   cash_descount       Decimal @db.Decimal(10,2)
   percentage_descount Decimal
-  active              Boolean
+  active              Boolean @default(true)
   tbl_service         tbl_service @relation(fields: [id_service], references: [id_service])
 }
 
@@ -210,6 +220,7 @@ model tbl_reservation {
   date_in           DateTime
   date_out          DateTime
   number_people     Int
+  active            Boolean       @db.Bit(1) @default(true)
   tbl_payment       tbl_payment   @relation(fields: [id_payment], references: [id_payment])
   tbl_client        tbl_client?   @relation(fields: [id_client],  references: [id_client], onDelete: NoAction, onUpdate: NoAction)
   tbl_service       tbl_service?  @relation(fields: [id_service], references: [id_service], onDelete: NoAction, onUpdate: NoAction)
@@ -232,6 +243,7 @@ model tbl_restaurant {
   open_hour            DateTime      @db.Time
   close_hour           DateTime      @db.Time
   tbl_user             tbl_user      @relation(fields: [id_user], references: [id_user])
+  active               Boolean           @db.Bit(1)
   tbl_restaurant_category tbl_restaurant_category @relation(fields: [id_restaurant_category], references: [id_restaurant_category])
   tbl_restaurant_table    tbl_restaurant_table[]
 }
@@ -239,6 +251,7 @@ model tbl_restaurant {
 model tbl_restaurant_category {
   id_restaurant_category Int      @id @default(autoincrement())
   description            String   @db.VarChar(255)
+  active                 Boolean           @db.Bit(1) @default(true)
   tbl_restaurant         tbl_restaurant[]
 }
 
@@ -251,6 +264,7 @@ model tbl_restaurant_table{
   discount_cash       Decimal    @db.Decimal(10,2)
   discount_percentage Decimal
   id_restaurant       Int
+  active              Boolean        @db.Bit(1) @default(true)
   tbl_restaurant      tbl_restaurant @relation(fields: [id_restaurant], references: [id_restaurant])
 }
 
@@ -265,13 +279,15 @@ model tbl_set_image_service{
   id_image_service  Int         @id @default(autoincrement())
   id_service        Int
   image             String      @db.LongText
+  active            Boolean     @db.Bit(1) @default(true)
   tbl_service       tbl_service @relation(fields: [id_service], references: [id_service])
 }
 
 model tbl_service {
-  id_service            Int @id @default(autoincrement())
+  id_service            Int               @id @default(autoincrement())
   service_type          service_type
-  id_relation_product   String @unique
+  id_relation_product   String            @unique
+  active                Boolean           @db.Bit(1) @default(true)
   tbl_favorite          tbl_favorite[]
   tbl_reservation       tbl_reservation[]
   tbl_rating_service    tbl_rating_service[]
@@ -291,6 +307,7 @@ model tbl_tour {
   id_user           Int
   date_created      DateTime
   last_update       DateTime      @updatedAt
+  active            Boolean       @db.Bit(1) @default(true)
   tbl_user          tbl_user      @relation(fields: [id_user], references: [id_user])
   tbl_tour_journey  tbl_tour_journey[]
 }
@@ -301,6 +318,7 @@ model tbl_tour_journey {
   hour_to_start       DateTime  @db.Time()
   number_people       Int
   day_of_week         String
+  active              Boolean   @db.Bit(1) @default(true)
   tbl_tour            tbl_tour  @relation(fields: [id_tour], references: [id_tour])
 
 }
@@ -313,6 +331,7 @@ model tbl_tourist {
   birth_day       DateTime  @db.Date
   email           String    @unique
   date_register   DateTime  @db.Timestamp()
+  active          Boolean           @db.Bit(1)
 }
 
 model tbl_trip {
@@ -327,6 +346,7 @@ model tbl_trip {
   destination         String                @db.VarChar(255)
   date_created        DateTime
   last_update         DateTime              @updatedAt
+  active              Boolean               @db.Bit(1) @default(true)
   tbl_user            tbl_user              @relation(fields: [id_user], references: [id_user])
   tbl_trip_transport  tbl_trip_transport[]
 }
@@ -334,6 +354,7 @@ model tbl_trip {
 model tbl_trip_category_transport {
   id_trip_category_transport  Int       @id @default(autoincrement())
   description                 String
+  active                      Boolean           @db.Bit(1) @default(true)
   tbl_trip_transport          tbl_trip_transport[]
 }
 
@@ -343,6 +364,7 @@ model tbl_trip_transport {
   id_trip_category            Int
   seat_number                 String
   cost                        Decimal                     @db.Decimal(10,2)
+  active                      Boolean                     @db.Bit(1) @default(true)
   tbl_trip_category_transport tbl_trip_category_transport @relation(fields: [id_trip_category], references: [id_trip_category_transport])
   tbl_trip                    tbl_trip                    @relation(fields: [id_trip], references: [id_trip])
 }
@@ -364,6 +386,7 @@ model tbl_user {
   google_sign         Boolean             @default(false)
   last_update         DateTime            @updatedAt
   id_rol              Int                 
+  active              Boolean             @db.Bit(1) @default(true)
   tbl_rol             tbl_rol             @relation(fields: [id_rol], references: [id_rol])
   tbl_hotel           tbl_hotel[]
   tbl_restaurant      tbl_restaurant[]

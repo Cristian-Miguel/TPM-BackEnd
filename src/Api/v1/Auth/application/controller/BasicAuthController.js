@@ -2,9 +2,9 @@ const { response, request } = require( 'express' );//it's redundant
 const { get_JWT } = require('../../../shared/infrastructure/JWT/Jwt.js');
 const AuthUserRepository = require('../../domain/repositories/AuthUserRepository.js');
 const AuthService = require('../../domain/services/AuthUserService.js');
-const ResponseCodeMessage = require('../../../shared/infrastructure/constant/ResponseCodeMessage.js');
+const ResponseCodeMessage = require('../../../Shared/infrastructure/constant/ResponseCodeMessage.js');
 const winston = require('winston');
-require( '../../../shared/infrastructure/Log/Logger' );
+require( '../../../Shared/infrastructure/Log/Logger' );
 
 const authService = new AuthService(AuthUserRepository, get_JWT);
 

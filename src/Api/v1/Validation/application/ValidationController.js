@@ -1,6 +1,6 @@
 const ValidationRepository = require('../domain/repository/ValidationRepository.js');
 const ValidationService = require('../domain/service/ValidationService.js');
-const { get_JWT } = require('../../../shared/infrastructure/JWT/Jwt.js');
+const { get_JWT } = require('../../Shared/infrastructure/JWT/Jwt.js');
 
 const validationService = new ValidationService(ValidationRepository, get_JWT );
 

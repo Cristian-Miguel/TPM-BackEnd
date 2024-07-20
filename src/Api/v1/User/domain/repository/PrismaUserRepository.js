@@ -1,5 +1,5 @@
 const UserRepository = require( './UserRepository' );
-const prisma = require( '../../../shared/domain/database/PrismaCliente' );
+const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class PrismaUserRepository extends UserRepository {
 
