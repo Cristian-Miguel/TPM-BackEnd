@@ -1,5 +1,5 @@
 const { response, request } = require( 'express' );//it's redundant
-const { get_JWT } = require('../../../shared/infrastructure/JWT/Jwt.js');
+const { get_JWT } = require('../../../Shared/infrastructure/JWT/Jwt.js');
 const AuthUserRepository = require('../../domain/repositories/AuthUserRepository.js');
 const AuthService = require('../../domain/services/AuthUserService.js');
 const ResponseCodeMessage = require('../../../Shared/infrastructure/constant/ResponseCodeMessage.js');

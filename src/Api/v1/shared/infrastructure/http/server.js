@@ -4,7 +4,7 @@ const helmet = require( 'helmet' );
 const morgan = require('morgan');
 const server_config = require( 'config' );
 const dotenv = require('dotenv');
-const { socketController } = require( '../../../../../helpers/Sockets' );
+const { socketController } = require( '../../../Socket/application/controller/Sockets' );
 
 class Server {
 
@@ -14,11 +14,9 @@ class Server {
         this.server = require( 'http' ).createServer( this.app );
         this.io = require( 'socket.io' )( this.server );
 
-        this.routes = {
-            basicAuth: 'v1/api/auth',
-            googleAuth: 'v1/api/auth_google',
-            facebookAuth: 'v1/api/auth_facebook',
-        }
+        this.mainRoute = 'v1/api';
+
+        this.routesSrc = routesSrc();
 
         this.middlewares();
         this.routes();
@@ -44,19 +42,26 @@ class Server {
 
     }
 
+    routesSrc () {
+
+        return {
+            basicAuth:          this.mainRoute + '/auth',
+            googleAuth:         this.mainRoute + '/auth_google',
+            facebookAuth:       this.mainRoute + '/auth_facebook',
+            user:               this.mainRoute + '/user',
+            hotel:              this.mainRoute + '/hotel',
+            roomHotel:          this.mainRoute + '/hotel/room',
+            roomCategoryHotel:  this.mainRoute + '/hotel/room/category',
+        };
+
+    }
+
     routes () {
-        this.app.use( this.routes.basicAuth, require( '../../../Auth/infrastructure/routes/BasicAuthRoute' ) );
-        // this.app.use( '/Usuario', require( '../routes/Usuario_Routes' ) )
-        // this.app.use( '/Hotel', require( '../Routes/Hotel_Routes' ) )
-        // this.app.use( '/Viaje',  require( '../Routes/Viaje_Routes' ) )
-        // this.app.use( '/Paquete',  require( '../Routes/Paquete_Routes' ) )
-        // this.app.use( '/Restaurante',  require( '../Routes/Restaurante_Routes' ) )
-        // this.app.use( '/Tour',  require( '../Routes/Tour_Routes' ) )
-        // this.app.use( '/Reserva',  require( '../Routes/Reserva_Routes' ) )
-        // this.app.use( '/Chat',  require( '../routes/Chat_Routes' ) )
-        // this.app.use( '/Favoritos',  require( '../Routes/Favoritos_Routes' ) )
-        // this.app.use( '/Calificacion',  require( '../Routes/Calificacion_Routes' ) )
-        // this.app.use( '/Carrusel_Imagenes',  require( '../Routes/Carrusel_Imagen_Routes' ) )
+        this.app.use( this.routesSrc.basicAuth,             require( '../../../Auth/infrastructure/routes/BasicAuthRoute' ) );
+        this.app.use( this.routesSrc.user,                  require( '../../../User/infrastructure/routes/UserRoutes' ) );
+        this.app.use( this.routesSrc.hotel,                 require( '../../../Hotel/infrastructure/routes/HotelRoutes' ) );
+        this.app.use( this.routesSrc.roomHotel,             require( '../../../Hotel/infrastructure/routes/HotelRoomRoutes' ) );
+        this.app.use( this.routesSrc.roomCategoryHotel,     require( '../../../Hotel/infrastructure/routes/RoomCategoryRoutes' ) );
     }
     
     socket () {

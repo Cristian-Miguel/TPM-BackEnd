@@ -1,26 +1,47 @@
 
 class HotelRepository {
-    async createHotel () {
+    async createHotel ( name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteHotelAdmin () {
+    async deleteHotelAdmin ( uuid ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteHotelSeller () {
+    async deleteHotelSeller ( uuid ) {
         throw new Error('Method not implemented.');
     }
 
-    async updateHotel () {
+    async updateHotel ( uuid, name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour ) {
         throw new Error('Method not implemented.');
     }
 
-    async getHotelPagination () {
+    async getHotelPagination ( page, size, orderBy, filter ) {
         throw new Error('Method not implemented.');
     }
 
-    async getHotelByUuid () {
+    async getHotelByUuid ( uuid ) {
+        throw new Error('Method not implemented.');
+    }
+
+    //Hotel Room Category
+    async createCategoryRoomHotel () {
+        throw new Error('Method not implemented.');
+    }
+
+    async deleteCategoryRoomHotel () {
+        throw new Error('Method not implemented.');
+    }
+
+    async updateCategoryRoomHotel () {
+        throw new Error('Method not implemented.');
+    }
+
+    async getCategoryRoomHotelPagination () {
+        throw new Error('Method not implemented.');
+    }
+
+    async getCategoryRoomHotel () {
         throw new Error('Method not implemented.');
     }
 

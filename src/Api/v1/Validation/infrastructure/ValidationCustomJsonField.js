@@ -10,7 +10,7 @@ class ValidationCustomJsonField {
         if( !await validationController.getIdRolByIdRol( role ) ) throw new Error( 'Rol not found in the DB' );
     }
 
-    async existUser( uuid = '' ){
+    async existUser ( uuid = '' ) {
         if( uuid === '' ) throw new Error('Insert uuid User');
 
         if( !await validationController.getUserInfo( uuid ) ) throw new Error('Id User not found in the DB');
@@ -21,6 +21,22 @@ class ValidationCustomJsonField {
 
         if( !await validationController.validateEmail( email ) ) throw new Error('Email was registrate or not found in the DB');
     }
+
+    validateTypeOrder( order_type = 'desc' ) {
+        if( order_type === '' ) throw new Error('Insert order type valid');
+
+        if( order_type !== 'desc' || order_type !== 'asc' ) 
+            throw new Error(`Invalid order type: ${order_type}. Allowed values are: desc, asc`);
+    }
+
+    validateTypeFilter ( filter_type = '' ) {
+        if( filter_type === '' ) throw new Error('Insert filter type valid');
+
+        const allowedFilters = ['like', 'gt', 'lt', 'eq'];
+        if (!allowedFilters.includes(filter_type)) {
+            throw new Error(`Invalid filter type: ${filter_type}. Allowed values are: ${allowedFilters.join(', ')}`);
+        }
+    }
 }
 
-module.exports = ValidationCustomJsonField;
+module.exports = new ValidationCustomJsonField();

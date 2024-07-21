@@ -4,7 +4,7 @@ const { DataValidate } = require( '../../../Shared/infrastructure/middleware/Dat
 const ValidateRoles = require( '../../../Validation/infrastructure/ValidateRoles' );
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
 const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
-const { AdminRol, UserRol, SellerRol } = require( '../../../Shared/infrastructure/constant/SystemConstants' );
+const { AdminRol, UserRol, SellerRol } = require( '../../../Shared/infrastructure/constant/SystemConstant' );
 const router = Router();
 const UserController = require( '../../../User/application/controller/UserController' );
 
@@ -71,7 +71,7 @@ router
         UserController.updateUser
     )
 
-    .post(
+    .get(
         '/delete/:id',
         [
             ValidateJwt.validateToken,
@@ -113,8 +113,26 @@ router
             check( 'page', 'Page is required' ).isNumeric(),
             check( 'size', 'Size is required' ).not().isEmpty(),
             check( 'size', 'Size is required' ).isNumeric(),
-            check( 'orderBy', 'OrderBy must be an array' ).not().isArray(),
-            check( 'filter', 'Filter must be an array' ).not().isArray(),
+           
+            check( 'orderBy', 'OrderBy must be an array' ).isArray(),
+            body( 'orderBy.*.order_type' )
+                .notEmpty().withMessage( 'order type in orderby array is required' )
+                .isString().withMessage( 'order type in orderby array must be an string type' )
+                .custom( ValidationCustomJsonField.validateTypeOrder ),//check have only desc and asc
+            body( 'orderBy.*.field' )
+                .notEmpty().withMessage( 'field in orderby array is required' )
+                .isString().withMessage( 'field in orderby array must be an string type' ),
+
+            check( 'filter', 'Filter must be an array' ).isArray(),
+            body( 'filter.*.filter_type' )
+                .notEmpty().withMessage( 'filter type in filter array is required' )
+                .isString().withMessage( 'filter type in filter array must be an string type' )
+                .custom( ValidationCustomJsonField.validateTypeFilter ),//check have only like, gt, lt, eq 
+            body( 'filter.*.field' )
+                .notEmpty().withMessage( 'field in filter array is required' )
+                .isString().withMessage( 'field in filter array must be an string type' ),
+            body( 'filter.*.compare' )
+                .notEmpty().withMessage( 'compare in filter array is required' ),
             DataValidate
         ],
         UserController.getUsersByPagination

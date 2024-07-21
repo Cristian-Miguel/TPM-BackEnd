@@ -119,7 +119,8 @@ model tbl_hotel_room {
   id_room_category Int
   number_room      String              @db.VarChar(255)
   id_hotel         Int
-  active           Boolean             @db.Bit(1) @default(true)
+  uuid_user        String?
+  active           Boolean             @db.Bit(1)  @default(false)
   tbl_hotel        tbl_hotel           @relation(fields: [id_hotel], references: [id_hotel])
   tbl_hotel_room_category tbl_hotel_room_category @relation(fields: [id_room_category], references: [id_hotel_room_category])
 }

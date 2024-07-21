@@ -2,7 +2,8 @@ const HotelRepository = require( './HotelRepository' );
 const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class PrismaHotelRepository extends HotelRepository{
-    async createHotel ({ name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour }) {
+    
+    async createHotel ( name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour ) {
         return prisma.tbl_hotel.create({
             data:{
                 name: name,
@@ -41,7 +42,7 @@ class PrismaHotelRepository extends HotelRepository{
         })
     }
 
-    async updateHotel ({ name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour }) {
+    async updateHotel ( uuid, name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour ) {
         return prisma.tbl_hotel.update({
             data:{
                 name: name,
@@ -57,6 +58,9 @@ class PrismaHotelRepository extends HotelRepository{
                 rating: 0.00,
                 date_created: new Date().toISOString(),
                 last_update: new Date().toISOString()
+            }, 
+            where:{
+                uuid_hotel: uuid
             }
         });
     }
@@ -74,7 +78,7 @@ class PrismaHotelRepository extends HotelRepository{
             }),
           ]);
 
-        return [ data, total ]
+        return [ data, total ];
     }
 
     async getHotelByUuid ( uuid ) {
