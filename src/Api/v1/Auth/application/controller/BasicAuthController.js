@@ -38,7 +38,7 @@ class BasicAuthController {
             const auth_logger = winston.loggers.get('AuthLogger');
             auth_logger.error(`Error in the sign up: ${error}`);
             
-            return response.status(500).json({
+            return res.status(500).json({
                 success: false,
                 error: ResponseCodeMessage.CODE_500()
             });
@@ -76,7 +76,7 @@ class BasicAuthController {
             const auth_logger = winston.loggers.get('AuthLogger');
             auth_logger.error(`Error in the sign in: ${error}`);
     
-            return response.status(500).json({
+            return res.status(500).json({
                 success: false,
                 error: ResponseCodeMessage.CODE_500()
             });

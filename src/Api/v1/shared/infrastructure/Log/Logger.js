@@ -17,7 +17,7 @@ winston.loggers.add('AuthLogger', {
             filename:`${__dirname}/../../logs/auth-api.log` 
         })
     ],
-    defaultMeta: {service: 'AuthenticationService'}
+    defaultMeta: {service: 'AuthService'}
 });
 
 winston.loggers.add('TokenLogger', {
@@ -37,7 +37,7 @@ winston.loggers.add('TokenLogger', {
         })
     ],
     defaultMeta: { service: 'ValidationService' }
-})
+});
 
 winston.loggers.add('UserLogger', {
     level:'info',
@@ -56,7 +56,26 @@ winston.loggers.add('UserLogger', {
         })
     ],
     defaultMeta: {service: 'UserService'}
-})
+});
+
+winston.loggers.add('SocketLogger', {
+    level:'info',
+    format: combine(
+        errors({ stack: true }),
+        timestamp(),
+        json(),
+        prettyPrint()
+    ),
+    transports:[
+        new winston.transports.Console(),
+        new winston.transports.File({
+            maxsize: 512000,
+            maxFiles: 5, 
+            filename:`${__dirname}/../../logs/socket-api.log` 
+        })
+    ],
+    defaultMeta: { service: 'SocketService' }
+});
 
 winston.loggers.add('ProductsLogger', {
     level:'info',
@@ -74,5 +93,5 @@ winston.loggers.add('ProductsLogger', {
             filename:`${__dirname}/../../logs/products-api.log` 
         })
     ],
-    defaultMeta: {service: 'ProductsService'}
-})
+    defaultMeta: {service: 'ProductService'}
+});

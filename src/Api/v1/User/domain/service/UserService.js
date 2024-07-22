@@ -1,3 +1,4 @@
+const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class UserService {
     constructor( UserRepository ){
@@ -5,25 +6,38 @@ class UserService {
     }
 
     async createUser({ email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol }){
-        return this.UserRepository
+        const result = await prisma.$transaction(async (prisma) => {
+            return await this.UserRepository
             .createUser( email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol );
+        });
+
+
+        return result;
     }
 
     async deleteUser({ uuid }){
-        return this.UserRepository.deleteUser( uuid );
+        const result = await prisma.$transaction(async (prisma) => {
+            return await this.UserRepository.deleteUser( uuid );
+        });
+
+        return result;
     }
 
     async updateUser({ uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol }){
-        return this.UserRepository
+        const result = await prisma.$transaction(async (prisma) => {
+            return await this.UserRepository
             .updateUser( uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol );
+        });
+
+        return result;
     }
 
     async getUserByUuid({ uuid }){
-        return this.UserRepository.getUserByUuid( uuid );
+        return await this.UserRepository.getUserByUuid( uuid );
     }
 
     async getUserByEmail({ email }){
-        return this.UserRepository.getUserByEmail( email );
+        return await this.UserRepository.getUserByEmail( email );
     }
 
     /**
@@ -35,7 +49,7 @@ class UserService {
      */
     async getUsersByPagination({ page, size, orderBy, filter }){
         
-        const [ data, count ] = this.UserRepository.getUsersByPagination( page, size, orderBy, filter );
+        const [ data, count ] = await this.UserRepository.getUsersByPagination( page, size, orderBy, filter );
 
         return {
             data, 

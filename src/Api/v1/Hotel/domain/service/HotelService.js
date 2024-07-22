@@ -9,7 +9,7 @@ class HotelService {
     async createHotel ({ name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour }) {
         
         const result = await prisma.$transaction(async (prisma) => {
-            return HotelService.createHotel
+            return await this.HotelService.createHotel
                 ( name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour );
         });
 
@@ -19,7 +19,7 @@ class HotelService {
     async deleteHotelAdmin ({ uuid }) {
 
         const result = await prisma.$transaction(async (prisma) => {
-            return HotelService.deleteHotelAdmin ( uuid );
+            return await this.HotelService.deleteHotelAdmin ( uuid );
         });
 
         return result;
@@ -28,7 +28,7 @@ class HotelService {
     async deleteHotelSeller ({ uuid }) {
 
         const result = await prisma.$transaction(async (prisma) => {
-            return HotelService.deleteHotelSeller( uuid );
+            return await this.HotelService.deleteHotelSeller( uuid );
         });
 
         return result;
@@ -37,7 +37,7 @@ class HotelService {
     async updateHotel ({ uuid_hotel, name, descrition, main_image, id_category, uuid_user, phone_number, email, website, open_hour, close_hour }) {
         
         const result = await prisma.$transaction(async (prisma) => {
-            return HotelService.updateHotel
+            return await this.HotelService.updateHotel
                 ( uuid_hotel, name, descrition, main_image, id_category, uuid_user, phone_number, email, website, open_hour, close_hour )
         });
 
@@ -45,11 +45,11 @@ class HotelService {
     }
 
     async getHotelPagination ({ page, size, orderBy, filter }) {
-        return HotelService.getHotelPagination ( page, size, orderBy, filter );
+        return await this.HotelService.getHotelPagination ( page, size, orderBy, filter );
     }
 
     async getHotelByUuid ({ uuid }) {
-        return HotelService.getHotelByUuid ( uuid );
+        return await this.HotelService.getHotelByUuid ( uuid );
     }
 }
 

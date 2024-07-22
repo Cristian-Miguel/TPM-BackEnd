@@ -4,7 +4,7 @@ const helmet = require( 'helmet' );
 const morgan = require('morgan');
 const server_config = require( 'config' );
 const dotenv = require('dotenv');
-const { socketController } = require( '../../../Socket/application/controller/Sockets' );
+const SocketManageEvent = require( '../../../Socket/infrastructure/SocketManageEvent' );
 
 class Server {
 
@@ -14,9 +14,9 @@ class Server {
         this.server = require( 'http' ).createServer( this.app );
         this.io = require( 'socket.io' )( this.server );
 
-        this.mainRoute = 'v1/api';
+        this.mainRoute = '/api/v1';
 
-        this.routesSrc = routesSrc();
+        this.routesSrc = this.routesSrc();
 
         this.middlewares();
         this.routes();
@@ -65,7 +65,7 @@ class Server {
     }
     
     socket () {
-        this.io.on('connection', ( socket ) => socketController(socket, this.io) );
+        this.io.on('connection', ( socket ) => new SocketManageEvent(socket, this.io) );
     }
 
     listen () {

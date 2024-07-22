@@ -4,7 +4,7 @@ const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 class PrismaAuthUserRepository extends AuthUserRepository {
 
     async CreateAddress( id_user, street,city, state, country, postal_code ) {
-        return prisma.tbl_address_user.create({
+        return await prisma.tbl_address_user.create({
             data: {
                 id_user:        id_user,
                 street:         street,
@@ -18,7 +18,7 @@ class PrismaAuthUserRepository extends AuthUserRepository {
     }
 
     async CreateUser( email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ){
-        return prisma.tbl_user.create({
+        return await prisma.tbl_user.create({
             data: {
                 email:          email,
                 username:       username,
@@ -39,7 +39,7 @@ class PrismaAuthUserRepository extends AuthUserRepository {
     }
 
     async FindByEmailPassword( email, password ){
-        return prisma.tbl_user.findUnique({
+        return await prisma.tbl_user.findUnique({
             select:{
                 uuid_user: true,
                 email: true,
@@ -55,7 +55,7 @@ class PrismaAuthUserRepository extends AuthUserRepository {
     }
 
     async UpdateToken( uuid, token ){
-       return prisma.tbl_user.update({
+       return await prisma.tbl_user.update({
         where: {
             uuid_user: uuid
         },
@@ -67,7 +67,7 @@ class PrismaAuthUserRepository extends AuthUserRepository {
     }
 
     async UpdateTokenAndLoginDate( uuid, token ){
-        return prisma.tbl_user.update({
+        return await prisma.tbl_user.update({
             where: {
                 uuid_user: uuid
             },

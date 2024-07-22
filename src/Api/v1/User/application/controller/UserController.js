@@ -12,7 +12,7 @@ class UserController {
     async createUser( req = request, res = response ){
         try {
 
-            const result = userService.createUser( req.body );
+            const result = await userService.createUser( req.body );
 
             return res.status(201).json({
                 success: true,
@@ -25,7 +25,7 @@ class UserController {
             const auth_logger = winston.loggers.get('UserLogger');
             auth_logger.error(`Error try to create user: ${ error }`);
             
-            return response.status(500).json({
+            return res.status(500).json({
                 success: false,
                 error: Response_Code_Message.CODE_500(),
                 stack: error
@@ -36,7 +36,7 @@ class UserController {
     async updateUser( req = request, res = response ){
         try {
 
-            const result = userService.updateUser( req.body );
+            const result = await userService.updateUser( req.body );
 
             return res.status(200).json({
                 success: true,
@@ -60,7 +60,7 @@ class UserController {
     async deleteUser( req = request, res = response ){
         try {
 
-            const result = userService.deleteUser( req.params );
+            const result = await userService.deleteUser( req.params );
 
             return res.status(200).json({
                 success: true,
@@ -84,7 +84,7 @@ class UserController {
     async getUserByUuid( req = request, res = response ){
         try {
 
-            const result = userService.getUserByUuid( req.params );
+            const result = await userService.getUserByUuid( req.params );
 
             return res.status(200).json({
                 success: true,
@@ -108,7 +108,7 @@ class UserController {
     async getUserByEmail( req = request, res = response ){
         try {
 
-            const result = userService.getUserByEmail( req.params );
+            const result = await userService.getUserByEmail( req.params );
 
             return res.status(200).json({
                 success: true,
@@ -132,7 +132,7 @@ class UserController {
     async getUsersByPagination( req = request, res = response ){
         try {
 
-            const result = userService.getUsersByPagination( req.body );
+            const result = await userService.getUsersByPagination( req.body );
 
             return res.status(201).json({
                 success: true,

@@ -1,5 +1,11 @@
 
 //Roles
-export const UserRol = 1;
-export const SellerRol = 2;
-export const AdminRol = 3;
+const UserRol = 1;
+const SellerRol = 2;
+const AdminRol = 3;
+
+module.exports = {
+    UserRol,
+    SellerRol,
+    AdminRol
+}

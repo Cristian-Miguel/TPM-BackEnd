@@ -7,9 +7,9 @@ class ValidationService {
 
     async checkEmailValidation( email ){
 
-        const email = await this.ValidationRepository.FindEmail( email );
+        const emailValidate = await this.ValidationRepository.FindEmail( email );
 
-        return email !== null;
+        return emailValidate !== null;
     }
 
     async getUserBasicInfo( email ) {

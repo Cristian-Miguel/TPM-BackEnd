@@ -71,4 +71,4 @@ class ValidateRoles {
     }
 }
 
-module.exports = ValidateRoles;
+module.exports = new ValidateRoles();

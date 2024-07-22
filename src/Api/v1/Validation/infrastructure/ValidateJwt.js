@@ -127,4 +127,4 @@ class ValidateJwt {
 
 }
 
-module.exports = ValidateJwt;
+module.exports = new ValidateJwt();

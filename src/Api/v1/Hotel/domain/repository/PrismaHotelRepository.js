@@ -4,7 +4,7 @@ const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 class PrismaHotelRepository extends HotelRepository{
     
     async createHotel ( name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour ) {
-        return prisma.tbl_hotel.create({
+        return await prisma.tbl_hotel.create({
             data:{
                 name: name,
                 descrition: descrition,
@@ -24,7 +24,7 @@ class PrismaHotelRepository extends HotelRepository{
     }
 
     async deleteHotelAdmin ( uuid ) {
-        return prisma.tbl_hotel.delete({
+        return await prisma.tbl_hotel.delete({
             where:{
                 uuid_hotel: uuid
             }
@@ -43,7 +43,7 @@ class PrismaHotelRepository extends HotelRepository{
     }
 
     async updateHotel ( uuid, name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour ) {
-        return prisma.tbl_hotel.update({
+        return await prisma.tbl_hotel.update({
             data:{
                 name: name,
                 descrition: descrition,
@@ -82,7 +82,7 @@ class PrismaHotelRepository extends HotelRepository{
     }
 
     async getHotelByUuid ( uuid ) {
-        return prisma.tbl_hotel.findUnique({
+        return await prisma.tbl_hotel.findUnique({
             where:{
                 uuid_hotel: uuid
             }

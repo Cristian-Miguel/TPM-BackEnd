@@ -4,8 +4,8 @@ const { response, request } = require( 'express' )//it's redundant
 const DataValidate = ( req = request, res = response, next ) => {
     const errors = validationResult( req )
     if( !errors.isEmpty() )
-        return res.status(400).json({ error: errors })
-    next()
+        return res.status(400).json({ error: errors });
+    next();
 }
 
 module.exports = {

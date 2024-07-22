@@ -24,27 +24,6 @@ class HotelRepository {
         throw new Error('Method not implemented.');
     }
 
-    //Hotel Room Category
-    async createCategoryRoomHotel () {
-        throw new Error('Method not implemented.');
-    }
-
-    async deleteCategoryRoomHotel () {
-        throw new Error('Method not implemented.');
-    }
-
-    async updateCategoryRoomHotel () {
-        throw new Error('Method not implemented.');
-    }
-
-    async getCategoryRoomHotelPagination () {
-        throw new Error('Method not implemented.');
-    }
-
-    async getCategoryRoomHotel () {
-        throw new Error('Method not implemented.');
-    }
-
 }
 
 module.exports = HotelRepository;
