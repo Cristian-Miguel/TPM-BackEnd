@@ -14,7 +14,7 @@ winston.loggers.add('AuthLogger', {
         new winston.transports.File({
             maxsize: 512000,
             maxFiles: 5, 
-            filename:`${__dirname}/../../logs/auth-api.log` 
+            filename:`${__dirname}/../../../../../../logs/auth-api.log` 
         })
     ],
     defaultMeta: {service: 'AuthService'}
@@ -33,7 +33,7 @@ winston.loggers.add('TokenLogger', {
         new winston.transports.File({
             maxsize: 512000,
             maxFiles: 5, 
-            filename:`${__dirname}/../../logs/token-api.log` 
+            filename:`${__dirname}/../../../../../../logs/token-api.log` 
         })
     ],
     defaultMeta: { service: 'ValidationService' }
@@ -52,7 +52,7 @@ winston.loggers.add('UserLogger', {
         new winston.transports.File({ 
             maxsize: 512000,
             maxFiles: 5, 
-            filename:`${__dirname}/../../logs/user-api.log`
+            filename:`${__dirname}/../../../../../../logs/user-api.log`
         })
     ],
     defaultMeta: {service: 'UserService'}
@@ -71,7 +71,7 @@ winston.loggers.add('SocketLogger', {
         new winston.transports.File({
             maxsize: 512000,
             maxFiles: 5, 
-            filename:`${__dirname}/../../logs/socket-api.log` 
+            filename:`${__dirname}/../../../../../../logs/socket-api.log` 
         })
     ],
     defaultMeta: { service: 'SocketService' }
@@ -90,7 +90,7 @@ winston.loggers.add('ProductsLogger', {
         new winston.transports.File({
             maxsize: 512000,
             maxFiles: 5, 
-            filename:`${__dirname}/../../logs/products-api.log` 
+            filename:`${__dirname}/../../../../../../logs/products-api.log` 
         })
     ],
     defaultMeta: {service: 'ProductService'}

@@ -1,7 +1,7 @@
 const { Router } = require('express');
-const { check, param } = require( 'express-validator' );
+const { check, param, body } = require( 'express-validator' );
 const { DataValidate } = require( '../../../Shared/infrastructure/middleware/DataValidate' );
-const ValidateRoles = require( '../../../Validation/infrastructure/ValidateRoles' );
+const { accessRol } = require( '../../../Validation/infrastructure/ValidateRoles' );
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
 const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
 const { AdminRol, SellerRol } = require( '../../../Shared/infrastructure/constant/SystemConstant' );
@@ -12,8 +12,8 @@ router
     .post(
         '/create',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
             check( 'name',          'Name is required' ).not().isEmpty(),
             check( 'description',   'Description is required' ),
             check( 'main_image',    'Main image is required' ),
@@ -26,14 +26,14 @@ router
             check( 'close_hour',    'Close hour is required' ),
             DataValidate
         ],
-        HotelController.createHotel()
+        HotelController.createHotel
     )
 
     .post(
         '/update',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
             check( 'uuid_hotel',    'Uuid is required' ).not().isEmpty(),
             check( 'uuid_hotel',    'It isn\'t an uuid' ).isUUID(),
             check( 'name',          'Name is required' ).not().isEmpty(),
@@ -58,36 +58,36 @@ router
             check( 'close_hour',    'Close hour is required' ).not().isEmpty(),
             DataValidate
         ],
-        HotelController
+        HotelController.updateHotel
     )
 
     .get(
         '/delete/admin/:uuid',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol ),
             param( 'uuid' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
-        HotelController
+        HotelController.deleteHotelAdmin
     )
 
     .get(
         '/delete/seller/:uuid',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
             param( 'uuid' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
-        HotelController
+        HotelController.deleteHotelSeller
     )
 
     .post(
         '/pagination',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
             check( 'page', 'Page is required' ).not().isEmpty(),
             check( 'page', 'Page is required' ).isNumeric(),
             check( 'size', 'Size is required' ).not().isEmpty(),
@@ -114,18 +114,18 @@ router
                 .notEmpty().withMessage( 'compare in filter array is required' ),
             DataValidate
         ],
-        HotelController
+        HotelController.getHotelPagination
     )
 
     .get(
         '/:uuid',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
             param( 'uuid' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
-        HotelController
+        HotelController.getHotelByUuid
     )
 
 

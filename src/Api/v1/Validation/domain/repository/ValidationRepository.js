@@ -1,19 +1,19 @@
 
 class ValidationRepository {
 
-    async FindEmail( email ) {
+    async findEmail( email ) {
         throw new Error('Method not implemented.');
     }
 
-    async FindUser( email, uuid ){
+    async findUser( email, uuid ){
         throw new Error('Method not implemented.');
     }
 
-    async FindUserByUuid( uuid ) {
+    async findUserByUuid( uuid ) {
         throw new Error('Method not implemented.');
     }
 
-    async FindRolById( id_rol ) {
+    async findRolById( id_rol ) {
         throw new Error('Method not implemented.');
     }
 

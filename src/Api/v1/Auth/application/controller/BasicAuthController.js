@@ -1,6 +1,6 @@
 const { response, request } = require( 'express' );//it's redundant
 const { get_JWT } = require('../../../Shared/infrastructure/JWT/Jwt.js');
-const AuthUserRepository = require('../../domain/repositories/AuthUserRepository.js');
+const AuthUserRepository = require('../../domain/repositories/PrismaAuthUserRepository.js');
 const AuthService = require('../../domain/services/AuthUserService.js');
 const ResponseCodeMessage = require('../../../Shared/infrastructure/constant/ResponseCodeMessage.js');
 const winston = require('winston');
@@ -13,7 +13,7 @@ class BasicAuthController {
     async signUp( req = request, res = response ) {
         try {
 
-            const token = await authService.singUp( req.body );
+            const token = await authService.signUp( req.body );
 
             if ( token ) {
 
@@ -29,7 +29,7 @@ class BasicAuthController {
 
                 return res.status(500).json({
                     success: false,
-                    error: ResponseCodeMessage.CODE_500()
+                    error: ResponseCodeMessage.CODE_500
                 });   
             }
 
@@ -40,7 +40,7 @@ class BasicAuthController {
             
             return res.status(500).json({
                 success: false,
-                error: ResponseCodeMessage.CODE_500()
+                error: ResponseCodeMessage.CODE_500
             });
 
         }
@@ -49,7 +49,7 @@ class BasicAuthController {
     async signIn( req = request, res = response ) {
         try {
 
-            const token = await authService.singIn( req.body );
+            const token = await authService.signIn( req.body );
 
             if( token ) {
 
@@ -78,7 +78,7 @@ class BasicAuthController {
     
             return res.status(500).json({
                 success: false,
-                error: ResponseCodeMessage.CODE_500()
+                error: ResponseCodeMessage.CODE_500
             });
     
         }

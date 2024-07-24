@@ -10,7 +10,7 @@ router
         '/sign_in', 
         [
             check( 'email', 'Email is invalid or is Empty' ).isEmail(),
-            check( 'email' ).custom( ValidationCustomJsonField.existRole ),
+            check( 'email' ).custom( ValidationCustomJsonField.existEmail ),
             check( 'password', 'Password ' ).not().isEmpty(),
             check( 'password', 'Password don\'t have 50 caracters' ).isLength({ min: 49, max: 51}),
             DataValidate

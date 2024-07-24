@@ -11,7 +11,6 @@ const validateController = new ValidateController();
 class ValidateJwt {
     
     async validateToken ( req = request, res = response, next ) {
-        const email = req.body.email;
 
         try {
 

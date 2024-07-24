@@ -27,7 +27,7 @@ class AuthService {
 
         await this.AuthUserRepository.UpdateToken( user.uuid_user, token );
 
-        return token
+        return token;
     }
 
     async signIn({ email, password }){

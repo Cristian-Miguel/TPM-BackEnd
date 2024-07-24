@@ -1,19 +1,20 @@
 const { Router } = require('express');
-const { check, param } = require( 'express-validator' );
+const { check, param, body } = require( 'express-validator' );
 const { DataValidate } = require( '../../../Shared/infrastructure/middleware/DataValidate' );
-const ValidateRoles = require( '../../../Validation/infrastructure/ValidateRoles' );
+const { accessRol } = require( '../../../Validation/infrastructure/ValidateRoles' );
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
 const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
 const { AdminRol, UserRol, SellerRol } = require( '../../../Shared/infrastructure/constant/SystemConstant' );
+const UserController = require( '../../application/controller/UserController' );
+
 const router = Router();
-const UserController = require( '../../../User/application/controller/UserController' );
 
 router
     .post(
         '/create',
         [
-            ValidateRoles.accessRol( AdminRol ),
             ValidateJwt.validateToken,
+            accessRol( AdminRol ),
             check( 'username', 'invalid username or is empty' ).not().isEmpty(),
 
             check( 'email', 'The field is empty' ).not().isEmpty(),
@@ -43,8 +44,8 @@ router
     .post(
         '/update',
         [
-            ValidateRoles.accessRol( AdminRol, UserRol, SellerRol ),
             ValidateJwt.validateToken,
+            accessRol( AdminRol, UserRol, SellerRol ),
             check( 'username', 'invalid username or is empty' ).not().isEmpty(),
 
             check( 'email', 'The field is empty' ).not().isEmpty(),
@@ -75,7 +76,7 @@ router
         '/delete/:id',
         [
             ValidateJwt.validateToken,
-            ValidateRoles.accessRol( AdminRol ),
+            accessRol( AdminRol ),
             param( 'id' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
@@ -86,18 +87,19 @@ router
         '/:email',
         [
             ValidateJwt.validateToken,
-            ValidateRoles.accessRol( AdminRol ),
+            accessRol( AdminRol ),
             param( 'email' ).isEmail().withMessage( 'The param isn\'t an email' ),
             DataValidate
         ],
         UserController.getUserByEmail
-    )
+    );
 
+router
     .get(
         '/:id',
         [
             ValidateJwt.validateToken,
-            ValidateRoles.accessRol( AdminRol ),
+            accessRol( AdminRol ),
             param( 'id' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
@@ -108,7 +110,7 @@ router
         '/pagination',
         [
             ValidateJwt.validateToken,
-            ValidateRoles.accessRol( AdminRol, SellerRol, UserRol ),
+            accessRol( AdminRol, SellerRol, UserRol ),
             check( 'page', 'Page is required' ).not().isEmpty(),
             check( 'page', 'Page is required' ).isNumeric(),
             check( 'size', 'Size is required' ).not().isEmpty(),
@@ -136,7 +138,7 @@ router
             DataValidate
         ],
         UserController.getUsersByPagination
-    )
+    );
 
 
 module.exports = router;

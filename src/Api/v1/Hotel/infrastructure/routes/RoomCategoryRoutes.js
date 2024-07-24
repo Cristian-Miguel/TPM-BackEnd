@@ -1,7 +1,7 @@
 const { Router } = require('express');
-const { check, param } = require( 'express-validator' );
+const { check, param, body } = require( 'express-validator' );
 const { DataValidate } = require( '../../../Shared/infrastructure/middleware/DataValidate' );
-const ValidateRoles = require( '../../../Validation/infrastructure/ValidateRoles' );
+const { accessRol } = require( '../../../Validation/infrastructure/ValidateRoles' );
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
 const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
 const { AdminRol } = require( '../../../Shared/infrastructure/constant/SystemConstant' );
@@ -13,7 +13,7 @@ router
         '/create',
         [
             ValidateJwt.validateToken,
-            ValidateRoles.accessRol( AdminRol ),
+            accessRol( AdminRol ),
             check( 'description', 'Description is required' ).not().isEmpty(),
             check( 'description', 'Description isn\'t is a string type' ).isString(),
             check( 'description', 'Description is less than 255 characters' ).isLength({ max: 255 }),
@@ -36,7 +36,7 @@ router
         '/update',
         [
             ValidateJwt.validateToken,
-            ValidateRoles.accessRol( AdminRol ),
+            accessRol( AdminRol ),
             check( 'description', 'Description is required' ).not().isEmpty(),
             check( 'description', 'Description isn\'t is a string type' ).isString(),
             check( 'description', 'Description is less than 255 characters' ).isLength({ max: 255 }),
@@ -59,7 +59,7 @@ router
         '/delete/:id_hotel_room_category',
         [
             ValidateJwt.validateToken,
-            ValidateRoles.accessRol( AdminRol ),
+            accessRol( AdminRol ),
             param( 'id_hotel_room_category' )
                 .notEmpty().withMessage( 'The id param is required' )
                 .isNumeric().withMessage( 'The param id isn\'t a numeric type' ),
@@ -72,7 +72,7 @@ router
         '/pagination',
         [
             ValidateJwt.validateToken,
-            ValidateRoles.accessRol( AdminRol ),
+            accessRol( AdminRol ),
             check( 'page', 'Page is required' ).not().isEmpty(),
             check( 'page', 'Page is required' ).isNumeric(),
             check( 'size', 'Size is required' ).not().isEmpty(),
@@ -106,7 +106,7 @@ router
         '/:id_hotel_room_category',
         [
             ValidateJwt.validateToken,
-            ValidateRoles.accessRol( AdminRol ),
+            accessRol( AdminRol ),
             param( 'id_hotel_room_category' )
                 .notEmpty().withMessage( 'The id param is required' )
                 .isNumeric().withMessage( 'The param id isn\'t a numeric type' ),

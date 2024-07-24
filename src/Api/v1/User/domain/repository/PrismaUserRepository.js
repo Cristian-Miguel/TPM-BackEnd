@@ -90,4 +90,4 @@ class PrismaUserRepository extends UserRepository {
 
 }
 
-module.exports = PrismaUserRepository;
+module.exports = new PrismaUserRepository();

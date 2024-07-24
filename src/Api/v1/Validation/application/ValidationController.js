@@ -1,4 +1,4 @@
-const ValidationRepository = require('../domain/repository/ValidationRepository.js');
+const ValidationRepository = require('../domain/repository/PrismaValidationRepository.js');
 const ValidationService = require('../domain/service/ValidationService.js');
 const { get_JWT } = require('../../Shared/infrastructure/JWT/Jwt.js');
 

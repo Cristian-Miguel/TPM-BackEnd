@@ -9,7 +9,7 @@ const userService = new UserService( UserRepository );
 
 class UserController {
 
-    async createUser( req = request, res = response ){
+    async createUser( req = request, res = response ) {
         try {
 
             const result = await userService.createUser( req.body );
@@ -49,7 +49,7 @@ class UserController {
             const auth_logger = winston.loggers.get('UserLogger');
             auth_logger.error(`Error try to update user: ${ error }`);
             
-            return response.status(500).json({
+            return res.status(500).json({
                 success: false,
                 error: Response_Code_Message.CODE_500(),
                 stack: error
@@ -73,7 +73,7 @@ class UserController {
             const auth_logger = winston.loggers.get('UserLogger');
             auth_logger.error(`Error try to delete user: ${ error }`);
             
-            return response.status(500).json({
+            return res.status(500).json({
                 success: false,
                 error: Response_Code_Message.CODE_500(),
                 stack: error
@@ -97,7 +97,7 @@ class UserController {
             const auth_logger = winston.loggers.get('UserLogger');
             auth_logger.error(`Error try to get user by uuid: ${ error }`);
             
-            return response.status(500).json({
+            return res.status(500).json({
                 success: false,
                 error: Response_Code_Message.CODE_500(),
                 stack: error
@@ -121,7 +121,7 @@ class UserController {
             const auth_logger = winston.loggers.get('UserLogger');
             auth_logger.error(`Error try to get user by email: ${ error }`);
             
-            return response.status(500).json({
+            return res.status(500).json({
                 success: false,
                 error: Response_Code_Message.CODE_500(),
                 stack: error
@@ -145,7 +145,7 @@ class UserController {
             const auth_logger = winston.loggers.get('UserLogger');
             auth_logger.error(`Error try to get users pagination: ${ error }`);
             
-            return response.status(500).json({
+            return res.status(500).json({
                 success: false,
                 error: Response_Code_Message.CODE_500(),
                 stack: error

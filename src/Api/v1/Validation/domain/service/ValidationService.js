@@ -7,21 +7,21 @@ class ValidationService {
 
     async checkEmailValidation( email ){
 
-        const emailValidate = await this.ValidationRepository.FindEmail( email );
+        const emailValidate = await this.ValidationRepository.findEmail( email );
 
         return emailValidate !== null;
     }
 
     async getUserBasicInfo( email ) {
-        return await this.ValidationRepository.FindUser( email );
+        return await this.ValidationRepository.findUser( email );
     }
 
     async getUserBasicInfoByUuid( uuid ) {
-        return await this.ValidationRepository.FindUserByUuid( uuid );
+        return await this.ValidationRepository.findUserByUuid( uuid );
     }
 
     async getRolById ( id_rol ) {
-        return await this.ValidationRepository.FindRolById( id_rol );
+        return await this.ValidationRepository.findRolById( id_rol );
     }
 }
 

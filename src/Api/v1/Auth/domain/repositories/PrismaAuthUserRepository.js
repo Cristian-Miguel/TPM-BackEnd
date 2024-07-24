@@ -67,7 +67,7 @@ class PrismaAuthUserRepository extends AuthUserRepository {
     }
 
     async UpdateTokenAndLoginDate( uuid, token ){
-        return await prisma.tbl_user.update({
+    return await prisma.tbl_user.update({
             where: {
                 uuid_user: uuid
             },

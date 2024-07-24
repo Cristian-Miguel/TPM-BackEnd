@@ -3,7 +3,7 @@ const prisma = require('../../../Shared/domain/database/PrismaCliente');
 
 class PrismaValidationRepository extends ValidationRepository {
 
-    async FindEmail( email ) {
+    async findEmail( email ) {
         return prisma.tbl_user.findUnique({
             select:{
                 email: true
@@ -14,7 +14,7 @@ class PrismaValidationRepository extends ValidationRepository {
         });
     }
 
-    async FindUser( email, uuid ) {
+    async findUser( email, uuid ) {
         return prisma.tbl_user.findUnique({
             select: {
                 uuid_user: true,
@@ -28,7 +28,7 @@ class PrismaValidationRepository extends ValidationRepository {
         });
     }
 
-    async FindUserByUuid( uuid ) {
+    async findUserByUuid( uuid ) {
         return prisma.tbl_user.findUnique({
             select: {
                 uuid_user: true,
@@ -41,7 +41,7 @@ class PrismaValidationRepository extends ValidationRepository {
         });
     }
 
-    async FindRolById( id_rol ) {
+    async findRolById( id_rol ) {
         return prisma.tbl_rol.findUnique({
             select: {
                 name: true,
@@ -56,4 +56,4 @@ class PrismaValidationRepository extends ValidationRepository {
 
 }
 
-module.exports = PrismaValidationRepository;
+module.exports = new PrismaValidationRepository();

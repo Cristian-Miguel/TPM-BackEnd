@@ -1,7 +1,7 @@
 const { Router } = require('express');
 const { check, param, body } = require( 'express-validator' );
 const { DataValidate } = require( '../../../Shared/infrastructure/middleware/DataValidate' );
-const ValidateRoles = require( '../../../Validation/infrastructure/ValidateRoles' );
+const { accessRol } = require( '../../../Validation/infrastructure/ValidateRoles' );
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
 const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
 const { AdminRol, UserRol, SellerRol } = require( '../../../Shared/infrastructure/constant/SystemConstant' );
@@ -12,8 +12,8 @@ router
     .post(
         '/create',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
             check( 'id_room_category', 'Id room category is required' ).not().isEmpty(),
             check( 'id_room_category', 'Id room category must be a numeric type' ).isNumeric(),
             check( 'number_room', 'Number room is required' ).not().isEmpty(),
@@ -28,8 +28,8 @@ router
     .post(
         '/createMany',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
             body( 'rooms' ).isArray().withMessage( 'rooms must be an array' ),
             body( 'rooms.*.id_room_category' )
                 .notEmpty().withMessage( 'Id room category is required' )
@@ -48,8 +48,8 @@ router
     .post(
         '/update',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
             check( 'id_hotel_room', 'Id hotel room is required' ).not().isEmpty(),
             check( 'id_hotel_room', 'Id hotel room must be a numeric type' ).isNumeric(),
             check( 'id_room_category', 'Id room category is required' ).not().isEmpty(),
@@ -66,8 +66,8 @@ router
     .get(
         '/delete/:id_hotel_room',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
             param( 'id_hotel_room' )
                 .notEmpty().withMessage( 'Id hotel room is required' )
                 .not().isNumeric().withMessage( 'Id hotel room must be a numeric type' ),
@@ -79,8 +79,8 @@ router
     .post(
         '/pagination',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol, UserRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol, UserRol ),
             check( 'page', 'Page is required' ).not().isEmpty(),
             check( 'page', 'Page is required' ).isNumeric(),
             check( 'size', 'Size is required' ).not().isEmpty(),
@@ -113,8 +113,8 @@ router
     .get(
         '/:id_hotel_room',
         [
-            ValidateJwt.ValidateJwt,
-            ValidateRoles.accessRol( AdminRol, SellerRol ),
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
             param( 'id_hotel_room' )
                 .notEmpty().withMessage( 'Id hotel room is required' )
                 .not().isNumeric().withMessage( 'Id hotel room must be a numeric type' ),
