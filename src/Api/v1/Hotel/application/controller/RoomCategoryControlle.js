@@ -1,5 +1,5 @@
 const { response, request } = require( 'express' );//it's redundant
-const RoomCategoryRepository = require( '../../domain/repository/RoomCategoryRepository' );
+const RoomCategoryRepository = require( '../../domain/repository/PrismaRoomCategoryReporsitory' );
 const RoomCategoryService = require( '../../domain/service/RoomCategoryService' );
 const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage' );
 const winston = require( 'winston' );

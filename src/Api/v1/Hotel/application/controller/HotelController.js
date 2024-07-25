@@ -1,5 +1,5 @@
 const { response, request } = require( 'express' );//it's redundant
-const HotelRepository = require( '../../domain/repository/HotelRepository' );
+const HotelRepository = require( '../../domain/repository/PrismaHotelRepository' );
 const HotelService = require( '../../domain/service/HotelService' );
 const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage' );
 const winston = require( 'winston' );
@@ -27,7 +27,7 @@ class HotelController {
             
             return response.status(500).json({
                 success: false,
-                error: Response_Code_Message.CODE_500(),
+                error: Response_Code_Message.CODE_500,
                 stack: error
             });
         }
@@ -51,7 +51,7 @@ class HotelController {
             
             return response.status(500).json({
                 success: false,
-                error: Response_Code_Message.CODE_500(),
+                error: Response_Code_Message.CODE_500,
                 stack: error
             });
         }
@@ -75,7 +75,7 @@ class HotelController {
             
             return response.status(500).json({
                 success: false,
-                error: Response_Code_Message.CODE_500(),
+                error: Response_Code_Message.CODE_500,
                 stack: error
             });
         }
@@ -99,7 +99,7 @@ class HotelController {
             
             return response.status(500).json({
                 success: false,
-                error: Response_Code_Message.CODE_500(),
+                error: Response_Code_Message.CODE_500,
                 stack: error
             });
         }
@@ -123,7 +123,7 @@ class HotelController {
             
             return response.status(500).json({
                 success: false,
-                error: Response_Code_Message.CODE_500(),
+                error: Response_Code_Message.CODE_500,
                 stack: error
             });
         }
@@ -147,7 +147,7 @@ class HotelController {
             
             return response.status(500).json({
                 success: false,
-                error: Response_Code_Message.CODE_500(),
+                error: Response_Code_Message.CODE_500,
                 stack: error
             });
         }

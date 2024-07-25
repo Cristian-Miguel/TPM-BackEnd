@@ -1,5 +1,5 @@
 const { response, request } = require( 'express' );//it's redundant
-const UserRepository = require( '../../domain/repository/UserRepository' );
+const UserRepository = require( '../../domain/repository/PrismaUserRepository' );
 const UserService = require( '../../domain/service/UserService' );
 const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage' );
 const winston = require( 'winston' );
