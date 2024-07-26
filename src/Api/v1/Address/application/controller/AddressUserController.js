@@ -1,28 +1,28 @@
 const { response, request } = require( 'express' );//it's redundant
-const AddressServiceRepository = require( '../../domain/repository/PrismaAddressServiceRepository' );
-const AddressServiceService = require( '../../domain/service/AddressServiceService' );
+const AddressUserRepository = require( '../../domain/repository/PrismaAddressUserRepository' );
+const AddressUserService = require( '../../domain/service/AddressUserService' );
 const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage' );
 const winston = require( 'winston' );
 require( '../../../Shared/infrastructure/Log/Logger' );
 
-const addressServiceService = new AddressServiceService( AddressServiceRepository );
+const addressUserService = new AddressUserService( AddressUserRepository );
 
 class AddressServiceController {
-    async createAddressService ( req = request, res = response ) {
+    async createAddressUser ( req = request, res = response ) {
         try {
 
-            const result = await addressServiceService.createAddressService( req.body );
+            const result = await addressUserService.createAddressUser( req.body );
 
             return res.status(201).json({
                 success: true,
-                uuid_address_service: result.uuid_address_service,
+                uuid_address_user: result.uuid_address_user,
                 msg: ResponseCodeMessage.CODE_201
             });
             
         } catch (error) {
-            
-            const product_logger = winston.loggers.get('ProductsLogger');
-            product_logger.error(`Error try to create a address: ${ error }`);
+
+            const user_logger = winston.loggers.get('UserLogger');
+            user_logger.error(`Error try to create a address: ${ error }`);
             
             return response.status(500).json({
                 success: false,
@@ -35,18 +35,18 @@ class AddressServiceController {
     async deleteAsAdminAddressService ( req = request, res = response ) {
         try {
 
-            const result = await addressServiceService.deleteAsAdminAddressService( req.params );
+            const result = await addressUserService.deleteAsAdminAddressUser( req.params );
 
             return res.status(200).json({
                 success: true,
-                uuid_address_service: result.uuid_address_service,
+                uuid_address_user: result.uuid_address_user,
                 msg: ResponseCodeMessage.CODE_200
             });
             
         } catch (error) {
             
-            const product_logger = winston.loggers.get('ProductsLogger');
-            product_logger.error(`Error try to delete to an address: ${ error }`);
+            const user_logger = winston.loggers.get('UserLogger');
+            user_logger.error(`Error try to delete to an address: ${ error }`);
             
             return response.status(500).json({
                 success: false,
@@ -56,21 +56,21 @@ class AddressServiceController {
         }
     }
 
-    async deleteAsUserAddressService ( req = request, res = response ) {
+    async deleteAsUserAddressUser ( req = request, res = response ) {
         try {
 
-            const result = await addressServiceService.deleteAsUserAddressService( req.params );
+            const result = await addressUserService.deleteAsUserAddressUser( req.params );
 
             return res.status(200).json({
                 success: true,
-                uuid_address_service: result.uuid_address_service,
+                uuid_address_user: result.uuid_address_user,
                 msg: ResponseCodeMessage.CODE_201
             });
             
         } catch (error) {
             
-            const product_logger = winston.loggers.get('ProductsLogger');
-            product_logger.error(`Error try a logic delete to an address: ${ error }`);
+            const user_logger = winston.loggers.get('UserLogger');
+            user_logger.error(`Error try a logic delete to an address: ${ error }`);
             
             return response.status(500).json({
                 success: false,
@@ -80,21 +80,21 @@ class AddressServiceController {
         }
     }
 
-    async updateAddressService ( req = request, res = response ) {
+    async updateAddressUser ( req = request, res = response ) {
         try {
 
-            const result = await addressServiceService.updateAddressService( req.body );
+            const result = await addressUserService.updateAddressUser( req.body );
 
             return res.status(200).json({
                 success: true,
-                uuid_address_service: result.uuid_address_service,
+                uuid_address_user: result.uuid_address_user,
                 msg: ResponseCodeMessage.CODE_200
             });
             
         } catch (error) {
             
-            const product_logger = winston.loggers.get('ProductsLogger');
-            product_logger.error(`Error try to update a address: ${ error }`);
+            const user_logger = winston.loggers.get('UserLogger');
+            user_logger.error(`Error try to update a address: ${ error }`);
             
             return response.status(500).json({
                 success: false,
@@ -104,10 +104,10 @@ class AddressServiceController {
         }
     }
 
-    async getAddressServicePagination ( req = request, res = response ) {
+    async getAddressUserPagination ( req = request, res = response ) {
         try {
 
-            const result = await addressServiceService.getAddressService( req.body );
+            const result = await addressUserService.getAddressUserPagination( req.body );
 
             return res.status(200).json({
                 success: true,
@@ -117,8 +117,8 @@ class AddressServiceController {
             
         } catch (error) {
             
-            const product_logger = winston.loggers.get('ProductsLogger');
-            product_logger.error(`Error try to get the list of address: ${ error }`);
+            const user_logger = winston.loggers.get('UserLogger');
+            user_logger.error(`Error try to get the list of address: ${ error }`);
             
             return response.status(500).json({
                 success: false,
@@ -131,7 +131,7 @@ class AddressServiceController {
     async getAddressServiceByUuid ( req = request, res = response ) {
         try {
 
-            const result = await addressServiceService.getAddressServiceByUuid( req.params );
+            const result = await addressUserService.getAddressUserByUuid( req.params );
 
             return res.status(200).json({
                 success: true,
@@ -141,8 +141,8 @@ class AddressServiceController {
             
         } catch (error) {
             
-            const product_logger = winston.loggers.get('ProductsLogger');
-            product_logger.error(`Error try to get a address: ${ error }`);
+            const user_logger = winston.loggers.get('UserLogger');
+            user_logger.error(`Error try to get a address: ${ error }`);
             
             return response.status(500).json({
                 success: false,

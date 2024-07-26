@@ -53,6 +53,7 @@ class Server {
             roomHotel:          this.mainRoute + '/hotel/room',
             roomCategoryHotel:  this.mainRoute + '/hotel/room/category',
             addressService:     this.mainRoute + '/address_service',
+            addressUser:        this.mainRoute + '/address_user',
         };
 
     }
@@ -64,6 +65,7 @@ class Server {
         this.app.use( this.routesSrc.roomHotel,             require( '../../../Hotel/infrastructure/routes/HotelRoomRoutes' ) );
         this.app.use( this.routesSrc.roomCategoryHotel,     require( '../../../Hotel/infrastructure/routes/RoomCategoryRoutes' ) );
         this.app.use( this.routesSrc.addressService,        require( '../../../Address/infraestructure/routes/AddressServiceRoutes' ) );
+        this.app.use( this.routesSrc.addressUser,           require( '../../../Address/infraestructure/routes/AddressUserRoutes' ) );
     }
     
     socket () {

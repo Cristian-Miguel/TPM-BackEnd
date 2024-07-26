@@ -1,43 +1,53 @@
+const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class AuthService {
-    constructor(AuthUserRepository, jwt ){
+    constructor(AuthUserRepository, UserRepository, AddressUserRepository, jwt ){
         this.AuthUserRepository = AuthUserRepository;
+        this.UserRepository = UserRepository;
+        this.AddressUserRepository = AddressUserRepository;
         this.jwt = jwt;
     }
 
     async signUp({ email, username, image_profile, password, first_name, last_name, birth_day, street,city, state, country, postal_code }){
-        
-        const user = await this.AuthUserRepository.CreateUser(
-            email, 
-            username, 
-            image_profile === null ? 'default' : body.image_profile, 
-            password, 
-            first_name, 
-            last_name, 
-            birth_day, 
-            0, 
-            "", 
-            "", 
-            1
-        );
+        const result = await prisma.$transaction(async (prisma) => {
+            
+            const user = await this.UserRepository.createUser(
+                email, 
+                username, 
+                image_profile === null ? 'default' : body.image_profile, 
+                password, 
+                first_name, 
+                last_name, 
+                birth_day, 
+                0, 
+                "", 
+                "", 
+                1
+            );
 
-        const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
+            await this.AddressUserRepository.createAddressUser( street,city, state, postal_code, country, user.uuid_user );
+            
+            const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
+            
+            await this.AuthUserRepository.updateToken( user.uuid_user, token );
 
-        await this.AuthUserRepository.CreateAddress( user.id_user, street,city, state, country, postal_code );
+            return token
+        });
 
-        await this.AuthUserRepository.UpdateToken( user.uuid_user, token );
-
-        return token;
+        return result;
     }
 
     async signIn({ email, password }){
-
-        const user = await this.AuthUserRepository.FindByEmailPassword( email, password );
+        const user = await this.AuthUserRepository.findByEmailPassword( email, password );
 
         const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
-        
-        await this.AuthUserRepository.UpdateTokenAndLoginDate( user.uuid_user, token );
-        
+
+        const result = await prisma.$transaction(async (prisma) => {
+
+            return await this.AuthUserRepository.updateTokenAndLoginDate( user.uuid_user, token );
+
+        });
+
         return token;   
     }
 

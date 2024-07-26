@@ -1,12 +1,14 @@
 const { response, request } = require( 'express' );//it's redundant
-const { get_JWT } = require('../../../Shared/infrastructure/JWT/Jwt.js');
-const AuthUserRepository = require('../../domain/repositories/PrismaAuthUserRepository.js');
-const AuthService = require('../../domain/services/AuthUserService.js');
-const ResponseCodeMessage = require('../../../Shared/infrastructure/constant/ResponseCodeMessage.js');
+const { get_JWT } = require( '../../../Shared/infrastructure/JWT/Jwt.js' );
+const AuthUserRepository = require( '../../domain/repositories/PrismaAuthUserRepository.js' );
+const UserRepository = require( '../../../User/domain/repository/PrismaUserRepository.js' );
+const AddressUserRepository = require( '../../../Address/domain/repository/PrismaAddressUserRepository.js' )
+const AuthService = require( '../../domain/services/AuthUserService.js' );
+const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage.js' );
 const winston = require('winston');
 require( '../../../Shared/infrastructure/Log/Logger' );
 
-const authService = new AuthService(AuthUserRepository, get_JWT);
+const authService = new AuthService(AuthUserRepository, UserRepository, AddressUserRepository, get_JWT);
 
 class BasicAuthController {
     
