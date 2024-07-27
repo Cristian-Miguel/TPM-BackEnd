@@ -5,6 +5,7 @@ const UserRepository = require( '../../../User/domain/repository/PrismaUserRepos
 const AddressUserRepository = require( '../../../Address/domain/repository/PrismaAddressUserRepository.js' )
 const AuthService = require( '../../domain/services/AuthUserService.js' );
 const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage.js' );
+const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
 const winston = require('winston');
 require( '../../../Shared/infrastructure/Log/Logger' );
 
@@ -38,13 +39,24 @@ class BasicAuthController {
         } catch(error) {
 
             const auth_logger = winston.loggers.get('AuthLogger');
-            auth_logger.error(`Error in the sign up: ${error}`);
-            
-            return res.status(500).json({
-                success: false,
-                error: ResponseCodeMessage.CODE_500
-            });
 
+            if(error instanceof PrismaError){
+                auth_logger.error(`Error in the database when try to sign up: \n ${ error.errorWinston } \n ${ error.messageError } \n ${ error.code }`);
+            
+                return res.status(500).json({
+                    success: false,
+                    message: error.messageError,
+                    error: ResponseCodeMessage.CODE_500
+                });
+
+            } else {
+                auth_logger.error(`Error in the sign up: ${ error }`);
+            
+                return res.status(500).json({
+                    success: false,
+                    error: ResponseCodeMessage.CODE_500
+                });
+            }
         }
     }
 
@@ -76,12 +88,30 @@ class BasicAuthController {
         } catch (error) {
 
             const auth_logger = winston.loggers.get('AuthLogger');
-            auth_logger.error(`Error in the sign in: ${error}`);
-    
-            return res.status(500).json({
-                success: false,
-                error: ResponseCodeMessage.CODE_500
-            });
+
+            if(error instanceof PrismaError){
+                auth_logger.error(`Error in the database when try to sign in: 
+                    \n ${ error.code }
+                    \n ${ error.errorWinston }
+                    \n ${ error.field }
+                    \n ${ error.version }
+                    \n ${ error.messageError }`
+                );
+            
+                return res.status(500).json({
+                    success: false,
+                    message: error.messageError,
+                    error: ResponseCodeMessage.CODE_500
+                });
+
+            } else {
+                auth_logger.error(`Error in the sign in: ${ error }`);
+            
+                return res.status(500).json({
+                    success: false,
+                    error: ResponseCodeMessage.CODE_500
+                });
+            }
     
         }
     }
