@@ -297,6 +297,8 @@ model tbl_service {
   tbl_promos            tbl_promos[]
   tbl_package_service   tbl_package_service[]
   tbl_set_image_service tbl_set_image_service[]
+
+  // tbl_hotel             tbl_hotel[]
 }
 
 model tbl_tour {

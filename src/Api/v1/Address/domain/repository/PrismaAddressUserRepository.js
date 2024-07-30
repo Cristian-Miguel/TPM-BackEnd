@@ -82,7 +82,7 @@ class PrismaAddressUserRepository extends AddressUserRepository {
                 orderBy: orderBy,
                 where: filter
             }),
-            prisma.tbl_user.count({
+            prisma.tbl_address_user.count({
                 filter
             }),
           ]);
