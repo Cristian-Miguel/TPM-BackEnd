@@ -17,7 +17,7 @@ class HotelRoomService {
         });
 
         const result = await prisma.$transaction(async (prisma) => {
-            return this.HotelRoomRepository.createHotelRoom( id_room_category, number_room, id_hotel );
+            return this.HotelRoomRepository.createHotelRoom( prisma, id_room_category, number_room, id_hotel );
         });
 
         return result;
@@ -25,7 +25,7 @@ class HotelRoomService {
 
     async createManyHotelRoom({ rooms }) {
         const result = await prisma.$transaction(async (prisma) => {
-            return this.HotelRoomRepository.createManyHotelRoom ( rooms );
+            return this.HotelRoomRepository.createManyHotelRoom ( prisma, rooms );
         });
 
         return result;
@@ -33,7 +33,7 @@ class HotelRoomService {
 
     async deleteRoomHotel ({ id_hotel_room }) {
         const result = await prisma.$transaction(async (prisma) => {
-            return this.HotelRoomRepository.deleteRoomHotel( id_hotel_room );
+            return this.HotelRoomRepository.deleteRoomHotel( prisma, id_hotel_room );
         });
 
         return result;
@@ -41,7 +41,7 @@ class HotelRoomService {
 
     async updateRoomHotel ({ id_hotel_room, id_room_category, number_room, id_hotel, active, uuid_user }) {
         const result = await prisma.$transaction(async (prisma) => {
-            return this.HotelRoomRepository.updateRoomHotel( id_hotel_room, id_room_category, number_room, id_hotel, active, uuid_user );
+            return this.HotelRoomRepository.updateRoomHotel( prisma, id_hotel_room, id_room_category, number_room, id_hotel, active, uuid_user );
         });
 
         return result;

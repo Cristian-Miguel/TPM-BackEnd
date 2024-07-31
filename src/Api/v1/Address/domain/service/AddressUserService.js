@@ -9,7 +9,7 @@ class AddressUserService {
     async createAddressUser ({ street, city, state, postal_code, country, uuid_user }) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.AddressUserRepository.createAddressUser(
-                 street, city, state, postal_code, country, uuid_user
+                prisma, street, city, state, postal_code, country, uuid_user
             );
 
         });
@@ -20,7 +20,7 @@ class AddressUserService {
     async deleteAddressUserAdmin ({ uuid_address_user }) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.AddressUserRepository.deleteAsAdminAddressUser(
-                uuid_address_user
+                prisma, uuid_address_user
             );  
         });
         
@@ -30,7 +30,7 @@ class AddressUserService {
     async deleteAddressUser ({ uuid_address_user }) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.AddressUserRepository.deleteAsUserAddressUser(
-                uuid_address_user
+                prisma, uuid_address_user
             );
             
         });
@@ -41,7 +41,7 @@ class AddressUserService {
     async updateAddressUser ({ uuid_address_user,  street, city, state, postal_code, country, uuid_user }) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.AddressUserRepository.updateAddressUser(
-                uuid_address_user, street, city, state, postal_code, country, uuid_user
+                prisma, uuid_address_user, street, city, state, postal_code, country, uuid_user
             );
             
         });

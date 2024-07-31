@@ -1,9 +1,8 @@
 const AddressServiceRepository = require( './AddressServiceRepository' );
-const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class PrismaAddressServiceRepository extends AddressServiceRepository {
-    async createAddressService ( street, city, state, postal_code, country, id_service ) {
-        return await prisma.tbl_address_service.create({
+    async createAddressService ( prismaSQL, street, city, state, postal_code, country, id_service ) {
+        return await prismaSQL.tbl_address_service.create({
             data:{
                 street,
                 city,
@@ -17,16 +16,16 @@ class PrismaAddressServiceRepository extends AddressServiceRepository {
         });
     }
 
-    async deleteAsAdminAddressService ( uuid_address_service ) {
-        return await prisma.tbl_address_service.delete({
+    async deleteAsAdminAddressService ( prismaSQL, uuid_address_service ) {
+        return await prismaSQL.tbl_address_service.delete({
             where:{
                 uuid_address_service
             }
         });
     }
 
-    async deleteAsUserAddressService ( uuid_address_service ) {
-        return await prisma.tbl_address_service.update({
+    async deleteAsUserAddressService ( prismaSQL, uuid_address_service ) {
+        return await prismaSQL.tbl_address_service.update({
             data:{
                 active:false,
             },
@@ -36,8 +35,8 @@ class PrismaAddressServiceRepository extends AddressServiceRepository {
         });
     }
 
-    async updateAddressService ( uuid_address_service, street, city, state, postal_code, country, id_service ) {
-        return await prisma.tbl_address_service.create({
+    async updateAddressService ( prismaSQL, uuid_address_service, street, city, state, postal_code, country, id_service ) {
+        return await prismaSQL.tbl_address_service.create({
             data:{
                 street,
                 city,

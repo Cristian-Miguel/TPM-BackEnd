@@ -1,19 +1,19 @@
 
 class AddressUserRepository {
 
-    async createAddressUser ( street, city, state, postal_code, country, id_user ) {
+    async createAddressUser ( prismaSQL, street, city, state, postal_code, country, id_user ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteAddressUserAdmin ( uuid_address_user ) {
+    async deleteAddressUserAdmin ( prismaSQL, uuid_address_user ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteAddressUser ( uuid_address_user ) {
+    async deleteAddressUser ( prismaSQL, uuid_address_user ) {
         throw new Error('Method not implemented.');
     }
 
-    async updateAddressUser ( uuid_address_user,  street, city, state, postal_code, country, id_user  ) {
+    async updateAddressUser ( prismaSQL, uuid_address_user,  street, city, state, postal_code, country, id_user  ) {
         throw new Error('Method not implemented.');
     }
 

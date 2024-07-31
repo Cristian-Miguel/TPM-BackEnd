@@ -10,7 +10,7 @@ class HotelService {
         
         const result = await prisma.$transaction(async (prisma) => {
             return await this.HotelService.createHotel
-                ( name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour );
+                ( prisma, name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour );
         });
 
         return result;
@@ -19,7 +19,7 @@ class HotelService {
     async deleteHotelAdmin ({ uuid }) {
 
         const result = await prisma.$transaction(async (prisma) => {
-            return await this.HotelService.deleteHotelAdmin ( uuid );
+            return await this.HotelService.deleteHotelAdmin ( prisma, uuid );
         });
 
         return result;
@@ -28,7 +28,7 @@ class HotelService {
     async deleteHotelSeller ({ uuid }) {
 
         const result = await prisma.$transaction(async (prisma) => {
-            return await this.HotelService.deleteHotelSeller( uuid );
+            return await this.HotelService.deleteHotelSeller( prisma, uuid );
         });
 
         return result;
@@ -38,7 +38,7 @@ class HotelService {
         
         const result = await prisma.$transaction(async (prisma) => {
             return await this.HotelService.updateHotel
-                ( uuid_hotel, name, descrition, main_image, id_category, uuid_user, phone_number, email, website, open_hour, close_hour )
+                ( prisma, uuid_hotel, name, descrition, main_image, id_category, uuid_user, phone_number, email, website, open_hour, close_hour )
         });
 
         return result;

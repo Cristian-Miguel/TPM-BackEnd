@@ -1,18 +1,18 @@
 
 class AddressServiceRepository {
-    async createAddressService ( street, city, state, postal_code, country, id_service ) {
+    async createAddressService ( prismaSQL, street, city, state, postal_code, country, id_service ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteAsAdminAddressService ( uuid_address_service ) {
+    async deleteAsAdminAddressService ( prismaSQL, uuid_address_service ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteAsUserAddressService ( uuid_address_service ) {
+    async deleteAsUserAddressService ( prismaSQL, uuid_address_service ) {
         throw new Error('Method not implemented.');
     }
 
-    async updateAddressService ( uuid_address_service, street, city, state, postal_code, country, id_service ) {
+    async updateAddressService ( prismaSQL, uuid_address_service, street, city, state, postal_code, country, id_service ) {
         throw new Error('Method not implemented.');
     }
 

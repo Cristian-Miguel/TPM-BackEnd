@@ -19,8 +19,8 @@ class PrismaAuthUserRepository extends AuthUserRepository {
         });
     }
 
-    async updateToken( uuid, token ){
-       return await prisma.tbl_user.update({
+    async updateToken( prismaSQL, uuid, token ){
+       return await prismaSQL.tbl_user.update({
         where: {
             uuid_user: uuid
         },
@@ -31,8 +31,8 @@ class PrismaAuthUserRepository extends AuthUserRepository {
     });
     }
 
-    async updateTokenAndLoginDate( uuid, token ){
-    return await prisma.tbl_user.update({
+    async updateTokenAndLoginDate( prismaSQL, uuid, token ){
+    return await prismaSQL.tbl_user.update({
             where: {
                 uuid_user: uuid
             },

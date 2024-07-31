@@ -3,9 +3,9 @@ const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class PrismaAddressUserRepository extends AddressUserRepository {
 
-    async createAddressUser ( street, city, state, postal_code, country, uuid_user ) {
+    async createAddressUser ( prismaSQL, street, city, state, postal_code, country, uuid_user ) {
 
-        const id_user = prisma.tbl_user.findUnique({
+        const id_user = prismaSQL.tbl_user.findUnique({
             select:{
                 id_user: true
             },
@@ -14,7 +14,7 @@ class PrismaAddressUserRepository extends AddressUserRepository {
             }
         });
 
-        return await prisma.tbl_address_user.create({
+        return await prismaSQL.tbl_address_user.create({
             data:{
                 street,
                 city,
@@ -28,16 +28,16 @@ class PrismaAddressUserRepository extends AddressUserRepository {
         });
     }
 
-    async deleteAddressUserAdmin ( uuid_address_user ) {
-        return await prisma.tbl_address_user.delete({
+    async deleteAddressUserAdmin ( prismaSQL, uuid_address_user ) {
+        return await prismaSQL.tbl_address_user.delete({
             where:{
                 uuid_address_user
             }
         });
     }
 
-    async deleteAddressUser ( uuid_address_user ) {
-        return await prisma.tbl_address_user.update({
+    async deleteAddressUser ( prismaSQL, uuid_address_user ) {
+        return await prismaSQL.tbl_address_user.update({
             data:{
                 active:false,
             },
@@ -47,9 +47,9 @@ class PrismaAddressUserRepository extends AddressUserRepository {
         });
     }
 
-    async updateAddressUser ( uuid_address_user,  street, city, state, postal_code, country, uuid_user  ) {
+    async updateAddressUser ( prismaSQL, uuid_address_user,  street, city, state, postal_code, country, uuid_user  ) {
 
-        const id_user = prisma.tbl_user.findUnique({
+        const id_user = prismaSQL.tbl_user.findUnique({
             select:{
                 id_user: true
             },
@@ -58,7 +58,7 @@ class PrismaAddressUserRepository extends AddressUserRepository {
             }
         });
 
-        return await prisma.tbl_address_user.create({
+        return await prismaSQL.tbl_address_user.create({
             data:{
                 street,
                 city,

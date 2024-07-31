@@ -1,15 +1,15 @@
 
 class UserRepository {
 
-    async createUser ( email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ) {
+    async createUser ( prismaSQL, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteUser( uuid ){
+    async deleteUser( prismaSQL, uuid ){
         throw new Error('Method not implemented.');
     }
 
-    async updateUser( email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ){
+    async updateUser( prismaSQL, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ){
         throw new Error('Method not implemented.');
     }
 

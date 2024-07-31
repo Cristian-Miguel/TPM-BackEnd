@@ -1,19 +1,19 @@
 
 class HotelRoomRepository {
 
-    async createRoomHotel ( id_room_category, number_room, id_hotel ) {
+    async createRoomHotel ( prismaSQL, id_room_category, number_room, id_hotel ) {
         throw new Error('Method not implemented.');
     }
 
-    async createManyRoomHotel ( rooms ) {
+    async createManyRoomHotel ( prismaSQL, rooms ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteRoomHotel ( id ) {
+    async deleteRoomHotel ( prismaSQL, id_hotel_room ) {
         throw new Error('Method not implemented.');
     }
 
-    async updateRoomHotel ( id_hotel_room, id_room_category, number_room, id_hotel, active, uuid_user ) {
+    async updateRoomHotel ( prismaSQL, id_hotel_room, id_room_category, number_room, id_hotel, active, uuid_user ) {
         throw new Error('Method not implemented.');
     }
 

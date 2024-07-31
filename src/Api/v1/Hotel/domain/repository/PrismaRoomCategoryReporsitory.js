@@ -3,8 +3,8 @@ const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class PrismaRoomCategoryRepository extends RoomCategoryRepository  {
 
-    async createCategoryRoomHotel ( description, number_beds, max_people, cost, discount_cash, discount_percentage ) {
-        return await prisma.tbl_hotel_room_category.create({
+    async createCategoryRoomHotel ( prismaSQL, description, number_beds, max_people, cost, discount_cash, discount_percentage ) {
+        return await prismaSQL.tbl_hotel_room_category.create({
             data:{
                 description,
                 number_beds,
@@ -16,16 +16,16 @@ class PrismaRoomCategoryRepository extends RoomCategoryRepository  {
         });
     }
 
-    async deleteCategoryRoomHotel ( id_hotel_room_category ) {
-        return await prisma.tbl_hotel_room_category.delete({
+    async deleteCategoryRoomHotel ( prismaSQL, id_hotel_room_category ) {
+        return await prismaSQL.tbl_hotel_room_category.delete({
             where:{
                 id_hotel_room_category
             }
         });
     }
 
-    async updateCategoryRoomHotel ( id_hotel_room_category, description, number_beds, max_people, cost, discount_cash, discount_percentage ) {
-        return await prisma.tbl_hotel_room_category.create({
+    async updateCategoryRoomHotel ( prismaSQL, id_hotel_room_category, description, number_beds, max_people, cost, discount_cash, discount_percentage ) {
+        return await prismaSQL.tbl_hotel_room_category.create({
             data:{
                 description,
                 number_beds,

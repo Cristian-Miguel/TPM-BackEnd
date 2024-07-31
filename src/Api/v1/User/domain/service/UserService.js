@@ -8,7 +8,7 @@ class UserService {
     async createUser({ email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol }){
         const result = await prisma.$transaction(async (prisma) => {
             return await this.UserRepository
-            .createUser( email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol );
+            .createUser( prisma, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol );
         });
 
 
@@ -17,7 +17,7 @@ class UserService {
 
     async deleteUser({ uuid }){
         const result = await prisma.$transaction(async (prisma) => {
-            return await this.UserRepository.deleteUser( uuid );
+            return await this.UserRepository.deleteUser( prisma, uuid );
         });
 
         return result;
@@ -26,7 +26,7 @@ class UserService {
     async updateUser({ uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol }){
         const result = await prisma.$transaction(async (prisma) => {
             return await this.UserRepository
-            .updateUser( uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol );
+                .updateUser( prisma, uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol );
         });
 
         return result;

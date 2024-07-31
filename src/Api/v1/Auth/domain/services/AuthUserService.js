@@ -16,6 +16,7 @@ class AuthService {
             const result = await prisma.$transaction(async (prisma) => {
                 
                 const user = await this.UserRepository.createUser(
+                    prisma,
                     email, 
                     username, 
                     image_profile === null ? 'default' : body.image_profile, 
@@ -29,11 +30,11 @@ class AuthService {
                     1
                 );
 
-                await this.AddressUserRepository.createAddressUser( street,city, state, postal_code, country, user.uuid_user );
+                await this.AddressUserRepository.createAddressUser( prisma, street, city, state, postal_code, country, user.uuid_user );
                 
                 const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
                 
-                await this.AuthUserRepository.updateToken( user.uuid_user, token );
+                await this.AuthUserRepository.updateToken( prisma, user.uuid_user, token );
 
                 return token
             });
@@ -54,7 +55,7 @@ class AuthService {
 
         const result = await prisma.$transaction(async (prisma) => {
 
-            return await this.AuthUserRepository.updateTokenAndLoginDate( user.uuid_user, token );
+            return await this.AuthUserRepository.updateTokenAndLoginDate( prisma, user.uuid_user, token );
 
         });
 

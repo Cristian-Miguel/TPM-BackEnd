@@ -3,8 +3,8 @@ const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class PrismaHotelRoomRepository extends HotelRoomRepository{
     
-    async createRoomHotel ( id_room_category, number_room, id_hotel ) {
-        return prisma.tbl_hotel_room.create({
+    async createRoomHotel ( prismaSQL, id_room_category, number_room, id_hotel ) {
+        return prismaSQL.tbl_hotel_room.create({
             data:{
                 id_room_category,
                 number_room,
@@ -13,28 +13,28 @@ class PrismaHotelRoomRepository extends HotelRoomRepository{
         });
     }
 
-    async createManyRoomHotel ( rooms ) {
-        return prisma.tbl_hotel_room.createMany({
+    async createManyRoomHotel ( prismaSQL, rooms ) {
+        return prismaSQL.tbl_hotel_room.createMany({
             data: rooms,
             skipDuplicates: true
         });
     }
 
-    async deleteRoomHotel ( id ) {
-        return prisma.tbl_hotel_room.delete({
+    async deleteRoomHotel ( prismaSQL, id_hotel_room ) {
+        return prismaSQL.tbl_hotel_room.delete({
             data:{
                 id_room_category,
                 number_room,
                 id_hotel
             },
             where: {
-                id_hotel_room: id
+                id_hotel_room
             }
         });
     }
 
-    async updateRoomHotel ( id_hotel_room, id_room_category, number_room, id_hotel, active, uuid_user ) {
-        return prisma.tbl_hotel_room.update({
+    async updateRoomHotel ( prismaSQL, id_hotel_room, id_room_category, number_room, id_hotel, active, uuid_user ) {
+        return prismaSQL.tbl_hotel_room.update({
             data:{
                 id_room_category,
                 number_room,

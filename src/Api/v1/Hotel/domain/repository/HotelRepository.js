@@ -1,18 +1,18 @@
 
 class HotelRepository {
-    async createHotel ( name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour ) {
+    async createHotel ( prismaSQL, name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteHotelAdmin ( uuid ) {
+    async deleteHotelAdmin ( prismaSQL, uuid ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteHotelSeller ( uuid ) {
+    async deleteHotelSeller ( prismaSQL, uuid ) {
         throw new Error('Method not implemented.');
     }
 
-    async updateHotel ( uuid, name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour ) {
+    async updateHotel ( prismaSQL, uuid, name, descrition, main_image, id_category, id_user, phone_number, email, website, open_hour, close_hour ) {
         throw new Error('Method not implemented.');
     }
 

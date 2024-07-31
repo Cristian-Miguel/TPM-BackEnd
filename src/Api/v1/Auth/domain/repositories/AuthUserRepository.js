@@ -5,11 +5,11 @@ class AuthUserRepository {
         throw new Error('Method not implemented.');
     }
 
-    async updateToken( uuid, token ){
+    async updateToken( prismaSQL, uuid, token ){
         throw new Error('Method not implemented.');
     }
 
-    async updateTokenAndLoginDate( uuid, token ){
+    async updateTokenAndLoginDate( prismaSQL, uuid, token ){
         throw new Error('Method not implemented.');
     }
 

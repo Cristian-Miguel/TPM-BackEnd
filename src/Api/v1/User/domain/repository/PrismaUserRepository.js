@@ -1,10 +1,10 @@
 const UserRepository = require( './UserRepository' );
-const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
+// const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class PrismaUserRepository extends UserRepository {
 
-    async createUser ( email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ) {
-        return await prisma.tbl_user.create({
+    async createUser ( prismaSQL, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ) {
+        return await prismaSQL.tbl_user.create({
             data: {
                 email:          email,
                 username:       username,
@@ -24,16 +24,16 @@ class PrismaUserRepository extends UserRepository {
         });
     }
 
-    async deleteUser( uuid ){
-        return await prisma.tbl_user.delete({
+    async deleteUser( prismaSQL, uuid ){
+        return await prismaSQL.tbl_user.delete({
             where:{
                 uuid_user: uuid
             }
         });
     }
 
-    async updateUser( uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ){
-        return prisma.tbl_user.update({
+    async updateUser( prismaSQL, uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ){
+        return prismaSQL.tbl_user.update({
             data: {
                 email:          email,
                 username:       username,

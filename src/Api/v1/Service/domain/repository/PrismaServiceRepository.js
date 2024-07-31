@@ -62,6 +62,10 @@ class PrismaServiceRepository extends ServiceRepository {
 
         const [ data, total ] = await Promise.all([
             prisma.tbl_service.findMany({
+                relationLoadStrategy: 'join',
+                include: {
+                    
+                },
                 skip: skip,
                 take: size,
                 orderBy: orderBy,

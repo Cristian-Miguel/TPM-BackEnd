@@ -9,7 +9,7 @@ class AddressServiceService {
     async createAddressService ( street, city, state, postal_code, country, id_service ) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.AddressServiceRepository.createAddressService(
-                 street, city, state, postal_code, country, id_service
+                prisma, street, city, state, postal_code, country, id_service
             );
 
         });
@@ -20,7 +20,7 @@ class AddressServiceService {
     async deleteAsAdminAddressService ({ uuid_address_service }) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.AddressServiceRepository.deleteAsAdminAddressService(
-                uuid_address_service
+                prisma, uuid_address_service
             );  
         });
         
@@ -30,7 +30,7 @@ class AddressServiceService {
     async deleteAsUserAddressService ({ uuid_address_service }) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.AddressServiceRepository.deleteAsUserAddressService(
-                uuid_address_service
+                prisma, uuid_address_service
             );
             
         });
@@ -41,7 +41,7 @@ class AddressServiceService {
     async updateAddressService ({ uuid_address_service, street, city, state, postal_code, country, id_service }) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.AddressServiceRepository.updateAddressService(
-                uuid_address_service, street, city, state, postal_code, country, id_service
+                prisma, uuid_address_service, street, city, state, postal_code, country, id_service
             );
             
         });

@@ -19,7 +19,7 @@ model tbl_address_service {
   street                String          @db.VarChar(255)
   city                  String          @db.VarChar(255)
   state                 String          @db.VarChar(255)
-  postal_code           Int             
+  zip_code              Int             
   country               String          @db.VarChar(255)
   id_service            Int
   date_created          DateTime
@@ -34,7 +34,7 @@ model tbl_address_user {
   street            String           @db.VarChar(255)
   city              String           @db.VarChar(255)
   state             String           @db.VarChar(255)
-  postal_code       Int             
+  zip_code          Int             
   country           String           @db.VarChar(255)
   id_user           Int
   date_created      DateTime
@@ -112,6 +112,7 @@ model tbl_hotel {
   active              Boolean           @db.Bit(1) @default(true)
   tbl_user            tbl_user          @relation(fields: [id_user], references: [id_user])
   tbl_hotel_room      tbl_hotel_room[]
+  tbl_service         tbl_service @relation(fields: [uuid_hotel], references: [id_relation_product])
 }
 
 model tbl_hotel_room {
@@ -160,6 +161,7 @@ model tbl_package {
   active              Boolean       @db.Bit(1) @default(true)
   tbl_user            tbl_user      @relation(fields: [id_user], references: [id_user])
   tbl_package_service tbl_package_service[]
+  tbl_service         tbl_service @relation(fields: [uuid_package], references: [id_relation_product])
 }
 
 model tbl_package_service {
@@ -247,6 +249,7 @@ model tbl_restaurant {
   active               Boolean           @db.Bit(1)
   tbl_restaurant_category tbl_restaurant_category @relation(fields: [id_restaurant_category], references: [id_restaurant_category])
   tbl_restaurant_table    tbl_restaurant_table[]
+  tbl_service             tbl_service @relation(fields: [uuid_restaurant], references: [id_relation_product])
 }
 
 model tbl_restaurant_category {
@@ -297,12 +300,16 @@ model tbl_service {
   tbl_promos            tbl_promos[]
   tbl_package_service   tbl_package_service[]
   tbl_set_image_service tbl_set_image_service[]
-
-  // tbl_hotel             tbl_hotel[]
+  tbl_restaurant        tbl_restaurant[]
+  tbl_hotel             tbl_hotel[]
+  tbl_package           tbl_package[]
+  tbl_tour              tbl_tour[]
+  tbl_trip              tbl_trip[]
 }
 
 model tbl_tour {
   id_tour           Int           @id @default(autoincrement())
+  uuid_tour         String        @unique @default(uuid())
   name              String        @db.VarChar(75)
   description       String        @db.VarChar(150)
   main_image        String        @db.LongText
@@ -313,6 +320,7 @@ model tbl_tour {
   active            Boolean       @db.Bit(1) @default(true)
   tbl_user          tbl_user      @relation(fields: [id_user], references: [id_user])
   tbl_tour_journey  tbl_tour_journey[]
+  tbl_service       tbl_service @relation(fields: [uuid_tour], references: [id_relation_product])
 }
 
 model tbl_tour_journey {
@@ -352,6 +360,7 @@ model tbl_trip {
   active              Boolean               @db.Bit(1) @default(true)
   tbl_user            tbl_user              @relation(fields: [id_user], references: [id_user])
   tbl_trip_transport  tbl_trip_transport[]
+  tbl_service         tbl_service           @relation(fields: [uuid_trip], references: [id_relation_product])
 }
 
 model tbl_trip_category_transport {
@@ -408,6 +417,18 @@ enum type_amenities{
   GARDEN
   NATURE_WALK
   GYM
+  FREE_WIFI
+  MINI_BAR
+  COFFE_MAKER
+  IN_ROOM_SAFE
+  TV_CABLE
+  ROOM_SERVICE
+  HAIRDRYER
+  SPA
+  BUSINESS_CENTER
+  LAUNDRY
+  PET_FRIENDLY_AREAS
+  WHEELCHAIR_ACCESSIBILITY
 }
 
 enum client_type{

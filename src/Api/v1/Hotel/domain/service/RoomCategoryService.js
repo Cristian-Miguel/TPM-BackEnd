@@ -8,7 +8,7 @@ class RoomCategoryService {
 
     async createRoomCategory ({ description, number_beds, max_people, cost, discount_cash, discount_percentage }) {
         const result = await prisma.$transaction(async (prisma) => {
-            return await this.RoomCategoryRepository.createRoomCategory( description, number_beds, max_people, cost, discount_cash, discount_percentage );
+            return await this.RoomCategoryRepository.createRoomCategory( prisma, description, number_beds, max_people, cost, discount_cash, discount_percentage );
         });
 
         return result;
@@ -16,7 +16,7 @@ class RoomCategoryService {
 
     async deleteRoomCategory ({ id_hotel_room_category }) {
         const result = await prisma.$transaction(async (prisma) => {
-            return await this.RoomCategoryRepository.deleteRoomCategory( id_hotel_room_category );
+            return await this.RoomCategoryRepository.deleteRoomCategory( prisma, id_hotel_room_category );
         });
 
         return result;
@@ -25,7 +25,7 @@ class RoomCategoryService {
     async updateRoomCategory ({ id_hotel_room_category, description, number_beds, max_people, cost, discount_cash, discount_percentage }) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.RoomCategoryRepository
-                .updateRoomCategory( id_hotel_room_category, description, number_beds, max_people, cost, discount_cash, discount_percentage );
+                .updateRoomCategory( prisma, id_hotel_room_category, description, number_beds, max_people, cost, discount_cash, discount_percentage );
         });
 
         return result;
