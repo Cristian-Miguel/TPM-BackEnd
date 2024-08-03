@@ -64,7 +64,11 @@ class PrismaServiceRepository extends ServiceRepository {
             prisma.tbl_service.findMany({
                 relationLoadStrategy: 'join',
                 include: {
-                    
+                    tbl_hotel: true,
+                    tbl_restaurant: true,
+                    tbl_tour: true,
+                    tbl_trip: true,
+                    tbl_package: true,
                 },
                 skip: skip,
                 take: size,
