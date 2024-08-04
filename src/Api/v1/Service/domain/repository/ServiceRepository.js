@@ -1,31 +1,27 @@
 
 class ServiceRepository {
 
-    async createService () {
+    async createService ( prismaSQL, service_type ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteServiceAsAdmin() {
+    async deleteServiceAsAdmin( prismaSQL, id_relation_product ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteServiceAsSeller() {
+    async updateService( prismaSQL, service_type, id_relation_product ){
         throw new Error('Method not implemented.');
     }
 
-    async updateService(){
+    async getServiceByService( service_type ){
         throw new Error('Method not implemented.');
     }
 
-    async getServiceById(){
+    async getServiceByUuid( id_relation_product ){
         throw new Error('Method not implemented.');
     }
 
-    async getServiceByUuid(){
-        throw new Error('Method not implemented.');
-    }
-
-    async getServicePagination(){
+    async getServicePagination( page, size, orderBy, filter ){
         throw new Error('Method not implemented.');
     }
 

@@ -2,36 +2,24 @@ const ServiceRepository = require( './ServiceRepository' );
 const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class PrismaServiceRepository extends ServiceRepository {
-    async createService ( service_type, id_relation_product ) {
-        return prisma.tbl_service.create({
+    async createService ( prismaSQL, service_type ) {
+        return await prismaSQL.tbl_service.create({
             data:{
-                service_type,
-                id_relation_product
+                service_type
             }
         });
     }
 
-    async deleteServiceAsAdmin( id_relation_product ) {
-        return prisma.tbl_service.delete({
+    async deleteServiceAsAdmin( prismaSQL, id_relation_product ) {
+        return await prismaSQL.tbl_service.delete({
             where:{
                 id_relation_product
             }
         });
     }
 
-    async deleteServiceAsSeller( id_relation_product ) {
-        return prisma.tbl_service.update({
-            data:{
-                active: false
-            },
-            where:{
-                id_relation_product
-            }
-        });
-    }
-
-    async updateService( service_type, id_relation_product ){
-        return prisma.tbl_service.update({
+    async updateService( prismaSQL, service_type, id_relation_product ){
+        return await prismaSQL.tbl_service.update({
             data:{
                 service_type
             },
@@ -42,17 +30,23 @@ class PrismaServiceRepository extends ServiceRepository {
     }
 
     async getServiceByService( service_type ){
-        return prisma.tbl_service.findMany({
+        const active = true;
+        
+        return await prisma.tbl_service.findMany({
             where:{
-                service_type
+                service_type,
+                active
             }
         });
     }
 
     async getServiceByUuid( id_relation_product ){
+        const active = true;
+        
         return prisma.tbl_service.findUnique({
             where:{
-                id_relation_product
+                id_relation_product,
+                active
             }
         });
     }

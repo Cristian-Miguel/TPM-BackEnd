@@ -95,7 +95,7 @@ model tbl_favorite {
 
 model tbl_hotel {
   id_hotel            Int               @id @default(autoincrement())
-  uuid_hotel          String            @default(uuid())
+  uuid_hotel          String            @unique
   name                String            @db.VarChar(100)
   description         String            @db.VarChar(150)
   main_image          String?           @db.LongText
@@ -150,7 +150,7 @@ model tbl_message {
 
 model tbl_package {
   id_package          Int           @id @default(autoincrement())
-  uuid_package        String        @unique @default(uuid())
+  uuid_package        String        @unique
   name                String        @db.VarChar(75)
   description         String        @db.VarChar(150)
   cost                Decimal       @db.Decimal(10, 2)
@@ -230,26 +230,26 @@ model tbl_reservation {
 }
 
 model tbl_restaurant {
-  id_restaurant        Int           @id @default(autoincrement())
-  uuid_restaurant      String        @unique @default(uuid())
-  name                 String        @db.VarChar(100)
-  description          String        @db.VarChar(150)
-  main_image           String        @db.LongText
-  rating               Decimal       @db.Decimal(2, 1)
-  id_user              Int
-  id_restaurant_category Int
-  date_created         DateTime
-  last_update          DateTime      @updatedAt
-  email                String?       @unique @db.VarChar(255)
-  phone_number         String?       @db.VarChar(255)
-  webside              String?       @db.VarChar(255)
-  open_hour            DateTime      @db.Time
-  close_hour           DateTime      @db.Time
-  tbl_user             tbl_user      @relation(fields: [id_user], references: [id_user])
-  active               Boolean           @db.Bit(1)
+  id_restaurant           Int           @id @default(autoincrement())
+  uuid_restaurant         String        @unique
+  name                    String        @db.VarChar(100)
+  description             String        @db.VarChar(150)
+  main_image              String        @db.LongText
+  rating                  Decimal       @db.Decimal(2, 1)
+  id_user                 Int
+  id_restaurant_category  Int
+  date_created            DateTime
+  last_update             DateTime      @updatedAt
+  email                   String?       @unique @db.VarChar(255)
+  phone_number            String?       @db.VarChar(255)
+  webside                 String?       @db.VarChar(255)
+  open_hour               DateTime      @db.Time
+  close_hour              DateTime      @db.Time
+  active                  Boolean       @db.Bit(1)
+  tbl_user                tbl_user                @relation(fields: [id_user], references: [id_user])
   tbl_restaurant_category tbl_restaurant_category @relation(fields: [id_restaurant_category], references: [id_restaurant_category])
   tbl_restaurant_table    tbl_restaurant_table[]
-  tbl_service             tbl_service @relation(fields: [uuid_restaurant], references: [id_relation_product])
+  tbl_service             tbl_service             @relation(fields: [uuid_restaurant], references: [id_relation_product])
 }
 
 model tbl_restaurant_category {
@@ -290,7 +290,7 @@ model tbl_set_image_service{
 model tbl_service {
   id_service            Int               @id @default(autoincrement())
   service_type          service_type
-  id_relation_product   String            @unique
+  id_relation_product   String            @unique @default(uuid())
   active                Boolean           @db.Bit(1) @default(true)
   tbl_favorite          tbl_favorite[]
   tbl_reservation       tbl_reservation[]
@@ -309,7 +309,7 @@ model tbl_service {
 
 model tbl_tour {
   id_tour           Int           @id @default(autoincrement())
-  uuid_tour         String        @unique @default(uuid())
+  uuid_tour         String        @unique
   name              String        @db.VarChar(75)
   description       String        @db.VarChar(150)
   main_image        String        @db.LongText
@@ -342,12 +342,12 @@ model tbl_tourist {
   birth_day       DateTime  @db.Date
   email           String    @unique
   date_register   DateTime  @db.Timestamp()
-  active          Boolean           @db.Bit(1)
+  active          Boolean   @db.Bit(1)
 }
 
 model tbl_trip {
   id_trip             Int                   @id @default(autoincrement())
-  uuid_trip           String                @unique @default(uuid())
+  uuid_trip           String                @unique
   name                String                @db.VarChar(100)
   description         String                @db.VarChar(150)
   main_image          String                @db.LongText

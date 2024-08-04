@@ -1,29 +1,29 @@
 const { response, request } = require( 'express' );//it's redundant
-const ServiceRepository = require( '../../domain/repository/PrismaServiceRepository' );
-const ServiceService = require( '../../domain/service/ServiceService' );
+const RestaurantRepository = require( '../../domain/repository/PrismaRestaurantRepository' );
+const RestaurantService = require( '../../domain/service/RestaurantService' );
 const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage' );
 const winston = require( 'winston' );
 require( '../../../Shared/infrastructure/Log/Logger' );
 
-const serviceService = new ServiceService( ServiceRepository );
+const restaurantService = new RestaurantService( RestaurantRepository );
 
-class ServiceController {
+class RestaurantController {
 
-    async createService ( req = request, res = response ) {
+    async createRestaurant( req = request, res = response ) {
         try {
 
-            const result = await serviceService.createService( req.body );
+            const result = await restaurantService.createRestaurant( req.body );
 
             return res.status(201).json({
                 success: true,
-                id_relation_product: result.id_relation_product,
+                uuid_restaurant: result.uuid_restaurant,
                 msg: ResponseCodeMessage.CODE_201
             });
-            
-        } catch (error) {
-            
+
+        } catch( error ) {
+
             const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to create a service: ${ error }`);
+            products_logger.error(`Error try to create a restaurant: ${ error }`);
             
             return res.status(500).json({
                 success: false,
@@ -33,21 +33,21 @@ class ServiceController {
         }
     }
 
-    async deleteServiceAsAdmin( req = request, res = response ) {
+    async updateRestaurant( req = request, res = response ){
         try {
 
-            const result = await serviceService.deleteServiceAsAdmin( req.params );
+            const result = await restaurantService.updateRestaurant( req.body );
 
             return res.status(200).json({
                 success: true,
-                id_relation_product: result.id_relation_product,
+                uuid_restaurant: result.uuid_restaurant,
                 msg: ResponseCodeMessage.CODE_200
             });
-            
-        } catch (error) {
-            
+
+        } catch( error ) {
+
             const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to hard delete a service: ${ error }`);
+            products_logger.error(`Error try to update a restaurant: ${ error }`);
             
             return res.status(500).json({
                 success: false,
@@ -57,21 +57,21 @@ class ServiceController {
         }
     }
 
-    async updateService( req = request, res = response ){
+    async deleteAsSeller( req = request, res = response ){
         try {
 
-            const result = await serviceService.deleteServiceAsSeller( req.body );
+            const result = await restaurantService.deleteAsSeller( req.params );
 
             return res.status(200).json({
                 success: true,
-                id_relation_product: result.id_relation_product,
+                uuid_restaurant: result.uuid_restaurant,
                 msg: ResponseCodeMessage.CODE_200
             });
-            
-        } catch (error) {
-            
+
+        } catch( error ) {
+
             const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to update a service: ${ error }`);
+            products_logger.error(`Error try to soft delete a restaurant: ${ error }`);
             
             return res.status(500).json({
                 success: false,
@@ -81,21 +81,21 @@ class ServiceController {
         }
     }
 
-    async getServiceByService( req = request, res = response ){
+    async deleteAsAdmin( req = request, res = response ){
         try {
 
-            const result = await serviceService.getServiceByService( req.params );
+            const result = await restaurantService.deleteAsAdmin( req.params );
 
             return res.status(200).json({
                 success: true,
-                data: result,
+                uuid_restaurant: result.uuid_restaurant,
                 msg: ResponseCodeMessage.CODE_200
             });
-            
-        } catch (error) {
-            
+
+        } catch( error ) {
+
             const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to get a list of services: ${ error }`);
+            products_logger.error(`Error try to hard delete a restaurant: ${ error }`);
             
             return res.status(500).json({
                 success: false,
@@ -105,45 +105,46 @@ class ServiceController {
         }
     }
 
-    async getServiceByUuid( req = request, res = response ){
+    async getRestaurantByUuid( req = request, res = response ){
         try {
 
-            const result = await serviceService.getServiceByUuid( req.params );
-
-            return res.status(200).json({
-                success: true,
-                data: result,
-                msg: ResponseCodeMessage.CODE_200
-            });
-            
-        } catch (error) {
-            
-            const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to get a service by uuid: ${ error }`);
-            
-            return res.status(500).json({
-                success: false,
-                error: Response_Code_Message.CODE_500(),
-                stack: error
-            });
-        }
-    }
-
-    async getServicePagination( req = request, res = response ){
-        try {
-
-            const result = await serviceService.getServicePagination( req.body );
+            const result = await restaurantService.getRestaurantByUuid( req.params );
 
             return res.status(200).json({
                 success: true,
                 data: result,
                 msg: ResponseCodeMessage.CODE_200
             });
-            
-        } catch (error) {
-            
+
+        } catch( error ) {
+
             const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to get a pagination of service: ${ error }`);
+            products_logger.error(`Error try to get a restaurant by uuid: ${ error }`);
+            
+            return res.status(500).json({
+                success: false,
+                error: Response_Code_Message.CODE_500(),
+                stack: error
+            });
+
+        }
+    }
+
+    async getRestaurantPagination( req = request, res = response ){
+        try {
+
+            const result = await restaurantService.getRestaurantPagination( req.params );
+
+            return res.status(200).json({
+                success: true,
+                data: result,
+                msg: ResponseCodeMessage.CODE_200
+            });
+
+        } catch( error ) {
+
+            const products_logger = winston.loggers.get('ProductsLogger');
+            products_logger.error(`Error try to get a pagination of restaurant: ${ error }`);
             
             return res.status(500).json({
                 success: false,
@@ -152,7 +153,6 @@ class ServiceController {
             });
         }
     }
-
 }
 
-module.exports = new ServiceController();
+module.exports = new RestaurantController();

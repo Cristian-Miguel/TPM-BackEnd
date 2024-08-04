@@ -5,8 +5,9 @@ const { accessRol } = require( '../../../Validation/infrastructure/ValidateRoles
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
 const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
 const { AdminRol, SellerRol } = require( '../../../Shared/infrastructure/constant/SystemConstant' );
+const RestaurantController = require( '../../application/controller/RestaurantController' );
+
 const router = Router();
-const HotelController = require( '../../application/controller/HotelController' );
 
 router
     .post(
@@ -14,15 +15,17 @@ router
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
-            check( 'name',          'Name is empty' ).not().isEmpty(),
-            check( 'name',          'Name isn\'t alphanumeric type' ).isAlphanumeric(),
-            check( 'description',   'Description is empty' ).not().isEmpty(),
-            check( 'description',   'Description isn\'t string type' ).isString(),
-            check( 'main_image',    'Main image is empty' ).not().isEmpty(),
-            check( 'main_image',    'Main image isn\'t url type' ).isURL(),
-            check( 'uuid_user',     'Uuid user is empty' ).not().isEmpty(),
-            check( 'uuid_user',     'Uuid user isn\'t a uuid type' ).isUUID(),
-            check( 'id_category',   'Name is required' ).not().isEmpty(),
+            
+            check( 'name', 'Name is empty' ).not().isEmpty(),
+            check( 'name', 'Name isn\'t alphanumeric type' ).isAlphanumeric(),
+            check( 'description', 'Description is empty' ).not().isEmpty(),
+            check( 'description', 'Description isn\'t string type' ).isString(),
+            check( 'main_image', 'Main image is empty' ).not().isEmpty(),
+            check( 'main_image', 'Main image isn\'t url type' ).isURL(),
+            check( 'uuid_user', 'Uuid user is empty' ).not().isEmpty(),
+            check( 'uuid_user', 'Uuid user isn\'t a uuid type' ).isUUID(),
+            check( 'id_restaurant_category', 'id restaurant category is empty' ).not().isEmpty(),
+            check( 'id_restaurant_category', 'id restaurant category isn\'t a numeric type' ).isNumeric(),
             body('email')
                 .optional({ checkFalsy: true })  // This allows the field to be empty
                 .trim()
@@ -35,32 +38,34 @@ router
                 .optional({ checkFalsy: true })  // This allows the field to be empty
                 .trim()
                 .isURL().withMessage('Must be a valid url.'),
-            check( 'open_hour',     'Open hour is empty' ).not().isEmpty(),
-            check( 'open_hour',     'Open hour isn\'t hour format hh:mm:ss' ).isTime(),
-            check( 'close_hour',    'Close hour is empty' ).not().isEmpty(),
-            check( 'close_hour',    'Close hour isn\'t hour format hh:mm:ss' ).isTime(),
+            check( 'open_hour', 'Open hour is empty' ).not().isEmpty(),
+            check( 'open_hour', 'Open hour isn\'t hour format hh:mm:ss' ).isTime(),
+            check( 'close_hour', 'Close hour is empty' ).not().isEmpty(),
+            check( 'close_hour', 'Close hour isn\'t hour format hh:mm:ss' ).isTime(),
+
             DataValidate
         ],
-        HotelController.createHotel
+        RestaurantController.createRestaurant
     )
 
     .post(
-        '/update',
+        '/create',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
-            check( 'uuid_hotel',    'Uuid is required' ).not().isEmpty(),
-            check( 'uuid_hotel',    'It isn\'t an uuid' ).isUUID(),
-            check( 'name',          'Name is empty' ).not().isEmpty(),
-            check( 'name',          'Name isn\'t alphanumeric type' ).isAlphanumeric(),
-            check( 'description',   'Description is empty' ).not().isEmpty(),
-            check( 'description',   'Description isn\'t string type' ).isString(),
-            check( 'main_image',    'Main image is empty' ).not().isEmpty(),
-            check( 'main_image',    'Main image isn\'t url type' ).isURL(),
-            check( 'id_category',   'Id category is required' ).not().isEmpty(),
-            check( 'id_category',   'Id category field isn\'t a numeric type' ).isString(),
-            check( 'uuid_user',     'Uuid user is empty' ).not().isEmpty(),
-            check( 'uuid_user',     'Uuid user isn\'t a uuid type' ).isUUID(),
+            
+            check( 'uuid_restaurant', 'Uuid restaurant is empty' ).not().isEmpty(),
+            check( 'uuid_restaurant', 'Uuid restaurant isn\'t a uuid type' ).isUUID(),
+            check( 'name', 'Name is empty' ).not().isEmpty(),
+            check( 'name', 'Name isn\'t alphanumeric type' ).isAlphanumeric(),
+            check( 'description', 'Description is empty' ).not().isEmpty(),
+            check( 'description', 'Description isn\'t string type' ).isString(),
+            check( 'main_image', 'Main image is empty' ).not().isEmpty(),
+            check( 'main_image', 'Main image isn\'t url type' ).isURL(),
+            check( 'uuid_user', 'Uuid user is empty' ).not().isEmpty(),
+            check( 'uuid_user', 'Uuid user isn\'t a uuid type' ).isUUID(),
+            check( 'id_restaurant_category', 'id restaurant category is empty' ).not().isEmpty(),
+            check( 'id_restaurant_category', 'id restaurant category isn\'t a numeric type' ).isNumeric(),
             body('email')
                 .optional({ checkFalsy: true })  // This allows the field to be empty
                 .trim()
@@ -73,36 +78,59 @@ router
                 .optional({ checkFalsy: true })  // This allows the field to be empty
                 .trim()
                 .isURL().withMessage('Must be a valid url.'),
-            check( 'open_hour',     'Open hour is empty' ).not().isEmpty(),
-            check( 'open_hour',     'Open hour isn\'t hour format hh:mm:ss' ).isTime(),
-            check( 'close_hour',    'Close hour is empty' ).not().isEmpty(),
-            check( 'close_hour',    'Close hour isn\'t hour format hh:mm:ss' ).isTime(),
+            check( 'open_hour', 'Open hour is empty' ).not().isEmpty(),
+            check( 'open_hour', 'Open hour isn\'t hour format hh:mm:ss' ).isTime(),
+            check( 'close_hour', 'Close hour is empty' ).not().isEmpty(),
+            check( 'close_hour', 'Close hour isn\'t hour format hh:mm:ss' ).isTime(),
 
             DataValidate
         ],
-        HotelController.updateHotel
+        RestaurantController.updateRestaurant
     )
 
     .get(
-        '/delete/admin/:uuid',
-        [
-            ValidateJwt.validateToken,
-            accessRol( AdminRol ),
-            param( 'uuid' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
-            DataValidate
-        ],
-        HotelController.deleteHotelAdmin
-    )
-
-    .get(
-        '/delete/seller/:uuid',
+        '/delete/seller/:uuid_restaurant',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
-            param( 'uuid' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
+            
+            param( 'uuid_restaurant' )
+                .notEmpty().withMessage( 'Uuid is required' )
+                .isUUID().withMessage( 'The param isn\'t an uuid' ),
+                
             DataValidate
         ],
-        HotelController.deleteHotelSeller
+        RestaurantController.deleteAsSeller
+    )
+
+    .get(
+        '/delete/admin/:uuid_restaurant',
+        [
+            ValidateJwt.validateToken,
+            accessRol( AdminRol ),
+            
+            param( 'uuid_restaurant' )
+                .notEmpty().withMessage( 'Uuid is required' )
+                .isUUID().withMessage( 'The param isn\'t an uuid' ),
+                
+            DataValidate
+        ],
+        RestaurantController.deleteAsAdmin
+    )
+
+    .get(
+        '/get/:uuid_restaurant',
+        [
+            ValidateJwt.validateToken,
+            accessRol( AdminRol, SellerRol ),
+            
+            param( 'uuid_restaurant' )
+                .notEmpty().withMessage( 'Uuid is required' )
+                .isUUID().withMessage( 'The param isn\'t an uuid' ),
+                
+            DataValidate
+        ],
+        RestaurantController.getRestaurantByUuid
     )
 
     .post(
@@ -136,19 +164,7 @@ router
                 .notEmpty().withMessage( 'compare in filter array is required' ),
             DataValidate
         ],
-        HotelController.getHotelPagination
-    )
-
-    .get(
-        '/:uuid',
-        [
-            ValidateJwt.validateToken,
-            accessRol( AdminRol, SellerRol ),
-            param( 'uuid' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
-            DataValidate
-        ],
-        HotelController.getHotelByUuid
-    )
-
+        RestaurantController.getRestaurantPagination
+    );
 
 module.exports = router;
