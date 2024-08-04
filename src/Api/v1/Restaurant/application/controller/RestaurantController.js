@@ -1,11 +1,13 @@
 const { response, request } = require( 'express' );//it's redundant
 const RestaurantRepository = require( '../../domain/repository/PrismaRestaurantRepository' );
+const ServiceRepository = require( '../../../Service/domain/repository/PrismaServiceRepository' );
+const AddressServiceRepository = require( '../../../Address/domain/repository/AddressServiceRepository' );
 const RestaurantService = require( '../../domain/service/RestaurantService' );
 const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage' );
 const winston = require( 'winston' );
 require( '../../../Shared/infrastructure/Log/Logger' );
 
-const restaurantService = new RestaurantService( RestaurantRepository );
+const restaurantService = new RestaurantService( RestaurantRepository, ServiceRepository, AddressServiceRepository );
 
 class RestaurantController {
 

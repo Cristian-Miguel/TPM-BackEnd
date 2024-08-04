@@ -3,7 +3,7 @@ const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 
 class PrismaAddressUserRepository extends AddressUserRepository {
 
-    async createAddressUser ( prismaSQL, street, city, state, postal_code, country, uuid_user ) {
+    async createAddressUser ( prismaSQL, street, city, state, zip_code, country, uuid_user ) {
 
         const id_user = prismaSQL.tbl_user.findUnique({
             select:{
@@ -19,7 +19,7 @@ class PrismaAddressUserRepository extends AddressUserRepository {
                 street,
                 city,
                 state,
-                postal_code,
+                zip_code,
                 country,
                 id_user,
                 date_created: new Date().toISOString(),
@@ -47,7 +47,7 @@ class PrismaAddressUserRepository extends AddressUserRepository {
         });
     }
 
-    async updateAddressUser ( prismaSQL, uuid_address_user,  street, city, state, postal_code, country, uuid_user  ) {
+    async updateAddressUser ( prismaSQL, uuid_address_user, street, city, state, zip_code, country, uuid_user  ) {
 
         const id_user = prismaSQL.tbl_user.findUnique({
             select:{
@@ -63,7 +63,7 @@ class PrismaAddressUserRepository extends AddressUserRepository {
                 street,
                 city,
                 state,
-                postal_code,
+                zip_code,
                 country,
                 id_user,
                 last_update: new Date().toISOString()

@@ -27,16 +27,16 @@ router
             check( 'state',         'State isn\'t a string type' ).isString(),
             check( 'state',         'State must be less than 255 characters' ).length({ max:255 }),
 
-            check( 'postal_code',   'Posta code is required' ).not().isEmpty(),
-            check( 'postal_code',   'Posta code isn\'t a numeric type' ).isNumeric(),
-            check( 'postal_code',   'Posta code must be less than 6 number' ).length({ max:6 }),
+            check( 'zip_code',      'Zip code is required' ).not().isEmpty(),
+            check( 'zip_code',      'Zip code isn\'t a numeric type' ).isNumeric(),
+            check( 'zip_code',      'Zip code must be less than 6 number' ).length({ max:6 }),
 
             check( 'country',       'Country is required' ).not().isEmpty(),
             check( 'country',       'Country isn\'t a string type' ).isString(),
             check( 'country',       'Country must be less than 255 characters' ).length({ max:255 }),
             
-            check( 'id_service',    'Id service is required' ).not().isEmpty(),
-            check( 'id_service',    'Id service isn\'t a numeric type' ).isNumeric(),
+            check( 'uuid_service',  'Id service is required' ).not().isEmpty(),
+            check( 'uuid_service',  'Id service isn\'t a uuid type' ).isUUID(),
             DataValidate
         ],
         AddressServiceController.createAddressService
@@ -62,16 +62,16 @@ router
             check( 'state',                 'State isn\'t a string type' ).isString(),
             check( 'state',                 'State must be less than 255 characters' ).length({ max:255 }),
 
-            check( 'postal_code',           'Posta code is required' ).not().isEmpty(),
-            check( 'postal_code',           'Posta code isn\'t a numeric type' ).isNumeric(),
-            check( 'postal_code',           'Posta code must be less than 6 number' ).length({ max:6 }),
+            check( 'zip_code',              'Zip code is required' ).not().isEmpty(),
+            check( 'zip_code',              'Zip code isn\'t a numeric type' ).isNumeric(),
+            check( 'zip_code',              'Zip code must be less than 6 number' ).length({ max:6 }),
 
             check( 'country',               'Country is required' ).not().isEmpty(),
             check( 'country',               'Country isn\'t a string type' ).isString(),
             check( 'country',               'Country must be less than 255 characters' ).length({ max:255 }),
             
-            check( 'id_service',            'Id service is required' ).not().isEmpty(),
-            check( 'id_service',            'Id service isn\'t a numeric type' ).isNumeric(),
+            check( 'uuid_service',          'Id service is required' ).not().isEmpty(),
+            check( 'uuid_service',          'Id service isn\'t a uuid type' ).isUUID(),
             DataValidate
         ],
         AddressServiceController.updateAddressService

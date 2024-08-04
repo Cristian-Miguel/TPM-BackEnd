@@ -1,13 +1,13 @@
 const AddressServiceRepository = require( './AddressServiceRepository' );
 
 class PrismaAddressServiceRepository extends AddressServiceRepository {
-    async createAddressService ( prismaSQL, street, city, state, postal_code, country, id_service ) {
+    async createAddressService ( prismaSQL, street, city, state, zip_code, country, id_service ) {
         return await prismaSQL.tbl_address_service.create({
             data:{
                 street,
                 city,
                 state,
-                postal_code,
+                zip_code,
                 country,
                 id_service,
                 date_created: new Date().toISOString(),
@@ -35,13 +35,13 @@ class PrismaAddressServiceRepository extends AddressServiceRepository {
         });
     }
 
-    async updateAddressService ( prismaSQL, uuid_address_service, street, city, state, postal_code, country, id_service ) {
+    async updateAddressService ( prismaSQL, uuid_address_service, street, city, state, zip_code, country, id_service ) {
         return await prismaSQL.tbl_address_service.create({
             data:{
                 street,
                 city,
                 state,
-                postal_code,
+                zip_code,
                 country,
                 id_service,
                 last_update: new Date().toISOString()

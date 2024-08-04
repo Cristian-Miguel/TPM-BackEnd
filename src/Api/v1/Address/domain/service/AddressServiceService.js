@@ -6,10 +6,10 @@ class AddressServiceService {
         this.AddressServiceRepository = AddressServiceRepository;
     }
 
-    async createAddressService ( street, city, state, postal_code, country, id_service ) {
+    async createAddressService ({ street, city, state, zip_code, country, id_service }) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.AddressServiceRepository.createAddressService(
-                prisma, street, city, state, postal_code, country, id_service
+                prisma, street, city, state, zip_code, country, id_service
             );
 
         });
@@ -38,10 +38,10 @@ class AddressServiceService {
         return result;
     }
 
-    async updateAddressService ({ uuid_address_service, street, city, state, postal_code, country, id_service }) {
+    async updateAddressService ({ uuid_address_service, street, city, state, zip_code, country, id_service }) {
         const result = await prisma.$transaction(async (prisma) => {
             return await this.AddressServiceRepository.updateAddressService(
-                prisma, uuid_address_service, street, city, state, postal_code, country, id_service
+                prisma, uuid_address_service, street, city, state, zip_code, country, id_service
             );
             
         });

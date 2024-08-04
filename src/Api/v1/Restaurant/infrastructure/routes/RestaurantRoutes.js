@@ -16,16 +16,16 @@ router
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
             
-            check( 'name', 'Name is empty' ).not().isEmpty(),
-            check( 'name', 'Name isn\'t alphanumeric type' ).isAlphanumeric(),
-            check( 'description', 'Description is empty' ).not().isEmpty(),
-            check( 'description', 'Description isn\'t string type' ).isString(),
-            check( 'main_image', 'Main image is empty' ).not().isEmpty(),
-            check( 'main_image', 'Main image isn\'t url type' ).isURL(),
-            check( 'uuid_user', 'Uuid user is empty' ).not().isEmpty(),
-            check( 'uuid_user', 'Uuid user isn\'t a uuid type' ).isUUID(),
-            check( 'id_restaurant_category', 'id restaurant category is empty' ).not().isEmpty(),
-            check( 'id_restaurant_category', 'id restaurant category isn\'t a numeric type' ).isNumeric(),
+            check( 'name',                      'Name is empty' ).not().isEmpty(),
+            check( 'name',                      'Name isn\'t alphanumeric type' ).isAlphanumeric(),
+            check( 'description',               'Description is empty' ).not().isEmpty(),
+            check( 'description',               'Description isn\'t string type' ).isString(),
+            check( 'main_image',                'Main image is empty' ).not().isEmpty(),
+            check( 'main_image',                'Main image isn\'t url type' ).isURL(),
+            check( 'uuid_user',                 'Uuid user is empty' ).not().isEmpty(),
+            check( 'uuid_user',                 'Uuid user isn\'t a uuid type' ).isUUID(),
+            check( 'id_restaurant_category',    'id restaurant category is empty' ).not().isEmpty(),
+            check( 'id_restaurant_category',    'id restaurant category isn\'t a numeric type' ).isNumeric(),
             body('email')
                 .optional({ checkFalsy: true })  // This allows the field to be empty
                 .trim()
@@ -38,10 +38,25 @@ router
                 .optional({ checkFalsy: true })  // This allows the field to be empty
                 .trim()
                 .isURL().withMessage('Must be a valid url.'),
-            check( 'open_hour', 'Open hour is empty' ).not().isEmpty(),
-            check( 'open_hour', 'Open hour isn\'t hour format hh:mm:ss' ).isTime(),
-            check( 'close_hour', 'Close hour is empty' ).not().isEmpty(),
-            check( 'close_hour', 'Close hour isn\'t hour format hh:mm:ss' ).isTime(),
+            check( 'open_hour',                 'Open hour is empty' ).not().isEmpty(),
+            check( 'open_hour',                 'Open hour isn\'t hour format hh:mm:ss' ).isTime(),
+            check( 'close_hour',                'Close hour is empty' ).not().isEmpty(),
+            check( 'close_hour',                'Close hour isn\'t hour format hh:mm:ss' ).isTime(),
+            check( 'street',                    'Street is required' ).not().isEmpty(),
+            check( 'street',                    'Street isn\'t a string type' ).isString(),
+            check( 'street',                    'Street must be less than 255 characters' ).length({ max:255 }),
+            check( 'city',                      'City is required' ).not().isEmpty(),
+            check( 'city',                      'City isn\'t a string type' ).isString(),
+            check( 'city',                      'City must be less than 255 characters' ).length({ max:255 }),
+            check( 'state',                     'State is required' ).not().isEmpty(),
+            check( 'state',                     'State isn\'t a string type' ).isString(),
+            check( 'state',                     'State must be less than 255 characters' ).length({ max:255 }),
+            check( 'zip_code',                  'Zip code is required' ).not().isEmpty(),
+            check( 'zip_code',                  'Zip code isn\'t a numeric type' ).isNumeric(),
+            check( 'zip_code',                  'Zip code must be less than 6 number' ).length({ max:6 }),
+            check( 'country',                   'Country is required' ).not().isEmpty(),
+            check( 'country',                   'Country isn\'t a string type' ).isString(),
+            check( 'country',                   'Country must be less than 255 characters' ).length({ max:255 }),
 
             DataValidate
         ],
@@ -49,23 +64,23 @@ router
     )
 
     .post(
-        '/create',
+        '/update',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
             
-            check( 'uuid_restaurant', 'Uuid restaurant is empty' ).not().isEmpty(),
-            check( 'uuid_restaurant', 'Uuid restaurant isn\'t a uuid type' ).isUUID(),
-            check( 'name', 'Name is empty' ).not().isEmpty(),
-            check( 'name', 'Name isn\'t alphanumeric type' ).isAlphanumeric(),
-            check( 'description', 'Description is empty' ).not().isEmpty(),
-            check( 'description', 'Description isn\'t string type' ).isString(),
-            check( 'main_image', 'Main image is empty' ).not().isEmpty(),
-            check( 'main_image', 'Main image isn\'t url type' ).isURL(),
-            check( 'uuid_user', 'Uuid user is empty' ).not().isEmpty(),
-            check( 'uuid_user', 'Uuid user isn\'t a uuid type' ).isUUID(),
-            check( 'id_restaurant_category', 'id restaurant category is empty' ).not().isEmpty(),
-            check( 'id_restaurant_category', 'id restaurant category isn\'t a numeric type' ).isNumeric(),
+            check( 'uuid_restaurant',           'Uuid restaurant is empty' ).not().isEmpty(),
+            check( 'uuid_restaurant',           'Uuid restaurant isn\'t a uuid type' ).isUUID(),
+            check( 'name',                      'Name is empty' ).not().isEmpty(),
+            check( 'name',                      'Name isn\'t alphanumeric type' ).isAlphanumeric(),
+            check( 'description',               'Description is empty' ).not().isEmpty(),
+            check( 'description',               'Description isn\'t string type' ).isString(),
+            check( 'main_image',                'Main image is empty' ).not().isEmpty(),
+            check( 'main_image',                'Main image isn\'t url type' ).isURL(),
+            check( 'uuid_user',                 'Uuid user is empty' ).not().isEmpty(),
+            check( 'uuid_user',                 'Uuid user isn\'t a uuid type' ).isUUID(),
+            check( 'id_restaurant_category',    'id restaurant category is empty' ).not().isEmpty(),
+            check( 'id_restaurant_category',    'id restaurant category isn\'t a numeric type' ).isNumeric(),
             body('email')
                 .optional({ checkFalsy: true })  // This allows the field to be empty
                 .trim()
@@ -78,10 +93,25 @@ router
                 .optional({ checkFalsy: true })  // This allows the field to be empty
                 .trim()
                 .isURL().withMessage('Must be a valid url.'),
-            check( 'open_hour', 'Open hour is empty' ).not().isEmpty(),
-            check( 'open_hour', 'Open hour isn\'t hour format hh:mm:ss' ).isTime(),
-            check( 'close_hour', 'Close hour is empty' ).not().isEmpty(),
-            check( 'close_hour', 'Close hour isn\'t hour format hh:mm:ss' ).isTime(),
+            check( 'open_hour',                 'Open hour is empty' ).not().isEmpty(),
+            check( 'open_hour',                 'Open hour isn\'t hour format hh:mm:ss' ).isTime(),
+            check( 'close_hour',                'Close hour is empty' ).not().isEmpty(),
+            check( 'close_hour',                'Close hour isn\'t hour format hh:mm:ss' ).isTime(),
+            check( 'street',                    'Street is required' ).not().isEmpty(),
+            check( 'street',                    'Street isn\'t a string type' ).isString(),
+            check( 'street',                    'Street must be less than 255 characters' ).length({ max:255 }),
+            check( 'city',                      'City is required' ).not().isEmpty(),
+            check( 'city',                      'City isn\'t a string type' ).isString(),
+            check( 'city',                      'City must be less than 255 characters' ).length({ max:255 }),
+            check( 'state',                     'State is required' ).not().isEmpty(),
+            check( 'state',                     'State isn\'t a string type' ).isString(),
+            check( 'state',                     'State must be less than 255 characters' ).length({ max:255 }),
+            check( 'zip_code',                  'Zip code is required' ).not().isEmpty(),
+            check( 'zip_code',                  'Zip code isn\'t a numeric type' ).isNumeric(),
+            check( 'zip_code',                  'Zip code must be less than 6 number' ).length({ max:6 }),
+            check( 'country',                   'Country is required' ).not().isEmpty(),
+            check( 'country',                   'Country isn\'t a string type' ).isString(),
+            check( 'country',                   'Country must be less than 255 characters' ).length({ max:255 }),
 
             DataValidate
         ],

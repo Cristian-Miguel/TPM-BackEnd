@@ -27,9 +27,9 @@ router
             check( 'state',         'State isn\'t a string type' ).isString(),
             check( 'state',         'State must be less than 255 characters' ).length({ max:255 }),
 
-            check( 'postal_code',   'Posta code is required' ).not().isEmpty(),
-            check( 'postal_code',   'Posta code isn\'t a numeric type' ).isNumeric(),
-            check( 'postal_code',   'Posta code must be less than 6 number' ).length({ max:6 }),
+            check( 'zip_code',      'Zip code is required' ).not().isEmpty(),
+            check( 'zip_code',      'Zip code isn\'t a numeric type' ).isNumeric(),
+            check( 'zip_code',      'Zip code must be less than 6 number' ).length({ max:6 }),
 
             check( 'country',       'Country is required' ).not().isEmpty(),
             check( 'country',       'Country isn\'t a string type' ).isString(),
@@ -50,28 +50,28 @@ router
             check( 'uuid_address_user',  'Street is required' ).not().isEmpty(),
             check( 'uuid_address_user',  'Street is required' ).isUUID(),
 
-            check( 'street',                'Street is required' ).not().isEmpty(),
-            check( 'street',                'Street isn\'t a string type' ).isString(),
-            check( 'street',                'Street must be less than 255 characters' ).length({ max:255 }),
+            check( 'street',             'Street is required' ).not().isEmpty(),
+            check( 'street',             'Street isn\'t a string type' ).isString(),
+            check( 'street',             'Street must be less than 255 characters' ).length({ max:255 }),
 
-            check( 'city',                  'City is required' ).not().isEmpty(),
-            check( 'city',                  'City isn\'t a string type' ).isString(),
-            check( 'city',                  'City must be less than 255 characters' ).length({ max:255 }),
+            check( 'city',               'City is required' ).not().isEmpty(),
+            check( 'city',               'City isn\'t a string type' ).isString(),
+            check( 'city',               'City must be less than 255 characters' ).length({ max:255 }),
 
-            check( 'state',                 'State is required' ).not().isEmpty(),
-            check( 'state',                 'State isn\'t a string type' ).isString(),
-            check( 'state',                 'State must be less than 255 characters' ).length({ max:255 }),
+            check( 'state',              'State is required' ).not().isEmpty(),
+            check( 'state',              'State isn\'t a string type' ).isString(),
+            check( 'state',              'State must be less than 255 characters' ).length({ max:255 }),
 
-            check( 'postal_code',           'Posta code is required' ).not().isEmpty(),
-            check( 'postal_code',           'Posta code isn\'t a numeric type' ).isNumeric(),
-            check( 'postal_code',           'Posta code must be less than 6 number' ).length({ max:6 }),
+            check( 'zip_code',           'Zip code is required' ).not().isEmpty(),
+            check( 'zip_code',           'Zip code isn\'t a numeric type' ).isNumeric(),
+            check( 'zip_code',           'Zip code must be less than 6 number' ).length({ max:6 }),
 
-            check( 'country',               'Country is required' ).not().isEmpty(),
-            check( 'country',               'Country isn\'t a string type' ).isString(),
-            check( 'country',               'Country must be less than 255 characters' ).length({ max:255 }),
+            check( 'country',            'Country is required' ).not().isEmpty(),
+            check( 'country',            'Country isn\'t a string type' ).isString(),
+            check( 'country',            'Country must be less than 255 characters' ).length({ max:255 }),
             
-            check( 'uuid_user',            'Uuid user is required' ).not().isEmpty(),
-            check( 'uuid_user',            'Uuid user isn\'t an uuid type' ).isUUID(),
+            check( 'uuid_user',          'Uuid user is required' ).not().isEmpty(),
+            check( 'uuid_user',          'Uuid user isn\'t an uuid type' ).isUUID(),
             DataValidate
         ],
         AddressServiceController.updateAddressService
