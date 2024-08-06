@@ -260,16 +260,16 @@ model tbl_restaurant_category {
 }
 
 model tbl_restaurant_table{
-  id_restaurant_table Int       @id @default(autoincrement())
+  id_restaurant_table Int                 @id @default(autoincrement())
   number_people       Int
-  cost                Decimal   @db.Decimal(10,2)
-  date_reservation    DateTime  @db.DateTime()
-  type_reservation    type_reservation
-  discount_cash       Decimal    @db.Decimal(10,2)
-  discount_percentage Decimal
+  cost                Decimal             @db.Decimal(10,2)
+  date_reservation    DateTime?           @db.DateTime()
+  type_reservation    type_reservation?
+  discount_cash       Decimal?            @db.Decimal(10,2)
+  discount_percentage Decimal?
   id_restaurant       Int
-  active              Boolean        @db.Bit(1) @default(true)
-  tbl_restaurant      tbl_restaurant @relation(fields: [id_restaurant], references: [id_restaurant])
+  reserved            Boolean             @db.Bit(1) @default(true)
+  tbl_restaurant      tbl_restaurant      @relation(fields: [id_restaurant], references: [id_restaurant])
 }
 
 model tbl_rol {
