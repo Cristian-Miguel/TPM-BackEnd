@@ -37,6 +37,12 @@ class ValidationCustomJsonField {
             throw new Error(`Invalid filter type: ${filter_type}. Allowed values are: ${allowedFilters.join(', ')}`);
         }
     }
+
+    validateFile( file = '' ){
+        if(!file){
+            throw new Error(`No file uploaded.`);
+        }
+    }
 }
 
 module.exports = new ValidationCustomJsonField();
