@@ -35,7 +35,7 @@ class RestaurantTableController {
     async createTablesExtractingExcelData( req = request, res = response) {
         try {
 
-            const result = await restaurantTableService.createTablesExtractingExcelData( req.body );
+            const result = await restaurantTableService.createTablesExtractingExcelData( req.file.path, req.body.uuid_restaurant );
 
             return res.status(201).json({
                 success: true,
@@ -55,7 +55,7 @@ class RestaurantTableController {
         }
     }
 
-    async createTablesExtractingCSVData({ file }) {
+    async createTablesExtractingCSVData( req = request, res = response) {
         
     }
 

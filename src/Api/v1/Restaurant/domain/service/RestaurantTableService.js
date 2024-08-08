@@ -15,7 +15,7 @@ class RestaurantTableService {
         return result;
     }
 
-    async createTablesExtractingExcelData({ file, uuid_restaurant }) {
+    async createTablesExtractingExcelData( file_path, uuid_restaurant ) {
 
         const result = prisma.$transaction(async (prisma) => {
             return await this.RestaurantTableRepository
@@ -25,7 +25,7 @@ class RestaurantTableService {
         return result;
     }
 
-    async createTablesExtractingCSVData({ file }) {
+    async createTablesExtractingCSVData( file_path, uuid_restaurant) {
         const result = prisma.$transaction(async (prisma) => {
             return await this.RestaurantTableRepository
                 .createTables( prisma, file );
