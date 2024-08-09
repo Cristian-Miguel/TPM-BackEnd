@@ -13,10 +13,10 @@ const router = Router();
 router
     .post(
         '/create',
-        upload.none(),
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
+            upload.none(),
             check('number_people', 'Number of people is required').notEmpty(),
             check('number_people', 'Number of people is a numeric type').isNumeric(),
             check('cost', 'Cost is a uuid type').notEmpty(),
