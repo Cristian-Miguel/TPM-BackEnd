@@ -9,7 +9,7 @@ const restaurantTableService = new RestaurantTableService( RestaurantTableReposi
 
 class RestaurantTableController {
 
-    async createTable( req = request, res = response) {
+    async createTable( req = request, res = response ) {
         try {
 
             const result = await restaurantTableService.createTable( req.body );
@@ -32,7 +32,7 @@ class RestaurantTableController {
         }
     }
 
-    async createTablesExtractingExcelData( req = request, res = response) {
+    async createTablesExtractingExcelData( req = request, res = response ) {
         try {
 
             const result = await restaurantTableService.createTablesExtractingExcelData( req.file.path, req.body.uuid_restaurant );
@@ -55,32 +55,165 @@ class RestaurantTableController {
         }
     }
 
-    async createTablesExtractingCSVData( req = request, res = response) {
-        
+    async createTablesExtractingCSVData( req = request, res = response ) {
+        try {
+
+            const result = await restaurantTableService.createTablesExtractingCSVData( req.file.path, req.body.uuid_restaurant );
+
+            return res.status(201).json({
+                success: true,
+                id_restaurant_table: result.id_restaurant_table,
+                msg: ResponseCodeMessage.CODE_201
+            });
+            
+        } catch (error) {
+            const products_logger = winston.loggers.get('ProductsLogger');
+            products_logger.error(`Error try to creates tables with csv file: ${ error }`);
+            
+            return res.status(500).json({
+                success: false,
+                error: Response_Code_Message.CODE_500(),
+                stack: error
+            });
+        }
     }
 
-    async updateTable({ id_restaurant_table, number_people, cost, date_reservation, type_reservation, discount_cash, discount_percentage, reserved }) {
-        
+    async updateTable( req = request, res = response ) {
+        try {
+
+            const result = await restaurantTableService.updateTable( req.body );
+
+            return res.status(200).json({
+                success: true,
+                id_restaurant_table: result.id_restaurant_table,
+                msg: ResponseCodeMessage.CODE_200
+            });
+            
+        } catch (error) {
+            const products_logger = winston.loggers.get('ProductsLogger');
+            products_logger.error(`Error try to update a table: ${ error }`);
+            
+            return res.status(500).json({
+                success: false,
+                error: Response_Code_Message.CODE_500(),
+                stack: error
+            });
+        }
     }
 
-    async deleteTable({ id_restaurant_table }) {
-       
+    async deleteTable( req = request, res = response ) {
+        try {
+
+            const result = await restaurantTableService.deleteTable( req.body );
+
+            return res.status(200).json({
+                success: true,
+                id_restaurant_table: result.id_restaurant_table,
+                msg: ResponseCodeMessage.CODE_200
+            });
+            
+        } catch (error) {
+            const products_logger = winston.loggers.get('ProductsLogger');
+            products_logger.error(`Error try to delete a table: ${ error }`);
+            
+            return res.status(500).json({
+                success: false,
+                error: Response_Code_Message.CODE_500(),
+                stack: error
+            });
+        }
     }
 
-    async deleteTables({ listIds }){
-        
+    async deleteTables( req = request, res = response ){
+        try {
+
+            const result = await restaurantTableService.deleteTables( req.body );
+
+            return res.status(200).json({
+                success: true,
+                id_restaurant_table: result.id_restaurant_table,
+                msg: ResponseCodeMessage.CODE_200
+            });
+            
+        } catch (error) {
+            const products_logger = winston.loggers.get('ProductsLogger');
+            products_logger.error(`Error try to delete tables: ${ error }`);
+            
+            return res.status(500).json({
+                success: false,
+                error: Response_Code_Message.CODE_500(),
+                stack: error
+            });
+        }
     }
 
-    async getTableById({ id_restaurant_table }) {
-        
+    async getTableById( req = request, res = response ) {
+        try {
+
+            const result = await restaurantTableService.getTableById( req.params );
+
+            return res.status(200).json({
+                success: true,
+                data: result,
+                msg: ResponseCodeMessage.CODE_200
+            });
+            
+        } catch (error) {
+            const products_logger = winston.loggers.get('ProductsLogger');
+            products_logger.error(`Error try to get tables by id: ${ error }`);
+            
+            return res.status(500).json({
+                success: false,
+                error: Response_Code_Message.CODE_500(),
+                stack: error
+            });
+        }
     }
 
-    async getTablesByRestaurant({ uuid_restaurant }){
-        
+    async getTablesByRestaurant( req = request, res = response ){
+        try {
+
+            const result = await restaurantTableService.getTablesByRestaurant( req.params );
+
+            return res.status(200).json({
+                success: true,
+                data: result,
+                msg: ResponseCodeMessage.CODE_200
+            });
+            
+        } catch (error) {
+            const products_logger = winston.loggers.get('ProductsLogger');
+            products_logger.error(`Error try to get tables by uuid restaurant: ${ error }`);
+            
+            return res.status(500).json({
+                success: false,
+                error: Response_Code_Message.CODE_500(),
+                stack: error
+            });
+        }
     }
 
-    async getTablesPagination({ page, size, orderBy, filter }){
-        
+    async getTablesPagination( req = request, res = response ){
+        try {
+
+            const result = await restaurantTableService.getTablesPagination( req.body );
+
+            return res.status(200).json({
+                success: true,
+                data: result,
+                msg: ResponseCodeMessage.CODE_200
+            });
+            
+        } catch (error) {
+            const products_logger = winston.loggers.get('ProductsLogger');
+            products_logger.error(`Error try to get tables paginated: ${ error }`);
+            
+            return res.status(500).json({
+                success: false,
+                error: Response_Code_Message.CODE_500(),
+                stack: error
+            });
+        }
     }
 
 }

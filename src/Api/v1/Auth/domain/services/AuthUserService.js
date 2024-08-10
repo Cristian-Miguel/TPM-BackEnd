@@ -49,17 +49,24 @@ class AuthService {
     }
 
     async signIn({ email, password }){
-        const user = await this.AuthUserRepository.findByEmailPassword( email, password );
+        try {
 
-        const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
+            const user = await this.AuthUserRepository.findByEmailPassword( email, password );
 
-        const result = await prisma.$transaction(async (prisma) => {
+            const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
 
-            return await this.AuthUserRepository.updateTokenAndLoginDate( prisma, user.uuid_user, token );
+            const result = await prisma.$transaction(async (prisma) => {
 
-        });
+                return await this.AuthUserRepository.updateTokenAndLoginDate( prisma, user.uuid_user, token );
 
-        return token;   
+            });
+
+            return token;
+        } catch (error) {
+            if(error instanceof PrismaClientKnownRequestError){
+                throw new PrismaError( error.code );
+            }
+        }
     }
 
 }

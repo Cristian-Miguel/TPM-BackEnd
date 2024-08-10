@@ -9,7 +9,7 @@ const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler'
 const winston = require('winston');
 require( '../../../Shared/infrastructure/Log/Logger' );
 
-const authService = new AuthService(AuthUserRepository, UserRepository, AddressUserRepository, get_JWT);
+const authService = new AuthService( AuthUserRepository, UserRepository, AddressUserRepository, get_JWT );
 
 class BasicAuthController {
     

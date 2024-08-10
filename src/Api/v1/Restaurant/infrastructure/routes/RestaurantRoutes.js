@@ -15,7 +15,6 @@ router
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
-            
             check( 'name',                      'Name is empty' ).not().isEmpty(),
             check( 'name',                      'Name isn\'t alphanumeric type' ).isAlphanumeric(),
             check( 'description',               'Description is empty' ).not().isEmpty(),
@@ -57,7 +56,6 @@ router
             check( 'country',                   'Country is required' ).not().isEmpty(),
             check( 'country',                   'Country isn\'t a string type' ).isString(),
             check( 'country',                   'Country must be less than 255 characters' ).isLength({ max:255 }),
-
             DataValidate
         ],
         RestaurantController.createRestaurant

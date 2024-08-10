@@ -13,10 +13,10 @@ const router = Router();
 router
     .post(
         '/create',
+        upload.none(),
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
-            upload.none(),
             check('number_people', 'Number of people is required').notEmpty(),
             check('number_people', 'Number of people is a numeric type').isNumeric(),
             check('cost', 'Cost is a uuid type').notEmpty(),
@@ -24,7 +24,7 @@ router
             check('date_reservation', 'Date reservation is required').notEmpty(),
             check('date_reservation', 'Date reservation is date type').isISO8601(),
             check('type_reservation', 'Type reservation is required').notEmpty(),
-            check('type_reservation', 'Type reservation is string type').toString(),
+            check('type_reservation', 'Type reservation is string type').isString(),
             check('discount_cash', 'Discount cash is a uuid type').notEmpty(),
             check('discount_cash', 'Discount cash is a decimal type').isDecimal(),
             check('discount_percentage', 'Discount percentage is a uuid type').notEmpty(),
@@ -37,6 +37,7 @@ router
         ],
         RestaurantTableController.createTable
     )
+
     .post(
         '/upload/excel',
         upload.single('file'),
@@ -50,6 +51,7 @@ router
         ],
         RestaurantTableController.createTablesExtractingExcelData
     )
+
     .post(
         '/upload/csv',
         upload.single('file'),
@@ -79,7 +81,7 @@ router
             check('date_reservation', 'Date reservation is required').notEmpty(),
             check('date_reservation', 'Date reservation is date type').isISO8601(),
             check('type_reservation', 'Type reservation is required').notEmpty(),
-            check('type_reservation', 'Type reservation is string type').toString(),
+            check('type_reservation', 'Type reservation is string type').isString(),
             check('discount_cash', 'Discount cash is a uuid type').notEmpty(),
             check('discount_cash', 'Discount cash is a decimal type').isDecimal(),
             check('discount_percentage', 'Discount percentage is a uuid type').notEmpty(),
