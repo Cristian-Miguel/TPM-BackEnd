@@ -6,16 +6,14 @@ const AddressUserRepository = require( '../../../Address/domain/repository/Prism
 const AuthService = require( '../../domain/services/AuthUserService.js' );
 const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage.js' );
 const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
-const winston = require('winston');
-require( '../../../Shared/infrastructure/Log/Logger' );
 
 const authService = new AuthService( AuthUserRepository, UserRepository, AddressUserRepository, get_JWT );
 
 class BasicAuthController {
     
     async signUp( req = request, res = response ) {
-        try {
 
+        try {
             const token = await authService.signUp( req.body );
 
             if ( token ) {
@@ -27,42 +25,39 @@ class BasicAuthController {
                 });
 
             } else {
-                const auth_logger = winston.loggers.get('AuthLogger');
-                auth_logger.info('User unauthenticate when was creating');
-
+                
                 return res.status(500).json({
                     success: false,
+                    message: "Check your information that sended",
                     error: ResponseCodeMessage.CODE_500
                 });   
             }
 
-        } catch(error) {
-
-            const auth_logger = winston.loggers.get('AuthLogger');
-
-            if(error instanceof PrismaError){
-                auth_logger.error(`Error in the database when try to sign up: \n ${ error.errorWinston } \n ${ error.messageError } \n ${ error.code }`);
+        } catch( error ) {
+            if( error instanceof PrismaError ) {
+                const { messageApiClient } = error;
             
                 return res.status(500).json({
                     success: false,
-                    message: error.messageError,
+                    message: messageApiClient,
                     error: ResponseCodeMessage.CODE_500
                 });
 
             } else {
-                auth_logger.error(`Error in the sign up: ${ error }`);
-            
                 return res.status(500).json({
                     success: false,
+                    message: "Server data process error",
                     error: ResponseCodeMessage.CODE_500
                 });
             }
+
         }
+        
     }
 
     async signIn( req = request, res = response ) {
-        try {
 
+        try {
             const token = await authService.signIn( req.body );
 
             if( token ) {
@@ -71,7 +66,7 @@ class BasicAuthController {
                     success: true,
                     token: token,
                     msg: ResponseCodeMessage.CODE_200
-                })
+                });
 
             } else {
 
@@ -80,40 +75,32 @@ class BasicAuthController {
 
                 return res.status(401).json({
                     success: false,
+                    message: "Check your email o password",
                     error: ResponseCodeMessage.CODE_401
                 });
 
             }
 
-        } catch (error) {
-
-            const auth_logger = winston.loggers.get('AuthLogger');
-
+        } catch ( error ) {
             if(error instanceof PrismaError){
-                auth_logger.error(`Error in the database when try to sign in: 
-                    \n ${ error.code }
-                    \n ${ error.errorWinston }
-                    \n ${ error.field }
-                    \n ${ error.version }
-                    \n ${ error.messageError }`
-                );
+                const { messageApiClient } = error;
             
                 return res.status(500).json({
                     success: false,
-                    message: error.messageError,
+                    message: messageApiClient,
                     error: ResponseCodeMessage.CODE_500
                 });
 
             } else {
-                auth_logger.error(`Error in the sign in: ${ error }`);
-            
                 return res.status(500).json({
                     success: false,
+                    message: "Server data process error",
                     error: ResponseCodeMessage.CODE_500
                 });
             }
     
         }
+
     }
 
 }

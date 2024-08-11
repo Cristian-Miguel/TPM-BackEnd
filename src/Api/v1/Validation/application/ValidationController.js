@@ -6,45 +6,45 @@ const validationService = new ValidationService(ValidationRepository, get_JWT );
 
 class ValidationController {
 
-    async validateEmail( email ){
-        try {
+    async validateEmail( email ) {
 
+        try {
             return await validationService.checkEmailValidation( email );
             
         } catch (error) {
-
             return false;
 
         }
+
     }
 
     async getUserInfo( email ) {
+
         try {
-            
             return await validationService.getUserBasicInfo( email );
 
         } catch (error) {
-            
             return null;
 
         }
+
     }
 
     async getUserInfoByUuid( uuid ) {
+
         try {
-            
             return await validationService.getUserBasicInfoByUuid( uuid );
 
         } catch (error) {
-            
             return null;
 
         }
+
     }
 
     async getIdRolByIdRol( id_rol ) {
+
         try {
-            
             return await validationService.getRolById( id_rol );
 
         } catch (error) {
@@ -52,6 +52,19 @@ class ValidationController {
             return null;
 
         }
+
+    }
+
+    async getIdRolByName( name ) {
+
+        try {
+            return await validationService.getRolByName( name );
+
+        } catch( error ) {
+            return null;
+
+        }
+
     }
 
 }

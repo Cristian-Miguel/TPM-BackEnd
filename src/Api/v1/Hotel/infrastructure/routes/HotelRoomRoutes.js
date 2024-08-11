@@ -5,12 +5,15 @@ const { accessRol } = require( '../../../Validation/infrastructure/ValidateRoles
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
 const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
 const { AdminRol, UserRol, SellerRol } = require( '../../../Shared/infrastructure/constant/SystemConstant' );
-const router = Router();
 const HotelRoomController = require( '../../application/controller/HotelRoomController' );
+const { upload } = require('../../../Shared/infrastructure/multer/multerConfig');
+
+const router = Router();
 
 router
     .post(
         '/create',
+        upload.none(),
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
@@ -26,23 +29,17 @@ router
     )
     
     .post(
-        '/createMany',
+        '/upload/excel',
+        upload.single('file'),
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
-            body( 'rooms' ).isArray().withMessage( 'rooms must be an array' ),
-            body( 'rooms.*.id_room_category' )
-                .notEmpty().withMessage( 'Id room category is required' )
-                .isNumeric().withMessage( 'Id room category must be a numeric type' ),
-            body( 'rooms.*.number_room' )
-                .notEmpty().withMessage( 'Number room is required' )
-                .isString().withMessage( 'Number room must be a string type' ),
-            body( 'rooms.*.uuid_hotel' )
-                .notEmpty().withMessage( 'Uuid hotel is required' )
-                .isUUID().withMessage( 'Uuid hotel must be an uuid type' ),
+            check('uuid_hotel', 'Uuid hotel is required').notEmpty(),
+            check('uuid_hotel', 'Uuid hotel is a uuid type').isUUID(),
+            body('file').custom( ValidationCustomJsonField.validateFile ),
             DataValidate
         ],
-        HotelRoomController.createManyRoomHotel
+        HotelRoomController.createManyRoomHotelByExcel
     )
 
     .post(

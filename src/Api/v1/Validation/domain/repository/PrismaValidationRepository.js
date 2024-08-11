@@ -54,6 +54,19 @@ class PrismaValidationRepository extends ValidationRepository {
         });
     }
 
+    async findRolByName( name ) {
+        return prisma.tbl_rol.findUnique({
+            select: {
+                name: true,
+                description: true,
+                id_rol: true
+            },
+            where: {
+                name
+            }
+        });
+    }
+
 }
 
 module.exports = new PrismaValidationRepository();

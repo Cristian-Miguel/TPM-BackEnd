@@ -22,7 +22,7 @@ class RestaurantRepository {
         throw new Error('Method not implemented.');
     }
 
-    async getRestaurantPagination( page, size, orderBy, filter ) {
+    async getRestaurantPagination( skip, take, orderBy, filter ) {
         throw new Error('Method not implemented.');
     }
 }

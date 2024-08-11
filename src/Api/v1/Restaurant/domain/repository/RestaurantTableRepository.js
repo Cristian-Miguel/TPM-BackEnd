@@ -29,7 +29,7 @@ class RestaurantTableRepository {
         throw new Error('Method not implemented.');
     }
 
-    async getTablesPagination( page, size, orderBy, filter ){
+    async getTablesPagination( skip, take, orderBy, filter ){
         throw new Error('Method not implemented.');
     }
 

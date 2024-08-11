@@ -17,7 +17,7 @@ class AddressUserRepository {
         throw new Error('Method not implemented.');
     }
 
-    async getAddressUserPagination ( page, size, orderBy, filter ) {
+    async getAddressUserPagination ( skip, take, orderBy, filter ) {
         throw new Error('Method not implemented.');
     }
 

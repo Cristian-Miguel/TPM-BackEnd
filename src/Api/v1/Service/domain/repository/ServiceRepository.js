@@ -21,7 +21,7 @@ class ServiceRepository {
         throw new Error('Method not implemented.');
     }
 
-    async getServicePagination( page, size, orderBy, filter ){
+    async getServicePagination( skip, take, orderBy, filter ){
         throw new Error('Method not implemented.');
     }
 

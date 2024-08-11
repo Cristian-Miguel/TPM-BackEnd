@@ -13,7 +13,7 @@ class RoomCategoryRepository {
         throw new Error('Method not implemented.');
     }
 
-    async getCategoryRoomHotelPagination ( page, size, orderBy, filter ) {
+    async getCategoryRoomHotelPagination ( skip, take, orderBy, filter ) {
         throw new Error('Method not implemented.');
     }
 

@@ -1,25 +1,28 @@
 const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
-const { PrismaClientKnownRequestError } = require('@prisma/client');
+const { UserRol } = require( '../../../Shared/infrastructure/constant/SystemConstant' );
 const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
+const winston = require('winston');
+require( '../../../Shared/domain/log/Logger' );
 
 class AuthService {
-    constructor(AuthUserRepository, UserRepository, AddressUserRepository, jwt ){
+    constructor( AuthUserRepository, UserRepository, AddressUserRepository, jwt ) {
+        
         this.AuthUserRepository = AuthUserRepository;
         this.UserRepository = UserRepository;
         this.AddressUserRepository = AddressUserRepository;
         this.jwt = jwt;
+
     }
 
-    async signUp({ email, username, image_profile, password, first_name, last_name, birth_day, street,city, state, country, postal_code }){
+    async signUp({ email, username, image_profile, password, first_name, last_name, birth_day, street, city, state, country, zip_code }) {
+
         try {
-        
             const result = await prisma.$transaction(async (prisma) => {
-                
                 const user = await this.UserRepository.createUser(
                     prisma,
                     email, 
                     username, 
-                    image_profile === null ? 'default' : body.image_profile, 
+                    image_profile === null ? 'default' : image_profile, 
                     password, 
                     first_name, 
                     last_name, 
@@ -27,30 +30,68 @@ class AuthService {
                     0, 
                     "", 
                     "", 
-                    1
+                    UserRol
                 );
 
-                await this.AddressUserRepository.createAddressUser( prisma, street, city, state, postal_code, country, user.uuid_user );
+                await this.AddressUserRepository.createAddressUser( prisma, street, city, state, zip_code, country, user.uuid_user );
                 
                 const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
                 
                 await this.AuthUserRepository.updateToken( prisma, user.uuid_user, token );
 
-                return token
+                return token;
+
             });
+
+            if( !result ){
+                const auth_logger = winston.loggers.get('AuthLogger');
+                auth_logger.info('User unauthenticate when was creating');
+
+            }
 
             return result;
 
-        } catch (error) {
-            if(error instanceof PrismaClientKnownRequestError){
-                throw new PrismaError( error.code );
+        } catch ( error ) {
+            const auth_logger = winston.loggers.get( 'AuthLogger' );
+
+            if( error instanceof PrismaError ) {
+                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
+
+                auth_logger.error(`Error in the database when try to sign up`,{
+                    prismaErrorType: typeErrorPrisma,
+                    prismaCode: code,
+                    prismaMeta: meta,
+                    prismaMessage: message,
+                    prismaClientVersion: clientVersion
+                });
+
+                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
+
+            } else if( error instanceof Error ) {
+                auth_logger.error(`Error in the sign up`, {
+                    genericName: error.name,
+                    genericMessage: error.message,
+                    genericStack: error.stack
+                });
+
+                throw new Error( error );
+
+            } else {
+                auth_logger.error(`Error in the sign up`, {
+                    genericError: error,
+                });
+
+                throw new Error( error );
+
             }
+
         }
+        
     }
 
-    async signIn({ email, password }){
-        try {
+    async signIn({ email, password }) {
 
+        try {
             const user = await this.AuthUserRepository.findByEmailPassword( email, password );
 
             const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
@@ -62,11 +103,45 @@ class AuthService {
             });
 
             return token;
-        } catch (error) {
-            if(error instanceof PrismaClientKnownRequestError){
-                throw new PrismaError( error.code );
+        } catch ( error ) {
+            const auth_logger = winston.loggers.get( 'AuthLogger' );
+
+            if( error instanceof PrismaError ) {
+                
+                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
+
+                auth_logger.error(`Error in the database when try to sign in`,{
+                    prismaErrorType: typeErrorPrisma,
+                    prismaCode: code,
+                    prismaMeta: meta,
+                    prismaMessage: message,
+                    prismaClientVersion: clientVersion
+                });
+
+                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
+
+            } else if( error instanceof Error ) {
+
+                auth_logger.error(`Error in the sign in`, {
+                    genericName: error.name,
+                    genericMessage: error.message,
+                    genericStack: error.stack
+                });
+
+                throw new Error( error );
+
+            } else {
+
+                auth_logger.error(`Error in the sign in`, {
+                    genericError: error,
+                });
+
+                throw new Error( error );
+
             }
+
         }
+        
     }
 
 }

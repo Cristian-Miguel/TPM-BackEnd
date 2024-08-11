@@ -9,7 +9,9 @@ require( '../../Shared/infrastructure/Log/Logger' );
 const validateController = new ValidateController();
 
 const accessRol = ( ...AllRoles ) => {
+
     return async ( req = request, res = response, next ) => {
+
         try {
             const token = req.header('authorization');
             const secret = serverConfig.get('security.JWT_SECRET');
@@ -65,7 +67,6 @@ const accessRol = ( ...AllRoles ) => {
             next();
 
         } catch (error) {
-        
             const tokenLogger = winston.loggers.get('TokenLogger');
             tokenLogger.warn('User email invalid in rol checker:' + error);
             

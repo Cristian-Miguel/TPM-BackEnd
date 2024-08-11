@@ -16,7 +16,7 @@ class AddressServiceRepository {
         throw new Error('Method not implemented.');
     }
 
-    async getAddressService ( page, size, orderBy, filter ) {
+    async getAddressService ( skip, take, orderBy, filter ) {
         throw new Error('Method not implemented.');
     }
 

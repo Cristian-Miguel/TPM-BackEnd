@@ -1,34 +1,60 @@
-const { PrismaClientKnownRequestError } = require('@prisma/client');
 
-class PrismaError extends PrismaClientKnownRequestError {
-    constructor( code ){
+class PrismaError extends Error {
+    constructor( code, meta, message, clientVersion, typeErrorPrisma ) {
+
         super();
         this.code = code;
-        this.errorWinston = super.message;
-        this.field = super.meta;
-        this.version = super.clientVersion;
-        this.messageError = '';
+        this.message = message;
+        this.meta = meta;
+        this.clientVersion = clientVersion;
+        this.typeErrorPrisma = typeErrorPrisma;
+        this.messageApiClient = '';
         
-        this.handleCodeMessage();
+        if( code ) {
+            this.handleCodeMessage();
+
+        } else {
+            this.handleOtherErrorPrisma();
+
+        }
+
     }
 
-    handleCodeMessage(){
-        switch(this.code){
+    handleOtherErrorPrisma() {
+
+        if( this.typeErrorPrisma === 'PrismaClientUnknownRequestError' ) {
+            this.messageApiClient = 'Unknown database error.';
+            
+        } else if( this.typeErrorPrisma === 'PrismaClientRustPanicError' ) {
+            this.messageApiClient = 'Fatal error with the query process. Call the administrator.';
+
+        } else if( this.typeErrorPrisma === 'PrismaClientValidationError' ) {
+            this.messageApiClient = "Error in some of your JSON fields, verify if it's the correct type on each field.";
+
+        }
+
+    }
+
+    handleCodeMessage() {
+
+        switch(this.code) {
             case 'P2000':
-                this.messageError = "The provided value for the column is too long for the column's type.";
+                this.messageApiClient = "The provided value for the column is too long for the column's type.";
                 break;
             case 'P2002':
-                this.messageError = 'There is a unique constraint violation, a new register cannot be created.';
+                this.messageApiClient = 'There is a unique constraint violation, a new register cannot be created.';
                 break;
             case 'P2025':
-                this.messageError = "The field wasn't find it";
+                this.messageApiClient = "The field wasn't find it";
                 break;
-            case 'P2025':
+            case 'P2028':
+                this.messageApiClient = "Transaction API error";
                 break;
             default:
-                this.messageError = 'Database operation failed.';
+                this.messageApiClient = 'Database operation failed.';
                 break;
         }
+
     }
 }
 

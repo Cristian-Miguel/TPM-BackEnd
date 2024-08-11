@@ -110,19 +110,19 @@ model tbl_hotel {
   open_hour           DateTime          @db.Time
   close_hour          DateTime          @db.Time
   active              Boolean           @db.Bit(1) @default(true)
-  tbl_user            tbl_user          @relation(fields: [id_user], references: [id_user])
   tbl_hotel_room      tbl_hotel_room[]
-  tbl_service         tbl_service @relation(fields: [uuid_hotel], references: [id_relation_product])
+  tbl_user            tbl_user          @relation(fields: [id_user], references: [id_user])
+  tbl_service         tbl_service       @relation(fields: [uuid_hotel], references: [id_relation_product])
 }
 
 model tbl_hotel_room {
-  id_hotel_room    Int                 @id @default(autoincrement())
-  id_room_category Int
-  number_room      String              @db.VarChar(255)
-  id_hotel         Int
-  uuid_user        String?
-  active           Boolean             @db.Bit(1)  @default(false)
-  tbl_hotel        tbl_hotel           @relation(fields: [id_hotel], references: [id_hotel])
+  id_hotel_room           Int                     @id @default(autoincrement())
+  id_room_category        Int
+  number_room             String                  @db.VarChar(255)
+  id_hotel                Int
+  uuid_user               String?
+  active                  Boolean                 @db.Bit(1)  @default(false)
+  tbl_hotel               tbl_hotel               @relation(fields: [id_hotel], references: [id_hotel])
   tbl_hotel_room_category tbl_hotel_room_category @relation(fields: [id_room_category], references: [id_hotel_room_category])
 }
 
@@ -391,7 +391,7 @@ model tbl_user {
   first_name          String              @db.VarChar(255)
   last_name           String              @db.VarChar(255)
   birth_day           DateTime            @db.Date
-  token               String              @db.LongText
+  token               String?             @db.LongText
   refresh_token       String?             @db.LongText
   last_logger         DateTime            @db.DateTime()
   user_create         DateTime            @db.DateTime()

@@ -4,16 +4,15 @@ const ServiceRepository = require( '../../../Service/domain/repository/PrismaSer
 const AddressServiceRepository = require( '../../../Address/domain/repository/AddressServiceRepository' );
 const RestaurantService = require( '../../domain/service/RestaurantService' );
 const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage' );
-const winston = require( 'winston' );
-require( '../../../Shared/infrastructure/Log/Logger' );
+const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
 
 const restaurantService = new RestaurantService( RestaurantRepository, ServiceRepository, AddressServiceRepository );
 
 class RestaurantController {
 
     async createRestaurant( req = request, res = response ) {
-        try {
 
+        try {
             const result = await restaurantService.createRestaurant( req.body );
 
             return res.status(201).json({
@@ -23,21 +22,30 @@ class RestaurantController {
             });
 
         } catch( error ) {
-
-            const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to create a restaurant: ${ error }`);
+            if( error instanceof PrismaError ) {
+                const { messageApiClient } = error;
             
-            return res.status(500).json({
-                success: false,
-                error: Response_Code_Message.CODE_500(),
-                stack: error
-            });
+                return res.status(500).json({
+                    success: false,
+                    message: messageApiClient,
+                    error: ResponseCodeMessage.CODE_500
+                });
+
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    message: "Server data process error",
+                    error: ResponseCodeMessage.CODE_500
+                });
+            }
+
         }
+        
     }
 
-    async updateRestaurant( req = request, res = response ){
-        try {
+    async updateRestaurant( req = request, res = response ) {
 
+        try {
             const result = await restaurantService.updateRestaurant( req.body );
 
             return res.status(200).json({
@@ -47,21 +55,30 @@ class RestaurantController {
             });
 
         } catch( error ) {
-
-            const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to update a restaurant: ${ error }`);
+            if( error instanceof PrismaError ) {
+                const { messageApiClient } = error;
             
-            return res.status(500).json({
-                success: false,
-                error: Response_Code_Message.CODE_500(),
-                stack: error
-            });
+                return res.status(500).json({
+                    success: false,
+                    message: messageApiClient,
+                    error: ResponseCodeMessage.CODE_500
+                });
+
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    message: "Server data process error",
+                    error: ResponseCodeMessage.CODE_500
+                });
+            }
+
         }
+        
     }
 
-    async deleteAsSeller( req = request, res = response ){
-        try {
+    async deleteAsSeller( req = request, res = response ) {
 
+        try {
             const result = await restaurantService.deleteAsSeller( req.params );
 
             return res.status(200).json({
@@ -71,21 +88,30 @@ class RestaurantController {
             });
 
         } catch( error ) {
-
-            const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to soft delete a restaurant: ${ error }`);
+            if( error instanceof PrismaError ) {
+                const { messageApiClient } = error;
             
-            return res.status(500).json({
-                success: false,
-                error: Response_Code_Message.CODE_500(),
-                stack: error
-            });
+                return res.status(500).json({
+                    success: false,
+                    message: messageApiClient,
+                    error: ResponseCodeMessage.CODE_500
+                });
+
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    message: "Server data process error",
+                    error: ResponseCodeMessage.CODE_500
+                });
+            }
+
         }
+        
     }
 
-    async deleteAsAdmin( req = request, res = response ){
-        try {
+    async deleteAsAdmin( req = request, res = response ) {
 
+        try {
             const result = await restaurantService.deleteAsAdmin( req.params );
 
             return res.status(200).json({
@@ -95,21 +121,30 @@ class RestaurantController {
             });
 
         } catch( error ) {
-
-            const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to hard delete a restaurant: ${ error }`);
+            if( error instanceof PrismaError ) {
+                const { messageApiClient } = error;
             
-            return res.status(500).json({
-                success: false,
-                error: Response_Code_Message.CODE_500(),
-                stack: error
-            });
+                return res.status(500).json({
+                    success: false,
+                    message: messageApiClient,
+                    error: ResponseCodeMessage.CODE_500
+                });
+
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    message: "Server data process error",
+                    error: ResponseCodeMessage.CODE_500
+                });
+            }
+
         }
+        
     }
 
-    async getRestaurantByUuid( req = request, res = response ){
-        try {
+    async getRestaurantByUuid( req = request, res = response ) {
 
+        try {
             const result = await restaurantService.getRestaurantByUuid( req.params );
 
             return res.status(200).json({
@@ -119,20 +154,29 @@ class RestaurantController {
             });
 
         } catch( error ) {
-
-            const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to get a restaurant by uuid: ${ error }`);
+            if( error instanceof PrismaError ) {
+                const { messageApiClient } = error;
             
-            return res.status(500).json({
-                success: false,
-                error: Response_Code_Message.CODE_500(),
-                stack: error
-            });
+                return res.status(500).json({
+                    success: false,
+                    message: messageApiClient,
+                    error: ResponseCodeMessage.CODE_500
+                });
+
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    message: "Server data process error",
+                    error: ResponseCodeMessage.CODE_500
+                });
+            }
 
         }
+        
     }
 
-    async getRestaurantPagination( req = request, res = response ){
+    async getRestaurantPagination( req = request, res = response ) {
+        
         try {
 
             const result = await restaurantService.getRestaurantPagination( req.params );
@@ -144,16 +188,25 @@ class RestaurantController {
             });
 
         } catch( error ) {
-
-            const products_logger = winston.loggers.get('ProductsLogger');
-            products_logger.error(`Error try to get a pagination of restaurant: ${ error }`);
+            if( error instanceof PrismaError ) {
+                const { messageApiClient } = error;
             
-            return res.status(500).json({
-                success: false,
-                error: Response_Code_Message.CODE_500(),
-                stack: error
-            });
+                return res.status(500).json({
+                    success: false,
+                    message: messageApiClient,
+                    error: ResponseCodeMessage.CODE_500
+                });
+
+            } else {
+                return res.status(500).json({
+                    success: false,
+                    message: "Server data process error",
+                    error: ResponseCodeMessage.CODE_500
+                });
+            }
+
         }
+        
     }
 }
 

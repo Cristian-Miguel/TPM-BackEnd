@@ -43,6 +43,7 @@ class ValidationCustomJsonField {
             throw new Error(`No file uploaded.`);
         }
     }
+    
 }
 
 module.exports = new ValidationCustomJsonField();

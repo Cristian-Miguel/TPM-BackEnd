@@ -17,6 +17,10 @@ class ValidationRepository {
         throw new Error('Method not implemented.');
     }
 
+    async findRolByName( name ) {
+        throw new Error('Method not implemented.');
+    }
+
 }
 
 module.exports = ValidationRepository;

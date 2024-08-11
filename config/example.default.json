@@ -1,6 +1,7 @@
 {
     "app": {
-        "port": 1
+        "port": 1,
+        "enviroment": "DEVELOPMENT"
     },
     "security":{
       "JWT_SECRET" : ""

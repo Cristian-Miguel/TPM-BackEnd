@@ -17,7 +17,7 @@ class RestaurantCategoryRepository {
         throw new Error('Method not implemented.');
     }
 
-    async getCategoryPagination ( page, size, orderBy, filter ) {
+    async getCategoryPagination ( skip, take, orderBy, filter ) {
         throw new Error('Method not implemented.');
     }
 }

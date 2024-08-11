@@ -13,7 +13,6 @@ class ValidateJwt {
     async validateToken ( req = request, res = response, next ) {
 
         try {
-
             //Check if the token if its different to null or undefine
             const token = req.headers( 'authorization' );
 
@@ -53,7 +52,6 @@ class ValidateJwt {
             }
 
         } catch (error) {
-            
             const tokenLogger = winston.loggers.get('TokenLogger');
             tokenLogger.warn('User email invalid');
             
@@ -64,12 +62,12 @@ class ValidateJwt {
             });
 
         }
+        
     }
 
     async validteTokenSocket( token = '' ) {
 
         try {
-            
             if( !token ) {
                 const tokenLogger = winston.loggers.get('TokenLogger');
                 tokenLogger.warn('User token invalid');
@@ -110,7 +108,6 @@ class ValidateJwt {
             return userInfo;
  
         } catch (error) {
-            
             const tokenLogger = winston.loggers.get('TokenLogger');
             tokenLogger.warn('User socket token invalid');
             

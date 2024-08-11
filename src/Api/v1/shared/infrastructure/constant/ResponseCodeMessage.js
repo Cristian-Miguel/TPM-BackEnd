@@ -55,7 +55,7 @@ class Response_Code_Message {
     static get CODE_431(){ return "" };
     static get CODE_451(){ return "" };
 
-    static get CODE_500(){ return "Contact with the administrator" };
+    static get CODE_500(){ return "Error in the server, contact with the administrator" };
     static get CODE_501(){ return "" };
     static get CODE_502(){ return "" };
     static get CODE_503(){ return "" };
