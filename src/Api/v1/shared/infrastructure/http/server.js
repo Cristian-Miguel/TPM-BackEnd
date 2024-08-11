@@ -21,10 +21,11 @@ class Server {
         this.middlewares();
         this.routes();
         this.socket();
+
     }
 
     middlewares () {
-
+        
         //CORS
         this.app.use( cors() );
 
