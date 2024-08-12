@@ -8,6 +8,8 @@ class PrismaUserRepository extends UserRepository {
 
     async createUser ( prismaSQL, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ) {
         try {
+            const now = new Date().toISOString();
+
             const user = await prismaSQL.tbl_user.create({
                 data: {
                     email:          email,
@@ -19,10 +21,10 @@ class PrismaUserRepository extends UserRepository {
                     birth_day:      birth_day,
                     token:          token,
                     refresh_token:  refresh_token,
-                    last_logger:    new Date().toISOString(),
-                    user_create:    new Date().toISOString(),
+                    last_logger:    now,
+                    user_create:    now,
                     google_sign:    google_sign,
-                    last_update:    new Date().toISOString(),
+                    last_update:    now,
                     id_rol:         id_rol
                 }
             });

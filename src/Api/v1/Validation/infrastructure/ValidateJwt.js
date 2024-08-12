@@ -4,7 +4,7 @@ const serverConfig = require( 'config' );
 const ValidateController = require( '../application/ValidationController' );
 const ResponseCodeMessage = require( '../../Shared/infrastructure/constant/ResponseCodeMessage' );
 const winston = require('winston');
-require('../../Shared/infrastructure/Log/Logger'); 
+require( '../../Shared/domain/log/Logger' );
 
 const validateController = new ValidateController();
 

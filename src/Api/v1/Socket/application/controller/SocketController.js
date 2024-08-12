@@ -1,7 +1,5 @@
 
 const SocketService = require( '../../domain/service/SocketService' );
-const winston = require( 'winston' );
-require( '../../../Shared/infrastructure/Log/Logger' );
 
 const socketService = new SocketService();
 
@@ -15,9 +13,6 @@ class SocketController {
             return true;
             
         } catch (error) {
-
-            const socketMessage = winston.loggers.get('SocketLogger');
-            socketMessage.error(`Error try to create a message in a socket event: ${ error }`);
             
             return response.status(500).json({
                 success: false,

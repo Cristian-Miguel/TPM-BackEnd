@@ -20,8 +20,8 @@ class BasicAuthController {
 
                 return res.status(201).json({
                     success: true,
-                    token: token,
-                    msg: ResponseCodeMessage.CODE_201
+                    message: ResponseCodeMessage.CODE_201,
+                    token: token
                 });
 
             } else {
@@ -64,8 +64,8 @@ class BasicAuthController {
 
                 return res.status(200).json({
                     success: true,
-                    token: token,
-                    msg: ResponseCodeMessage.CODE_200
+                    message: ResponseCodeMessage.CODE_200,
+                    token: token
                 });
 
             } else {

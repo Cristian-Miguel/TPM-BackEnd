@@ -5,17 +5,10 @@ const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler'
 
 class PrismaAddressUserRepository extends AddressUserRepository {
 
-    async createAddressUser ( prismaSQL, street, city, state, zip_code, country, uuid_user ) {
+    async createAddressUser ( prismaSQL, street, city, state, zip_code, country, id_user ) {
 
         try {
-            const id_user = prismaSQL.tbl_user.findUnique({
-                select:{
-                    id_user: true
-                },
-                where:{
-                    uuid_user: uuid_user
-                }
-            });
+            const now = new Date().toISOString();
 
             return await prismaSQL.tbl_address_user.create({
                 data:{
@@ -25,8 +18,8 @@ class PrismaAddressUserRepository extends AddressUserRepository {
                     zip_code,
                     country,
                     id_user,
-                    date_created: new Date().toISOString(),
-                    last_update: new Date().toISOString(),
+                    date_created: now,
+                    last_update: now,
                 }
             });
 

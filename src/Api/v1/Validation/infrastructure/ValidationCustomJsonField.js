@@ -19,7 +19,7 @@ class ValidationCustomJsonField {
     async existEmail ( email = '' ) {
         if( email === '' ) throw new Error('Insert email user');
 
-        if( !await validationController.validateEmail( email ) ) throw new Error('Email was registrate or not found in the DB');
+        if( !await validationController.validateEmail( email ) ) throw new Error( 'Email was registrate or not found in the DB' );
     }
 
     validateTypeOrder( order_type = 'desc' ) {

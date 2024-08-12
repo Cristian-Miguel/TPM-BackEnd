@@ -5,8 +5,8 @@ const winston = require('winston');
 require( '../../../Shared/domain/log/Logger' );
 
 class AuthService {
+
     constructor( AuthUserRepository, UserRepository, AddressUserRepository, jwt ) {
-        
         this.AuthUserRepository = AuthUserRepository;
         this.UserRepository = UserRepository;
         this.AddressUserRepository = AddressUserRepository;
@@ -14,7 +14,7 @@ class AuthService {
 
     }
 
-    async signUp({ email, username, image_profile, password, first_name, last_name, birth_day, street, city, state, country, zip_code }) {
+    async signUp({ email, username, image_profile, password, profile, address }) {
 
         try {
             const result = await prisma.$transaction(async (prisma) => {
@@ -24,18 +24,27 @@ class AuthService {
                     username, 
                     image_profile === null ? 'default' : image_profile, 
                     password, 
-                    first_name, 
-                    last_name, 
-                    birth_day, 
-                    0, 
+                    profile.first_name, 
+                    profile.last_name, 
+                    profile.birth_day, 
+                    false, 
                     "", 
                     "", 
                     UserRol
                 );
 
-                await this.AddressUserRepository.createAddressUser( prisma, street, city, state, zip_code, country, user.uuid_user );
+                await this.AddressUserRepository
+                    .createAddressUser( 
+                        prisma, 
+                        address.street, 
+                        address.city, 
+                        address.state, 
+                        address.zip_code, 
+                        address.country, 
+                        user.id_user 
+                    );
                 
-                const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, user.id_rol );
+                const token = await this.jwt( user.uuid_user, user.email, user.username, user.image_profile, UserRol );
                 
                 await this.AuthUserRepository.updateToken( prisma, user.uuid_user, token );
 

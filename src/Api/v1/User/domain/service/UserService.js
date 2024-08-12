@@ -53,6 +53,7 @@ class UserService {
             }
 
         }
+
     }
 
     async deleteUser({ uuid }) {

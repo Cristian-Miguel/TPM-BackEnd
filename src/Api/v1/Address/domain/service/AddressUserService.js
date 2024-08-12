@@ -13,9 +13,18 @@ class AddressUserService {
     async createAddressUser ({ street, city, state, postal_code, country, uuid_user }) {
 
         try {
+            const user = prismaSQL.tbl_user.findUnique({
+                select:{
+                    id_user: true
+                },
+                where:{
+                    uuid_user
+                }
+            });
+            
             const result = await prisma.$transaction(async (prisma) => {
                 return await this.AddressUserRepository.createAddressUser(
-                    prisma, street, city, state, postal_code, country, uuid_user
+                    prisma, street, city, state, postal_code, country, user.id_user
                 );
 
             });
