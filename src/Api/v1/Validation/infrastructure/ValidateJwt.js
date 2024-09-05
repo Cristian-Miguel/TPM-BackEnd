@@ -14,7 +14,7 @@ class ValidateJwt {
 
         try {
             //Check if the token if its different to null or undefine
-            const token = req.headers( 'authorization' );
+            const token = req.headers.authorization.split(' ')[1];
 
             if( !token ) {
                 const tokenLogger = winston.loggers.get('TokenLogger');
@@ -51,9 +51,13 @@ class ValidateJwt {
                 });
             }
 
+            next();
+
         } catch (error) {
             const tokenLogger = winston.loggers.get('TokenLogger');
-            tokenLogger.warn('User email invalid');
+            tokenLogger.error('Error Token validate', {
+                genericError: error,
+            });
             
             return res.status(500).json({
                 success: false,
@@ -105,7 +109,8 @@ class ValidateJwt {
                 });
             }
 
-            return userInfo;
+            // return userInfo;
+            next();
  
         } catch (error) {
             const tokenLogger = winston.loggers.get('TokenLogger');

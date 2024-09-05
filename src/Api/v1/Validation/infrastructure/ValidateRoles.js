@@ -13,7 +13,7 @@ const accessRol = ( ...AllRoles ) => {
     return async ( req = request, res = response, next ) => {
 
         try {
-            const token = req.header('authorization');
+            const token = req.headers.authorization.split(' ')[1];
             const secret = serverConfig.get('security.JWT_SECRET');
 
             if ( !token ) {
@@ -50,7 +50,7 @@ const accessRol = ( ...AllRoles ) => {
                 });
             }
 
-            const found = AllRoles.find( rols => rolls == id_rol );
+            const found = AllRoles.find( rols => rols == id_rol );
 
             if( found === undefined ) {
                 
@@ -68,7 +68,9 @@ const accessRol = ( ...AllRoles ) => {
 
         } catch (error) {
             const tokenLogger = winston.loggers.get('TokenLogger');
-            tokenLogger.warn('User email invalid in rol checker:' + error);
+            tokenLogger.error('Error Token validate Rol', {
+                genericError: error,
+            });
             
             return res.status(500).json({
                 success: false,

@@ -1,9 +1,11 @@
 const { response, request } = require( 'express' );//it's redundant
 const UserRepository = require( '../../domain/repository/PrismaUserRepository' );
+const AddressUserRepository = require( '../../../Address/domain/repository/PrismaAddressUserRepository.js' );
 const UserService = require( '../../domain/service/UserService' );
 const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/ResponseCodeMessage' );
+const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
 
-const userService = new UserService( UserRepository );
+const userService = new UserService( UserRepository, AddressUserRepository );
 
 class UserController {
 

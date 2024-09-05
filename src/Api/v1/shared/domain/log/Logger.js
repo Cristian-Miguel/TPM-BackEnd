@@ -169,7 +169,7 @@ winston.loggers.add('TokenLogger', {
         new winston.transports.File({
             maxsize: 512000,
             maxFiles: 5, 
-            filename:`${__dirname}/../../../../../../logs/token-api.log` 
+            filename:`${__dirname}/../../../../../../logs/token/token-api.log` 
         })
     ],
     defaultMeta: { 

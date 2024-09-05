@@ -153,16 +153,18 @@ class PrismaAddressUserRepository extends AddressUserRepository {
     async updateAddressUser ( prismaSQL, uuid_address_user, street, city, state, zip_code, country, uuid_user  ) {
 
         try {
-            const id_user = prismaSQL.tbl_user.findUnique({
+            const user = await prisma.tbl_user.findUnique({
                 select:{
                     id_user: true
                 },
                 where:{
-                    uuid_user: uuid_user
+                    uuid_user
                 }
             });
 
-            return await prismaSQL.tbl_address_user.create({
+            const id_user = user.id_user;
+
+            return await prismaSQL.tbl_address_user.update({
                 data:{
                     street,
                     city,

@@ -110,7 +110,7 @@ class PrismaUserRepository extends UserRepository {
 
     }
 
-    async updateUser( prismaSQL, uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ) {
+    async updateUser( prismaSQL, uuid_user, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol ) {
         
         try {
             return prismaSQL.tbl_user.update({
@@ -124,14 +124,12 @@ class PrismaUserRepository extends UserRepository {
                     birth_day:      birth_day,
                     token:          token,
                     refresh_token:  refresh_token,
-                    last_logger:    new Date().toISOString(),
-                    user_create:    new Date().toISOString(),
                     google_sign:    google_sign,
                     last_update:    new Date().toISOString(),
                     id_rol:         id_rol
                 },
                 where:{
-                    uuid_user: uuid
+                    uuid_user
                 }
             });
 

@@ -1,18 +1,46 @@
 const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 const winston = require('winston');
+const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
 require( '../../../Shared/domain/log/Logger' );
 
 class UserService {
-    constructor( UserRepository ) {
+    constructor( UserRepository, AddressUserRepository ) {
         this.UserRepository = UserRepository;
+        this.AddressUserRepository = AddressUserRepository
 
     }
 
-    async createUser({ email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol }){
+    async createUser({ email, username, image_profile, password, google_sign, token, refresh_token, id_rol, profile, address }){
         try{
             const result = await prisma.$transaction(async (prisma) => {
-                return await this.UserRepository
-                .createUser( prisma, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol );
+                 const user = await this.UserRepository
+                    .createUser( 
+                        prisma, 
+                        email, 
+                        username, 
+                        image_profile === null ? 'default' : image_profile, 
+                        password, 
+                        profile.first_name, 
+                        profile.last_name, 
+                        profile.birth_day, 
+                        google_sign, 
+                        token, 
+                        refresh_token, 
+                        id_rol 
+                    );
+
+                await this.AddressUserRepository
+                    .createAddressUser( 
+                        prisma, 
+                        address.street, 
+                        address.city, 
+                        address.state, 
+                        address.zip_code, 
+                        address.country, 
+                        user.id_user 
+                    );
+                
+                return true;
             
             });
 
@@ -103,12 +131,43 @@ class UserService {
 
     }
 
-    async updateUser({ uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol }) {
+    async updateUser({ uuid_user, email, username, image_profile, password, google_sign, token, refresh_token, id_rol, profile, address }) {
 
         try {
             const result = await prisma.$transaction(async (prisma) => {
-                return await this.UserRepository
-                    .updateUser( prisma, uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol );
+                // return await this.UserRepository
+                //     .updateUser( prisma, uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol );
+                
+                await this.UserRepository
+                    .updateUser( 
+                        prisma, 
+                        uuid_user,
+                        email, 
+                        username, 
+                        image_profile === null ? 'default' : image_profile, 
+                        password, 
+                        profile.first_name, 
+                        profile.last_name, 
+                        profile.birth_day, 
+                        google_sign, 
+                        token, 
+                        refresh_token, 
+                        id_rol 
+                    );
+
+                await this.AddressUserRepository
+                    .updateAddressUser( 
+                        prisma, 
+                        address.uuid_address_user,
+                        address.street, 
+                        address.city, 
+                        address.state, 
+                        address.zip_code, 
+                        address.country, 
+                        uuid_user 
+                    );
+                
+                return true;
             });
 
             return result;
