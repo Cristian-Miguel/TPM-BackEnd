@@ -80,7 +80,7 @@ class UserController {
     async deleteUser( req = request, res = response ) {
 
         try {
-            const result = await userService.deleteUser( req.params );
+            const result = await userService.deleteUser( req.query );
 
             return res.status(200).json({
                 success: true,
@@ -114,7 +114,7 @@ class UserController {
     async getUserByUuid( req = request, res = response ) {
 
         try {
-            const result = await userService.getUserByUuid( req.params );
+            const result = await userService.getUserByUuid( req.query );
 
             return res.status(200).json({
                 success: true,
@@ -148,7 +148,7 @@ class UserController {
     async getUserByEmail( req = request, res = response ) {
 
         try {
-            const result = await userService.getUserByEmail( req.params );
+            const result = await userService.getUserByEmail( req.query );
 
             return res.status(200).json({
                 success: true,

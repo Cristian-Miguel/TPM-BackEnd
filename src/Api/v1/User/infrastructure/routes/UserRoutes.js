@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { check, param, body } = require( 'express-validator' );
+const { check, body, query } = require( 'express-validator' );
 const { DataValidate } = require( '../../../Shared/infrastructure/middleware/DataValidate' );
 const { accessRol } = require( '../../../Validation/infrastructure/ValidateRoles' );
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
@@ -18,6 +18,7 @@ router
             check( 'image_profile',     'Invalid url image or is empty' ).not().isEmpty(),
             check( 'image_profile',     'Image profile must be a url format' ).isURL(),
             check( 'username',          'Invalid username or is empty' ).not().isEmpty(),
+            check( 'username',          'User name must be a String type' ).isString(),
             check( 'username',          'User name is max size of 50 chatacters' ).isLength({ max:50 }),
             check( 'email',             'Email is required' ).not().isEmpty(),
             check( 'email',             'Invalid email' ).isEmail(),
@@ -70,6 +71,7 @@ router
             check( 'image_profile',     'Invalid url image or is empty' ).not().isEmpty(),
             check( 'image_profile',     'Image profile must be a url format' ).isURL(),
             check( 'username',          'Invalid username or is empty' ).not().isEmpty(),
+            check( 'username',          'User name must be a String type' ).isString(),
             check( 'username',          'User name is max size of 50 chatacters' ).isLength({ max:50 }),
             check( 'email',             'Email is required' ).not().isEmpty(),
             check( 'email',             'Invalid email' ).isEmail(),
@@ -115,33 +117,33 @@ router
     )
 
     .delete(
-        '/delete/:id',
+        '/delete',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol ),
-            param( 'id' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
+            query( 'uuid' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
         UserController.deleteUser
     )
 
     .get(
-        '/:email',
+        '/email',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol ),
-            param( 'email' ).isEmail().withMessage( 'The param isn\'t an email' ),
+            query( 'email' ).isEmail().withMessage( 'The param isn\'t an email' ),
             DataValidate
         ],
         UserController.getUserByEmail
     )
 
     .get(
-        '/:id',
+        '/uuid',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol ),
-            param( 'id' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
+            query( 'uuid' ).isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
         UserController.getUserByUuid

@@ -135,9 +135,6 @@ class UserService {
 
         try {
             const result = await prisma.$transaction(async (prisma) => {
-                // return await this.UserRepository
-                //     .updateUser( prisma, uuid, email, username, image_profile, password, first_name, last_name, birth_day, google_sign, token, refresh_token, id_rol );
-                
                 await this.UserRepository
                     .updateUser( 
                         prisma, 

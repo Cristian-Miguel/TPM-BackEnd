@@ -69,7 +69,10 @@ class PrismaUserRepository extends UserRepository {
     async deleteUser( prismaSQL, uuid ) {
 
         try {
-            return await prismaSQL.tbl_user.delete({
+            return await prismaSQL.tbl_user.update({
+                data:{
+                    active: false
+                },
                 where:{
                     uuid_user: uuid
                 }
