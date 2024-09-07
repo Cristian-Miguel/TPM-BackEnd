@@ -258,7 +258,7 @@ class PrismaUserRepository extends UserRepository {
 
     }
 
-    async getUserPagination( skip, take, orderBy, filter ) {
+    async getUsersByPagination( skip, take, orderBy, filter ) {
 
         try { 
             const [ data, total ] = await Promise.all([
@@ -269,7 +269,7 @@ class PrismaUserRepository extends UserRepository {
                     where: filter
                 }),
                 prisma.tbl_user.count({
-                    filter
+                    where: filter
                 }),
             ]);
 

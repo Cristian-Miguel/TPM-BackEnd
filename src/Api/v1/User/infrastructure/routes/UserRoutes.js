@@ -153,9 +153,9 @@ router
         '/pagination',
         [
             ValidateJwt.validateToken,
-            accessRol( AdminRol, SellerRol, UserRol ),
+            accessRol( AdminRol ),
             check( 'page', 'Page is required' ).not().isEmpty(),
-            check( 'page', 'Page is required' ).isNumeric(),
+            check( 'page', 'Page is int type and greater than 0' ).isInt({ gt:0 }),
             check( 'size', 'Size is required' ).not().isEmpty(),
             check( 'size', 'Size is required' ).isNumeric(),
            
@@ -163,7 +163,7 @@ router
             body( 'orderBy.*.order_type' )
                 .notEmpty().withMessage( 'order type in orderby array is required' )
                 .isString().withMessage( 'order type in orderby array must be an string type' )
-                .custom( ValidationCustomJsonField.validateTypeOrder ),//check have only desc and asc
+                .not().custom( ValidationCustomJsonField.validateTypeOrder ),//check have only desc and asc
             body( 'orderBy.*.field' )
                 .notEmpty().withMessage( 'field in orderby array is required' )
                 .isString().withMessage( 'field in orderby array must be an string type' ),
@@ -172,7 +172,7 @@ router
             body( 'filter.*.filter_type' )
                 .notEmpty().withMessage( 'filter type in filter array is required' )
                 .isString().withMessage( 'filter type in filter array must be an string type' )
-                .custom( ValidationCustomJsonField.validateTypeFilter ),//check have only like, gt, lt, eq 
+                .not().custom( ValidationCustomJsonField.validateTypeFilter ),//check have only like, gt, lt, eq 
             body( 'filter.*.field' )
                 .notEmpty().withMessage( 'field in filter array is required' )
                 .isString().withMessage( 'field in filter array must be an string type' ),

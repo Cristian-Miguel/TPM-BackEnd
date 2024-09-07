@@ -25,7 +25,7 @@ class ValidationCustomJsonField {
     validateTypeOrder( order_type = 'desc' ) {
         if( order_type === '' ) throw new Error('Insert order type valid');
 
-        if( order_type !== 'desc' || order_type !== 'asc' ) 
+        if( order_type !== 'desc' && order_type !== 'asc' ) 
             throw new Error(`Invalid order type: ${order_type}. Allowed values are: desc, asc`);
     }
 

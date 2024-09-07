@@ -303,7 +303,215 @@ class UserService {
         try{
             const skip = ( page - 1 ) * size;
 
-            const [ data, count ] = await this.UserRepository.getUsersByPagination( skip, size, orderBy, filter );
+            const prismaOrderBy = [];
+            const prismaFilter = [];
+            //change to orderBy prisma format
+            orderBy.map( ( element ) => {
+                const field = element.field;
+
+                switch (field) {
+                    case "email":
+                        prismaOrderBy.push({
+                            email: element.order_type
+                        });
+                        break;
+                    case "username":
+                        prismaOrderBy.push({
+                            username:element.order_type
+                        });
+                        break;
+                    case "first_name":
+                        prismaOrderBy.push({
+                            first_name:element.order_type
+                        });
+                        break;
+                    case "last_name":
+                        prismaOrderBy.push({
+                            last_name:element.order_type
+                        });
+                        break;
+                    case "birth_day":
+                        prismaOrderBy.push({
+                            birth_day:element.order_type
+                        });
+                        break;
+                    case "user_create":
+                        prismaOrderBy.push({
+                            user_create:element.order_type
+                        });
+                        break;
+                    case "id_rol":
+                        prismaOrderBy.push({
+                            tbl_rol: {
+                                id_rol:element.order_type
+                            }
+                        });
+                        break;
+                
+                    default:
+                        throw new Error(`The field "${field}" doesn't have implement or doesn't exist`);
+                }
+            } );
+
+            //change to filter prisma format
+            filter.map( ( element ) => {
+                const field = element.field;
+
+                switch (field) {
+                    case "email":
+                        if (element.filter_type === 'like') {
+                            prismaFilter.push({
+                                email:{
+                                    contains: element.compare
+                                }
+                            });
+                        } else if(element.filter_type === 'eq') {
+                            prismaFilter.push({
+                                email:{
+                                    equals: element.compare
+                                }
+                            });
+                        } else {
+                            throw new Error(`The field "${field}" doesn't allow gt and lt, only eq and like`);
+                        }
+                        break;
+                    case "username":
+                        if (element.filter_type === 'like') {
+                            prismaFilter.push({
+                                username:{
+                                    contains: element.compare
+                                }
+                            });
+                        } else if(element.filter_type === 'eq') {
+                            prismaFilter.push({
+                                username:{
+                                    equals: element.compare
+                                }
+                            });
+                        } else {
+                            throw new Error(`The field "${field}" doesn't allow gt and lt, only eq and like`);
+                        }
+                        break;
+                    case "first_name":
+                        if (element.filter_type === 'like') {
+                            prismaFilter.push({
+                                first_name:{
+                                    contains: element.compare
+                                }
+                            });
+                        } else if(element.filter_type === 'eq') {
+                            prismaFilter.push({
+                                first_name:{
+                                    equals: element.compare
+                                }
+                            });
+                        } else {
+                            throw new Error(`The field "${field}" doesn't allow gt and lt, only eq and like`);
+                        }
+                        break;
+                    case "last_name":
+                        if (element.filter_type === 'like') {
+                            prismaFilter.push({
+                                last_name:{
+                                    contains: element.compare
+                                }
+                            });
+                        } else if(element.filter_type === 'eq') {
+                            prismaFilter.push({
+                                last_name:{
+                                    equals: element.compare
+                                }
+                            });
+                        } else {
+                            throw new Error(`The field "${field}" doesn't allow gt and lt, only eq and like`);
+                        }
+                        break;
+                    case "birth_day":
+                        if (element.filter_type === 'gt') {
+                            prismaFilter.push({
+                                birth_day:{
+                                    gt: element.compare
+                                }
+                            });
+                        } else if(element.filter_type === 'lt') {
+                            prismaFilter.push({
+                                birth_day:{
+                                    lt: element.compare
+                                }
+                            });
+                        } else if(element.filter_type === 'eq') {
+                            prismaFilter.push({
+                                birth_day:{
+                                    equals: element.compare
+                                }
+                            });
+                        } else {
+                            throw new Error(`The field "${field}" doesn't allow like, only eq, gt and lt`);
+                        }
+                        break;
+                    case "user_create":
+                        if (element.filter_type === 'gt') {
+                            prismaFilter.push({
+                                user_create:{
+                                    gt: element.compare
+                                }
+                            });
+                        } else if(element.filter_type === 'lt') {
+                            prismaFilter.push({
+                                user_create:{
+                                    lt: element.compare
+                                }
+                            });
+                        } else if(element.filter_type === 'eq') {
+                            prismaFilter.push({
+                                user_create:{
+                                    equals: element.compare
+                                }
+                            });
+                        } else {
+                            throw new Error(`The field "${field}" doesn't allow like, only eq, gt and lt`);
+                        }
+                        break;
+                    case "id_rol":
+                        if (element.filter_type === 'gt') {
+                            prismaFilter.push({
+                                tbl_rol: {
+                                    id_rol:{
+                                        gt: element.compare
+                                    }
+                                }
+                            });
+                        } else if(element.filter_type === 'lt') {
+                            prismaFilter.push({
+                                tbl_rol: {
+                                    id_rol:{
+                                        lt: element.compare
+                                    }
+                                }
+                            });
+                        } else if(element.filter_type === 'eq') {
+                            prismaFilter.push({
+                                tbl_rol: {
+                                    id_rol:{
+                                        equals: element.compare
+                                    }
+                                }
+                            });
+                        } else {
+                            throw new Error(`The field "${field}" doesn't allow like, only eq, gt and lt`);
+                        }
+                        break;
+                
+                    default:
+                        throw new Error(`The field "${field}" doesn't have implement or doesn't exist`);
+                }
+            } );
+
+            const filterAdapter = {
+                AND: prismaFilter
+            }
+
+            const [ data, count ] = await this.UserRepository.getUsersByPagination( skip, size, prismaOrderBy, filterAdapter );
 
             return {
                 data, 
