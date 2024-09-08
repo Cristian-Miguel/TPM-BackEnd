@@ -1,6 +1,8 @@
 const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 const winston = require('winston');
-const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
+const PrismaError = require('../../../Shared/domain/database/PrismaError');
+const FilterError = require('../../../Shared/domain/exception/FilterError');
+const OrderByError = require('../../../Shared/domain/exception/OrderByError');
 require( '../../../Shared/domain/log/Logger' );
 
 class UserService {
@@ -47,38 +49,7 @@ class UserService {
             return result;
 
         } catch ( error ) {
-            const user_logger = winston.loggers.get( 'UserLogger' );
-
-            if(error instanceof PrismaError) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                user_logger.error(`Error in the database when try to created an user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if(error instanceof Error) {
-                user_logger.error(`Error when try to created an user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                user_logger.error(`Error when try to created an user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
+            this._handleError( error, 'Error when trying to create a user.');
 
         }
 
@@ -94,39 +65,8 @@ class UserService {
             return result;
 
         } catch ( error ) {
-            const user_logger = winston.loggers.get( 'UserLogger' );
-
-            if(error instanceof PrismaError) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                user_logger.error(`Error in the database when try to delete an user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if(error instanceof Error) {
-                user_logger.error(`Error when try to delete an user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                user_logger.error(`Error when try to created an user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-
+            this._handleError( error, 'Error when trying to delete a user.');
+            
         }
 
     }
@@ -169,39 +109,8 @@ class UserService {
 
             return result;
         } catch ( error ) {
-            const user_logger = winston.loggers.get( 'UserLogger' );
-
-            if(error instanceof PrismaError) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                user_logger.error(`Error in the database when try to update an user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if(error instanceof Error) {
-                user_logger.error(`Error when try a update an user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                user_logger.error(`Error when try a update an user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-
+            this._handleError( error, 'Error when trying a update a user.');
+            
         }
 
     }
@@ -212,39 +121,8 @@ class UserService {
             return await this.UserRepository.getUserByUuid( uuid );
 
         } catch ( error ) {
-            const user_logger = winston.loggers.get( 'UserLogger' );
-
-            if(error instanceof PrismaError) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                user_logger.error(`Error in the database when try to get an user by uuid`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if(error instanceof Error) {
-                user_logger.error(`Error when try to get an user by uuid`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                user_logger.error(`Error when try to get an user by uuid`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-
+            this._handleError( error, 'Error when trying to get a user by uuid.');
+            
         }
 
     }
@@ -254,38 +132,7 @@ class UserService {
             return await this.UserRepository.getUserByEmail( email );
         
         } catch ( error ) {
-            const user_logger = winston.loggers.get( 'UserLogger' );
-
-            if(error instanceof PrismaError) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                user_logger.error(`Error in the database when try to created a user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if(error instanceof Error) {
-                user_logger.error(`Error when try a created a user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                user_logger.error(`Error when try a created a user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
+            this._handleError( error, 'Error when trying to get a user by email.');
 
         }
 
@@ -349,7 +196,7 @@ class UserService {
                         break;
                 
                     default:
-                        throw new Error(`The field "${field}" doesn't have implement or doesn't exist`);
+                        throw new OrderByError(`The field "${field}" doesn't have implement or doesn't exist`);
                 }
             } );
 
@@ -372,7 +219,7 @@ class UserService {
                                 }
                             });
                         } else {
-                            throw new Error(`The field "${field}" doesn't allow gt and lt, only eq and like`);
+                            throw new FilterError(`The field "${field}" doesn't allow gt and lt, only eq and like`);
                         }
                         break;
                     case "username":
@@ -389,7 +236,7 @@ class UserService {
                                 }
                             });
                         } else {
-                            throw new Error(`The field "${field}" doesn't allow gt and lt, only eq and like`);
+                            throw new FilterError(`The field "${field}" doesn't allow gt and lt, only eq and like`);
                         }
                         break;
                     case "first_name":
@@ -406,7 +253,7 @@ class UserService {
                                 }
                             });
                         } else {
-                            throw new Error(`The field "${field}" doesn't allow gt and lt, only eq and like`);
+                            throw new FilterError(`The field "${field}" doesn't allow gt and lt, only eq and like`);
                         }
                         break;
                     case "last_name":
@@ -423,7 +270,7 @@ class UserService {
                                 }
                             });
                         } else {
-                            throw new Error(`The field "${field}" doesn't allow gt and lt, only eq and like`);
+                            throw new FilterError(`The field "${field}" doesn't allow gt and lt, only eq and like`);
                         }
                         break;
                     case "birth_day":
@@ -446,7 +293,7 @@ class UserService {
                                 }
                             });
                         } else {
-                            throw new Error(`The field "${field}" doesn't allow like, only eq, gt and lt`);
+                            throw new FilterError(`The field "${field}" doesn't allow like, only eq, gt and lt`);
                         }
                         break;
                     case "user_create":
@@ -469,7 +316,7 @@ class UserService {
                                 }
                             });
                         } else {
-                            throw new Error(`The field "${field}" doesn't allow like, only eq, gt and lt`);
+                            throw new FilterError(`The field "${field}" doesn't allow like, only eq, gt and lt`);
                         }
                         break;
                     case "id_rol":
@@ -498,12 +345,12 @@ class UserService {
                                 }
                             });
                         } else {
-                            throw new Error(`The field "${field}" doesn't allow like, only eq, gt and lt`);
+                            throw new FilterError(`The field "${field}" doesn't allow like, only eq, gt and lt`);
                         }
                         break;
                 
                     default:
-                        throw new Error(`The field "${field}" doesn't have implement or doesn't exist`);
+                        throw new FilterError(`The field "${field}" doesn't have implement or doesn't exist`);
                 }
             } );
 
@@ -521,41 +368,62 @@ class UserService {
             }
 
         } catch ( error ) {
-            const user_logger = winston.loggers.get( 'UserLogger' );
-
-            if(error instanceof PrismaError) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                user_logger.error(`Error in the database when try to paginated a list user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if(error instanceof Error) {
-                user_logger.error(`Error when try to paginated a list user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                user_logger.error(`Error when try to paginated a list user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-
+                this._handleError( error, 'Error when trying to paginate a list user.');
+                
         }
 
+    }
+
+    //handleError in each use case
+    _handleError( error, message ) {
+        const user_logger = winston.loggers.get( 'UserLogger' );
+        if(error instanceof PrismaError) {
+            const { code, meta, message, clientVersion, typeErrorPrisma } = error;
+
+            user_logger.error(message, {
+                prismaErrorType: typeErrorPrisma,
+                prismaCode: code,
+                prismaMeta: meta,
+                prismaMessage: message,
+                prismaClientVersion: clientVersion
+            });
+
+            throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
+        } else if(error instanceof OrderByError) {
+            user_logger.error(message, {
+                genericName: "Order by error",
+                genericMessage: error.clientResponse,
+                genericStack: error.stack
+            });
+
+            throw new OrderByError( error.clientResponse );
+
+        } else if(error instanceof FilterError) {
+            user_logger.error(message, {
+                genericName: "Filter error",
+                genericMessage: error.clientResponse,
+                genericStack: error.stack
+            });
+
+            throw new FilterError( error.clientResponse );
+
+        } else if(error instanceof Error) {
+            user_logger.error(message, {
+                genericName: error.name,
+                genericMessage: error.message,
+                genericStack: error.stack
+            });
+
+            throw new Error( error );
+
+        } else {
+            user_logger.error(message, {
+                genericError: error,
+            });
+
+            throw new Error( error );
+
+        }
     }
 
 }

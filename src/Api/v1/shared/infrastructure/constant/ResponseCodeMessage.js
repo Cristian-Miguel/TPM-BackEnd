@@ -25,7 +25,7 @@ class Response_Code_Message {
     static get CODE_307(){ return "" };
     static get CODE_308(){ return "" };
 
-    static get CODE_400(){ return "" };
+    static get CODE_400(){ return "Error in the request" };
     static get CODE_401(){ return "Error in your authentication" };
     static get CODE_402(){ return "" };
     static get CODE_403(){ return "" };

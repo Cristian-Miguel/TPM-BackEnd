@@ -1,7 +1,7 @@
 const AddressUserRepository = require('./AddressUserRepository');
 const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
 const { PrismaClientKnownRequestError, PrismaClientUnknownRequestError, PrismaClientRustPanicError, PrismaClientInitializationError, PrismaClientValidationError } = require('@prisma/client');
-const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
+const PrismaError = require('../../../Shared/domain/database/PrismaError');
 
 class PrismaAddressUserRepository extends AddressUserRepository {
 
