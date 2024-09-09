@@ -17,16 +17,11 @@ class BasicAuthController {
             const token = await authService.signUp( req.body );
 
             if ( token ) {
-
-                return res.status(201).json({
-                    success: true,
-                    message: ResponseCodeMessage.CODE_201,
-                    token: token
-                });
+                return this.sendSuccessResponse( res, 201, token, ResponseCodeMessage.CODE_201 );
 
             } else {
                 
-                return res.status(500).json({
+                return res.status(400).json({
                     success: false,
                     message: "Check your information that sended",
                     error: ResponseCodeMessage.CODE_500
@@ -34,22 +29,7 @@ class BasicAuthController {
             }
 
         } catch( error ) {
-            if( error instanceof PrismaError ) {
-                const { messageApiClient } = error;
-            
-                return res.status(500).json({
-                    success: false,
-                    message: messageApiClient,
-                    error: ResponseCodeMessage.CODE_500
-                });
-
-            } else {
-                return res.status(500).json({
-                    success: false,
-                    message: "Server data process error",
-                    error: ResponseCodeMessage.CODE_500
-                });
-            }
+            return this.handleError( res, error );
 
         }
         
@@ -61,17 +41,9 @@ class BasicAuthController {
             const token = await authService.signIn( req.body );
 
             if( token ) {
-
-                return res.status(200).json({
-                    success: true,
-                    message: ResponseCodeMessage.CODE_200,
-                    token: token
-                });
+                return this.sendSuccessResponse( res, 200, token, ResponseCodeMessage.CODE_200 );
 
             } else {
-
-                const auth_logger = winston.loggers.get('AuthLogger');
-                auth_logger.info('User unauthenticate');
 
                 return res.status(401).json({
                     success: false,
@@ -82,25 +54,37 @@ class BasicAuthController {
             }
 
         } catch ( error ) {
-            if(error instanceof PrismaError){
-                const { messageApiClient } = error;
-            
-                return res.status(500).json({
-                    success: false,
-                    message: messageApiClient,
-                    error: ResponseCodeMessage.CODE_500
-                });
-
-            } else {
-                return res.status(500).json({
-                    success: false,
-                    message: "Server data process error",
-                    error: ResponseCodeMessage.CODE_500
-                });
-            }
+            return this.handleError( res, error );
     
         }
 
+    }
+
+    sendSuccessResponse( res, statusCode, token, message ) {
+        return res.status(statusCode).json({
+            success: true,
+            message,
+            token
+        });
+    }
+
+    handleError( res, error ) {
+        if(error instanceof PrismaError){
+            const { messageApiClient } = error;
+        
+            return res.status(500).json({
+                success: false,
+                message: messageApiClient,
+                error: ResponseCodeMessage.CODE_500
+            });
+
+        } else {
+            return res.status(500).json({
+                success: false,
+                message: "Error in the server",
+                error: ResponseCodeMessage.CODE_500
+            });
+        }
     }
 
 }

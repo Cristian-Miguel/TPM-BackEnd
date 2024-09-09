@@ -47,7 +47,7 @@ winston.loggers.add('AddressServiceLogger', {
 });
 
 winston.loggers.add('AuthLogger', {
-    level:'error',
+    level:'info',
     format: combine(
         errors({ stack: true }),
         timestamp(),
@@ -135,7 +135,7 @@ winston.loggers.add('ServiceLogger', {
 });
 
 winston.loggers.add('UserLogger', {
-    level:'error',
+    level:'info',
     format: combine(
         errors({ stack: true }),
         timestamp(),

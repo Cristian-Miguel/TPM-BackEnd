@@ -102,11 +102,11 @@ class UserController {
         }
     }
 
-    sendSuccessResponse( res, statusCode, data, msg ){
+    sendSuccessResponse( res, statusCode, data, message ){
         return res.status(statusCode).json({
             success: true,
             ...data,
-            msg,
+            message,
         });
     }
 

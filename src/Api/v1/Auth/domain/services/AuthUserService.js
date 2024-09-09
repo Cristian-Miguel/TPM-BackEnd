@@ -61,39 +61,8 @@ class AuthService {
             return result;
 
         } catch ( error ) {
-            const auth_logger = winston.loggers.get( 'AuthLogger' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                auth_logger.error(`Error in the database when try to sign up`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                auth_logger.error(`Error in the sign up`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                auth_logger.error(`Error in the sign up`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-
+            this._handleError( error, "Error when trying sign up a user" );
+            
         }
         
     }
@@ -113,44 +82,49 @@ class AuthService {
 
             return token;
         } catch ( error ) {
-            const auth_logger = winston.loggers.get( 'AuthLogger' );
-
-            if( error instanceof PrismaError ) {
-                
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                auth_logger.error(`Error in the database when try to sign in`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-
-                auth_logger.error(`Error in the sign in`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-
-                auth_logger.error(`Error in the sign in`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
+            this._handleError( error, "Error when trying sign in a user" );
 
         }
         
+    }
+
+    //handleError in each use case
+    _handleError( error, message ) {
+        const auth_logger = winston.loggers.get( 'AuthLogger' );
+
+        if( error instanceof PrismaError ) {
+            
+            const { code, meta, message, clientVersion, typeErrorPrisma } = error;
+
+            auth_logger.error(message, {
+                prismaErrorType: typeErrorPrisma,
+                prismaCode: code,
+                prismaMeta: meta,
+                prismaMessage: message,
+                prismaClientVersion: clientVersion
+            });
+
+            throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
+
+        } else if( error instanceof Error ) {
+
+            auth_logger.error(message, {
+                genericName: error.name,
+                genericMessage: error.message,
+                genericStack: error.stack
+            });
+
+            throw new Error( error );
+
+        } else {
+
+            auth_logger.error(message, {
+                genericError: error,
+            });
+
+            throw new Error( error );
+
+        }
     }
 
 }
