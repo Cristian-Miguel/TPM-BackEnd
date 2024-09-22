@@ -5,11 +5,11 @@ class AddressUserRepository {
         throw new Error('Method not implemented.');
     }
 
-    async deleteAddressUserAdmin ( prismaSQL, uuid_address_user ) {
+    async deleteAddressUserAsAdmin ( prismaSQL, uuid_address_user ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteAddressUser ( prismaSQL, uuid_address_user ) {
+    async deleteAddressUserAsUser ( prismaSQL, uuid_address_user ) {
         throw new Error('Method not implemented.');
     }
 

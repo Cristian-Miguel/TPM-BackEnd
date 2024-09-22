@@ -5,6 +5,7 @@ const ResponseCodeMessage = require( '../../../Shared/infrastructure/constant/Re
 const PrismaError = require('../../../Shared/domain/database/PrismaError.js');
 const FilterError = require('../../../Shared/domain/exception/FilterError.js');
 const OrderByError = require('../../../Shared/domain/exception/OrderByError.js');
+
 const userService = new UserService( UserRepository, AddressUserRepository );
 
 class UserController {
@@ -105,7 +106,7 @@ class UserController {
     sendSuccessResponse( res, statusCode, data, message ){
         return res.status(statusCode).json({
             success: true,
-            ...data,
+            data,
             message,
         });
     }

@@ -157,7 +157,7 @@ router
             check( 'page', 'Page is required' ).not().isEmpty(),
             check( 'page', 'Page is int type and greater than 0' ).isInt({ gt:0 }),
             check( 'size', 'Size is required' ).not().isEmpty(),
-            check( 'size', 'Size is required' ).isNumeric(),
+            check( 'size', 'Size is a int type' ).isInt(),
            
             check( 'orderBy', 'OrderBy must be an array' ).isArray(),
             body( 'orderBy.*.order_type' )

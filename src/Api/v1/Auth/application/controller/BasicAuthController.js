@@ -10,6 +10,11 @@ const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler'
 const authService = new AuthService( AuthUserRepository, UserRepository, AddressUserRepository, get_JWT );
 
 class BasicAuthController {
+
+    constructor(){
+        this.signUp = this.signUp.bind(this);
+        this.signIn = this.signIn.bind(this);
+    }
     
     async signUp( req = request, res = response ) {
 

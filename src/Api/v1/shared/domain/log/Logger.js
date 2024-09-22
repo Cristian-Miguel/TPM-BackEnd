@@ -2,6 +2,30 @@ const winston = require('winston');
 const { combine, timestamp, json, prettyPrint, errors } = winston.format;
 const server_config = require( 'config' );
 
+
+winston.loggers.add('GenericLogger', {
+    level:'info',
+    format: combine(
+        errors({ stack: true }),
+        timestamp(),
+        json(),
+        prettyPrint()
+    ),
+    transports:[
+        new winston.transports.Console(),
+        new winston.transports.File({
+            maxsize: 512000,
+            maxFiles: 5, 
+            filename:`${__dirname}/../../../../../../logs/genericErrors/generic-api.log` 
+        })
+    ],
+    defaultMeta: {
+        service: 'Service',
+        enviroment: server_config.get( 'app.enviroment' )
+    }
+});
+
+
 winston.loggers.add('AddressUserLogger', {
     level:'error',
     format: combine(

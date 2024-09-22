@@ -65,9 +65,6 @@ class Server {
     routes () {
         this.app.use( this.routesSrc.addressService,        require( '../../../Address/infraestructure/routes/AddressServiceRoutes' ) );
         this.app.use( this.routesSrc.addressUser,           require( '../../../Address/infraestructure/routes/AddressUserRoutes' ) );
-        this.app.use( this.routesSrc.addressUser,           require( '../../../Address/infraestructure/routes/AddressUserRoutes' ) );
-        this.app.use( this.routesSrc.addressUser,           require( '../../../Address/infraestructure/routes/AddressUserRoutes' ) );
-        this.app.use( this.routesSrc.addressUser,           require( '../../../Address/infraestructure/routes/AddressUserRoutes' ) );
         this.app.use( this.routesSrc.basicAuth,             require( '../../../Auth/infrastructure/routes/BasicAuthRoute' ) );
         this.app.use( this.routesSrc.user,                  require( '../../../User/infrastructure/routes/UserRoutes' ) );
         this.app.use( this.routesSrc.hotel,                 require( '../../../Hotel/infrastructure/routes/HotelRoutes' ) );

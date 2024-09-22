@@ -1,19 +1,41 @@
 const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
-const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
-const winston = require('winston');
-require( '../../../Shared/domain/log/Logger' );
+const ErrorServiceHandler = require( '../../../Shared/domain/Handler/ErrorServiceHandler' );
+const FilterOrOrderAdapter = require( '../../../Shared/domain/Handler/FilterOrOrderAdapter' );
 
+/**
+ * * Service class for managin user addresses.
+ *  Provides methods to create, delete , update and retrieve user addresses.
+ * @class AddressUserService
+ */
 class AddressUserService {
 
+    /**
+     * Constructor for AddressUserService
+     * 
+     * @param { object } AddressUserRepository - Repository to interact with the address user data.
+     */
     constructor( AddressUserRepository ) {
         this.AddressUserRepository = AddressUserRepository;
 
     }
 
-    async createAddressUser ({ street, city, state, postal_code, country, uuid_user }) {
+    /**
+     * Create a new user address
+     * 
+     * @param {object} addressData - The data of the address to be created.
+     * @param {string} addressData.street 
+     * @param {string} addressData.city
+     * @param {string} addressData.state
+     * @param {int} addressData.zip_code 
+     * @param {string} addressData.country 
+     * @param {string} addressData.uuid_user - UUID of the user who owns the address.
+     * @returns {Promise<object>} - The created address.
+     * @throws Will throw an error if address creation fails.
+     */
+    async createAddressUser ({ street, city, state, zip_code, country, uuid_user }) {
 
         try {
-            const user = prismaSQL.tbl_user.findUnique({
+            const user = await prisma.tbl_user.findUnique({
                 select:{
                     id_user: true
                 },
@@ -24,7 +46,7 @@ class AddressUserService {
             
             const result = await prisma.$transaction(async (prisma) => {
                 return await this.AddressUserRepository.createAddressUser(
-                    prisma, street, city, state, postal_code, country, user.id_user
+                    prisma, street, city, state, zip_code, country, user.id_user
                 );
 
             });
@@ -32,47 +54,23 @@ class AddressUserService {
             return result;
 
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressUserLogger' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to created an address user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when created an address user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when created an address user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-            
+            ErrorServiceHandler._handleError(error, 'Error when trying to create a user address.', 'AddressUserLogger');
         }
         
     }
 
-    async deleteAddressUserAdmin ({ uuid_address_user }) {
+    /**
+     * Deletes a user address as an admin (hard delete).
+     *
+     * @param {object} query - The data required for deletion.
+     * @param {string} query.uuid_address_user - UUID of the address to be deleted.
+     * @returns {Promise<object>} - Result of the deletion operation.
+     * @throws Will throw an error if address deletion fails.
+     */
+    async deleteAddressUserAsAdmin ({ uuid_address_user }) {
         try {
             const result = await prisma.$transaction(async (prisma) => {
-                return await this.AddressUserRepository.deleteAsAdminAddressUser(
+                return await this.AddressUserRepository.deleteAddressUserAsAdmin(
                     prisma, uuid_address_user
                 );  
             });
@@ -80,48 +78,24 @@ class AddressUserService {
             return result;
 
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressUserLogger' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to delete an address user as an admin user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when delete an address user as an admin user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when delete an address user as an admin user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-            
+            ErrorServiceHandler._handleError(error, 'Error when trying to hard delete a user address.', 'AddressUserLogger');
         }
         
     }
 
-    async deleteAddressUser ({ uuid_address_user }) {
+    /**
+     * Soft deletes a user address.
+     *
+     * @param {object} query - The data required for deletion.
+     * @param {string} query.uuid_address_user - UUID of the address to be soft deleted.
+     * @returns {Promise<object>} - Result of the deletion operation.
+     * @throws Will throw an error if address deletion fails.
+     */
+    async deleteAddressUserAsUser ({ uuid_address_user }) {
 
         try {
             const result = await prisma.$transaction(async (prisma) => {
-                return await this.AddressUserRepository.deleteAsUserAddressUser(
+                return await this.AddressUserRepository.deleteAddressUserAsUser(
                     prisma, uuid_address_user
                 );
                 
@@ -130,48 +104,30 @@ class AddressUserService {
             return result;
         
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressUserLogger' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to delete an address user as an user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when delete an address user as an user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when delete an address user as an user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-            
+            ErrorServiceHandler._handleError(error, 'Error when trying to soft delete a user address.', 'AddressUserLogger');
         }
 
     }
 
-    async updateAddressUser ({ uuid_address_user,  street, city, state, postal_code, country, uuid_user }) {
+    /**
+     * Updates a user address.
+     *
+     * @param {object} addressData - The data to update the address.
+     * @param {string} addressData.uuid_address_user - UUID of the address to be updated.
+     * @param {string} addressData.street
+     * @param {string} addressData.city
+     * @param {string} addressData.state
+     * @param {string} addressData.zip_code
+     * @param {string} addressData.country
+     * @param {string} addressData.uuid_user - UUID of the user who owns the address.
+     * @returns {Promise<object>} - The updated address.
+     * @throws Will throw an error if address update fails.
+     */
+    async updateAddressUser ({ uuid_address_user,  street, city, state, zip_code, country, uuid_user }) {
         try {
             const result = await prisma.$transaction(async (prisma) => {
                 return await this.AddressUserRepository.updateAddressUser(
-                    prisma, uuid_address_user, street, city, state, postal_code, country, uuid_user
+                    prisma, uuid_address_user, street, city, state, zip_code, country, uuid_user
                 );
                 
             });
@@ -179,90 +135,57 @@ class AddressUserService {
             return result;
 
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressUserLogger' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to update an address user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when update an address user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when update an address user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-            
+            ErrorServiceHandler._handleError(error, 'Error when trying to update a user address.', 'AddressUserLogger');
         }
         
     }
 
+    /**
+     * Retrieves paginated list of user addresses.
+     *
+     * @param {object} paginationData - The pagination, order and filter data.
+     * @param {number} paginationData.page - The page number.
+     * @param {number} paginationData.size - The number of items per page.
+     * @param {string} paginationData.orderBy - The field to order by.
+     * @param {object} paginationData.filter - The filter criteria.
+     * @returns {Promise<object[]>} - The paginated list of addresses.
+     * @throws Will throw an error if pagination fails.
+     */
     async getAddressUserPagination ({ page, size, orderBy, filter }) {
 
         try {
             const skip = ( page - 1 ) * size;
 
-            return await this.AddressUserRepository.getAddressUser(
-                skip, size, orderBy, filter
+            // * Create field mappings to handle both orderBy and filter cases
+            const validFields = {
+                street: "street",
+                city: "city",
+                state: "state",
+                country: "country",
+                zip_code: "zip_code"
+            }
+
+            const orderByAdapter = FilterOrOrderAdapter.buildOrderBy(validFields, orderBy);
+            const filterAdapter = FilterOrOrderAdapter.buildFilter(validFields, filter);
+
+            return await this.AddressUserRepository.getAddressUserPagination(
+                skip, size, orderByAdapter, filterAdapter
             );
 
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressUserLogger' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to paginated an address user list`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when paginated an address user list`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when paginated an address user list`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-            
+            ErrorServiceHandler._handleError(error, 'Error when trying to paginated a user address list.', 'AddressUserLogger');
         }
 
     }
 
+    /**
+     * Retrieves a user address by UUID.
+     *
+     * @param {object} query - The UUID of the address.
+     * @param {string} query.uuid_address_user - UUID of the address to retrieve.
+     * @returns {Promise<object>} - The address data.
+     * @throws Will throw an error if retrieval fails.
+     */
     async getAddressUserByUuid ({ uuid_address_user }) {
         try {
             return await this.AddressUserRepository.getAddressUserByUuid(
@@ -270,41 +193,8 @@ class AddressUserService {
             );
 
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressUserLogger' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to delete an address user as an admin user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when delete an address user as an admin user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when delete an address user as an admin user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-            
+            ErrorServiceHandler._handleError(error, 'Error when trying to get a user address by uuid.', 'AddressUserLogger');
         }
-
     }
 
 }

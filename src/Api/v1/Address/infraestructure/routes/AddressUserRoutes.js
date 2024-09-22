@@ -1,17 +1,31 @@
 const { Router } = require('express');
-const { check, param, body } = require( 'express-validator' );
+const { check, query, body } = require( 'express-validator' );
 const { DataValidate } = require( '../../../Shared/infrastructure/middleware/DataValidate' );
 const { accessRol } = require( '../../../Validation/infrastructure/ValidateRoles' );
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
 const ValidationCustomJsonField = require( '../../../Validation/infrastructure/ValidationCustomJsonField' );
 const { AdminRol, SellerRol, UserRol } = require( '../../../Shared/infrastructure/constant/SystemConstant' );
-const AddressServiceController = require( '../../application/controller/AddressServiceController' );
+const AddressUserController = require( '../../application/controller/AddressUserController' );
 
 const router = Router();
 
+/**
+ * This module handles the routing for user addresses.
+ * It includes endpoints for creating, updating, deleting and retrieve user addresses.
+ * 
+ * @module AddressUserRoutes
+ */
+
 router
+    /**
+     * @api {post} /api/v1/address_user Post a new user address.
+     * @apiDescription Create the address of a user based on the provided object.
+     * @apiParam {object} adress - The fields necessary to create the address.
+     * @apiSuccess {string} UUID - The user address UUID.
+     * @apiError {400} BadRequest Invalid param format. 
+     */
     .post(
-        '/create',
+        '',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol, UserRol ),
@@ -39,16 +53,16 @@ router
             check( 'uuid_user',    'Uuid user isn\'t an uuid type' ).isUUID(),
             DataValidate
         ],
-        AddressServiceController.createAddressService
+        AddressUserController.createAddressUser
     )
     
-    .post(
-        '/update',
+    .put(
+        '',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol, UserRol ),
-            check( 'uuid_address_user',  'Street is required' ).not().isEmpty(),
-            check( 'uuid_address_user',  'Street is required' ).isUUID(),
+            check( 'uuid_address_user',  'UUID is required' ).not().isEmpty(),
+            check( 'uuid_address_user',  'UUID address user isn\'t a uuid format' ).isUUID(),
 
             check( 'street',             'Street is required' ).not().isEmpty(),
             check( 'street',             'Street isn\'t a string type' ).isString(),
@@ -74,33 +88,33 @@ router
             check( 'uuid_user',          'Uuid user isn\'t an uuid type' ).isUUID(),
             DataValidate
         ],
-        AddressServiceController.updateAddressService
+        AddressUserController.updateAddressUser
     )
 
-    .get(
-        '/delete/admin/:uuid_address_user',
+    .delete(
+        '/admin',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol ),
-            param( 'uuid_address_user' )
+            query( 'uuid_address_user' )
                 .notEmpty().withMessage( 'Uuid is required' )
                 .isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
-        AddressServiceController.deleteAsAdminAddressService
+        AddressUserController.deleteAddressUserAsAdmin
     )
 
-    .get(
-        '/delete/seller/:uuid_address_user',
+    .delete(
+        '',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol, UserRol ),
-            param( 'uuid_address_user' )
+            query( 'uuid_address_user' )
                 .notEmpty().withMessage( 'Uuid is required' )
                 .isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
-        AddressServiceController.deleteAsUserAddressService
+        AddressUserController.deleteAddressUserAsUser
     )
 
     .post(
@@ -109,15 +123,15 @@ router
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
             check( 'page', 'Page is required' ).not().isEmpty(),
-            check( 'page', 'Page is required' ).isNumeric(),
+            check( 'page', 'Page is int type and greater than 0' ).isInt({ gt:0 }),
             check( 'size', 'Size is required' ).not().isEmpty(),
-            check( 'size', 'Size is required' ).isNumeric(),
+            check( 'size', 'Size is a int type' ).isInt(),
             
             check( 'orderBy', 'OrderBy must be an array' ).isArray(),
             body( 'orderBy.*.order_type' )
                 .notEmpty().withMessage( 'order type in orderby array is required' )
                 .isString().withMessage( 'order type in orderby array must be an string type' )
-                .custom( ValidationCustomJsonField.validateTypeOrder ),//check have only desc and asc
+                .not().custom( ValidationCustomJsonField.validateTypeOrder ),//check have only desc and asc
             body( 'orderBy.*.field' )
                 .notEmpty().withMessage( 'field in orderby array is required' )
                 .isString().withMessage( 'field in orderby array must be an string type' ),
@@ -126,7 +140,7 @@ router
             body( 'filter.*.filter_type' )
                 .notEmpty().withMessage( 'filter type in filter array is required' )
                 .isString().withMessage( 'filter type in filter array must be an string type' )
-                .custom( ValidationCustomJsonField.validateTypeFilter ),//check have only like, gt, lt, eq 
+                .not().custom( ValidationCustomJsonField.validateTypeFilter ),//check have only like, gt, lt, eq 
             body( 'filter.*.field' )
                 .notEmpty().withMessage( 'field in filter array is required' )
                 .isString().withMessage( 'field in filter array must be an string type' ),
@@ -134,20 +148,20 @@ router
                 .notEmpty().withMessage( 'compare in filter array is required' ),
             DataValidate
         ],
-        AddressServiceController.getAddressServicePagination
+        AddressUserController.getAddressUserPagination
     )
 
     .get(
-        '/:uuid_address_user',
+        '',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol, UserRol ),
-            param( 'uuid_address_user' )
+            query( 'uuid_address_user' )
                 .notEmpty().withMessage( 'Uuid is required' )
                 .isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
-        AddressServiceController.getAddressServiceByUuid
+        AddressUserController.getAddressUserByUuid
     );
 
 module.exports = router;
