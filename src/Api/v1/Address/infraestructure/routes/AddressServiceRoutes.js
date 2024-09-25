@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { check, param, body } = require( 'express-validator' );
+const { check, query, body } = require( 'express-validator' );
 const { DataValidate } = require( '../../../Shared/infrastructure/middleware/DataValidate' );
 const { accessRol } = require( '../../../Validation/infrastructure/ValidateRoles' );
 const ValidateJwt = require( '../../../Validation/infrastructure/ValidateJwt' );
@@ -11,7 +11,7 @@ const router = Router();
 
 router
     .post(
-        '/create',
+        '',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol ),
@@ -35,20 +35,20 @@ router
             check( 'country',       'Country isn\'t a string type' ).isString(),
             check( 'country',       'Country must be less than 255 characters' ).isLength({ max:255 }),
             
-            check( 'uuid_service',  'Id service is required' ).not().isEmpty(),
-            check( 'uuid_service',  'Id service isn\'t a uuid type' ).isUUID(),
+            check( 'uuid_service',  'UUID service is required' ).not().isEmpty(),
+            check( 'uuid_service',  'UUID service isn\'t a uuid type' ).isUUID(),
             DataValidate
         ],
         AddressServiceController.createAddressService
     )
     
-    .post(
-        '/update',
+    .put(
+        '',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
-            check( 'uuid_address_service',  'Street is required' ).not().isEmpty(),
-            check( 'uuid_address_service',  'Street is required' ).isUUID(),
+            check( 'uuid_address_service',  'UUID address service is required' ).not().isEmpty(),
+            check( 'uuid_address_service',  'UUID address service isn\'t an UUID type' ).isUUID(),
 
             check( 'street',                'Street is required' ).not().isEmpty(),
             check( 'street',                'Street isn\'t a string type' ).isString(),
@@ -77,30 +77,30 @@ router
         AddressServiceController.updateAddressService
     )
 
-    .get(
-        '/delete/admin/:uuid_address_service',
+    .delete(
+        '/admin',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol ),
-            param( 'uuid_address_service' )
+            query( 'uuid_address_service' )
                 .notEmpty().withMessage( 'Uuid is required' )
                 .isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
-        AddressServiceController.deleteAsAdminAddressService
+        AddressServiceController.deleteAddressServiceAsAdmin
     )
 
     .get(
-        '/delete/seller/:uuid_address_service',
+        '',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
-            param( 'uuid_address_service' )
+            query( 'uuid_address_service' )
                 .notEmpty().withMessage( 'Uuid is required' )
                 .isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate
         ],
-        AddressServiceController.deleteAsUserAddressService
+        AddressServiceController.deleteAddressServiceAsUser
     )
 
     .post(
@@ -117,7 +117,7 @@ router
             body( 'orderBy.*.order_type' )
                 .notEmpty().withMessage( 'order type in orderby array is required' )
                 .isString().withMessage( 'order type in orderby array must be an string type' )
-                .custom( ValidationCustomJsonField.validateTypeOrder ),//check have only desc and asc
+                .not().custom( ValidationCustomJsonField.validateTypeOrder ),//check have only desc and asc
             body( 'orderBy.*.field' )
                 .notEmpty().withMessage( 'field in orderby array is required' )
                 .isString().withMessage( 'field in orderby array must be an string type' ),
@@ -126,7 +126,7 @@ router
             body( 'filter.*.filter_type' )
                 .notEmpty().withMessage( 'filter type in filter array is required' )
                 .isString().withMessage( 'filter type in filter array must be an string type' )
-                .custom( ValidationCustomJsonField.validateTypeFilter ),//check have only like, gt, lt, eq 
+                .not().custom( ValidationCustomJsonField.validateTypeFilter ),//check have only like, gt, lt, eq 
             body( 'filter.*.field' )
                 .notEmpty().withMessage( 'field in filter array is required' )
                 .isString().withMessage( 'field in filter array must be an string type' ),
@@ -138,11 +138,11 @@ router
     )
 
     .get(
-        '/:uuid_address_service',
+        '',
         [
             ValidateJwt.validateToken,
             accessRol( AdminRol, SellerRol ),
-            param( 'uuid_address_service' )
+            query( 'uuid_address_service' )
                 .notEmpty().withMessage( 'Uuid is required' )
                 .isUUID().withMessage( 'The param isn\'t an uuid' ),
             DataValidate

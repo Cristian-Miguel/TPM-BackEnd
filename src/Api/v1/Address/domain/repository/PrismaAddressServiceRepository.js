@@ -1,7 +1,6 @@
 const AddressServiceRepository = require( './AddressServiceRepository' );
 const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
-const { PrismaClientKnownRequestError, PrismaClientUnknownRequestError, PrismaClientRustPanicError, PrismaClientInitializationError, PrismaClientValidationError } = require('@prisma/client');
-const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
+const PrismaErrorHandler = require('../../../Shared/domain/database/PrismaErrorHandler');
 
 class PrismaAddressServiceRepository extends AddressServiceRepository {
 
@@ -22,42 +21,13 @@ class PrismaAddressServiceRepository extends AddressServiceRepository {
             });
 
         } catch( error ) {
-
-            if( error instanceof PrismaClientKnownRequestError ) {
-                const { code, meta, message, clientVersion } = error;
-
-                throw new PrismaError( code, meta, message, clientVersion, 'PrismaClientKnownRequestError' );
-
-            } else if( error instanceof PrismaClientUnknownRequestError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientUnknownRequestError' );
-
-            } else if( error instanceof PrismaClientRustPanicError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientRustPanicError' );
-
-            } else if( error instanceof PrismaClientInitializationError ) {
-                const { errorCode, message, clientVersion } = error;
-
-                throw new PrismaError( errorCode, '', message, clientVersion, 'PrismaClientInitializationError' );
-
-            } else if( error instanceof PrismaClientValidationError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientValidationError' );
-
-            } else {
-                throw new Error( error );
-
-            }
+            PrismaErrorHandler.handleError(error);
 
         }
     
     }
 
-    async deleteAsAdminAddressService ( prismaSQL, uuid_address_service ) {
+    async deleteAddressServiceAsAdmin ( prismaSQL, uuid_address_service ) {
 
         try {
             return await prismaSQL.tbl_address_service.delete({
@@ -67,42 +37,13 @@ class PrismaAddressServiceRepository extends AddressServiceRepository {
             });
 
         } catch( error ) {
-
-            if( error instanceof PrismaClientKnownRequestError ) {
-                const { code, meta, message, clientVersion } = error;
-
-                throw new PrismaError( code, meta, message, clientVersion, 'PrismaClientKnownRequestError' );
-
-            } else if( error instanceof PrismaClientUnknownRequestError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientUnknownRequestError' );
-
-            } else if( error instanceof PrismaClientRustPanicError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientRustPanicError' );
-
-            } else if( error instanceof PrismaClientInitializationError ) {
-                const { errorCode, message, clientVersion } = error;
-
-                throw new PrismaError( errorCode, '', message, clientVersion, 'PrismaClientInitializationError' );
-
-            } else if( error instanceof PrismaClientValidationError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientValidationError' );
-
-            } else {
-                throw new Error( error );
-
-            }
+            PrismaErrorHandler.handleError(error);
 
         }
         
     }
 
-    async deleteAsUserAddressService ( prismaSQL, uuid_address_service ) {
+    async deleteAddressServiceAsUser ( prismaSQL, uuid_address_service ) {
 
         try {
             return await prismaSQL.tbl_address_service.update({
@@ -115,36 +56,7 @@ class PrismaAddressServiceRepository extends AddressServiceRepository {
             });
 
         } catch( error ) {
-
-            if( error instanceof PrismaClientKnownRequestError ) {
-                const { code, meta, message, clientVersion } = error;
-
-                throw new PrismaError( code, meta, message, clientVersion, 'PrismaClientKnownRequestError' );
-
-            } else if( error instanceof PrismaClientUnknownRequestError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientUnknownRequestError' );
-
-            } else if( error instanceof PrismaClientRustPanicError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientRustPanicError' );
-
-            } else if( error instanceof PrismaClientInitializationError ) {
-                const { errorCode, message, clientVersion } = error;
-
-                throw new PrismaError( errorCode, '', message, clientVersion, 'PrismaClientInitializationError' );
-
-            } else if( error instanceof PrismaClientValidationError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientValidationError' );
-
-            } else {
-                throw new Error( error );
-
-            }
+            PrismaErrorHandler.handleError(error);
 
         }
         
@@ -168,42 +80,13 @@ class PrismaAddressServiceRepository extends AddressServiceRepository {
                 }
             });
         } catch( error ) {
-
-            if( error instanceof PrismaClientKnownRequestError ) {
-                const { code, meta, message, clientVersion } = error;
-
-                throw new PrismaError( code, meta, message, clientVersion, 'PrismaClientKnownRequestError' );
-
-            } else if( error instanceof PrismaClientUnknownRequestError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientUnknownRequestError' );
-
-            } else if( error instanceof PrismaClientRustPanicError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientRustPanicError' );
-
-            } else if( error instanceof PrismaClientInitializationError ) {
-                const { errorCode, message, clientVersion } = error;
-
-                throw new PrismaError( errorCode, '', message, clientVersion, 'PrismaClientInitializationError' );
-
-            } else if( error instanceof PrismaClientValidationError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientValidationError' );
-
-            } else {
-                throw new Error( error );
-
-            }
+            PrismaErrorHandler.handleError(error);
 
         }
         
     }
 
-    async getAddressService ( skip, take, orderBy, filter ) {
+    async getAddressServicePagination ( skip, take, orderBy, filter ) {
 
         try {
             const [ data, total ] = await Promise.all([
@@ -214,43 +97,14 @@ class PrismaAddressServiceRepository extends AddressServiceRepository {
                     where: filter
                 }),
                 prisma.tbl_user.count({
-                    filter
+                    where: filter
                 }),
             ]);
 
             return [ data, total ];
 
         } catch( error ) {
-
-            if( error instanceof PrismaClientKnownRequestError ) {
-                const { code, meta, message, clientVersion } = error;
-
-                throw new PrismaError( code, meta, message, clientVersion, 'PrismaClientKnownRequestError' );
-
-            } else if( error instanceof PrismaClientUnknownRequestError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientUnknownRequestError' );
-
-            } else if( error instanceof PrismaClientRustPanicError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientRustPanicError' );
-
-            } else if( error instanceof PrismaClientInitializationError ) {
-                const { errorCode, message, clientVersion } = error;
-
-                throw new PrismaError( errorCode, '', message, clientVersion, 'PrismaClientInitializationError' );
-
-            } else if( error instanceof PrismaClientValidationError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientValidationError' );
-
-            } else {
-                throw new Error( error );
-
-            }
+            PrismaErrorHandler.handleError(error);
 
         }
         
@@ -266,36 +120,7 @@ class PrismaAddressServiceRepository extends AddressServiceRepository {
             });
 
         } catch( error ) {
-
-            if( error instanceof PrismaClientKnownRequestError ) {
-                const { code, meta, message, clientVersion } = error;
-
-                throw new PrismaError( code, meta, message, clientVersion, 'PrismaClientKnownRequestError' );
-
-            } else if( error instanceof PrismaClientUnknownRequestError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientUnknownRequestError' );
-
-            } else if( error instanceof PrismaClientRustPanicError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientRustPanicError' );
-
-            } else if( error instanceof PrismaClientInitializationError ) {
-                const { errorCode, message, clientVersion } = error;
-
-                throw new PrismaError( errorCode, '', message, clientVersion, 'PrismaClientInitializationError' );
-
-            } else if( error instanceof PrismaClientValidationError ) {
-                const { message, clientVersion } = error;
-
-                throw new PrismaError( '', '', message, clientVersion, 'PrismaClientValidationError' );
-
-            } else {
-                throw new Error( error );
-
-            }
+            PrismaErrorHandler.handleError(error);
 
         }
         

@@ -1,10 +1,19 @@
 const prisma = require( '../../../Shared/domain/database/PrismaCliente' );
-const PrismaError = require('../../../Shared/domain/database/PrismaErrorHandler');
-const winston = require('winston');
-require( '../../../Shared/domain/log/Logger' );
+const ErrorServiceHandler = require( '../../../Shared/domain/Handler/ErrorServiceHandler' );
+const FilterOrOrderAdapter = require( '../../../Shared/domain/Handler/FilterOrOrderAdapter' );
 
+/**
+ * * Service class for manage user addresses.
+ *  Provides methods to create, delete , update and retrieve user addresses.
+ * @class AddressServiceService
+ */
 class AddressServiceService {
 
+    /**
+     * Constructor for AddressServiceService
+     * 
+     * @param { object } AddressServiceService - Repository to interact with the address service data.
+     */
     constructor( AddressServiceRepository ) {
         this.AddressServiceRepository = AddressServiceRepository;
 
@@ -23,48 +32,17 @@ class AddressServiceService {
             return result;
         
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressServiceService' );
+            ErrorServiceHandler._handleError(error, 'Error when trying to create a service address.', 'AddressServiceService');
 
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to created an address service`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when created an address service`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when created an address service`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
-            
         }
         
     }
 
-    async deleteAsAdminAddressService ({ uuid_address_service }) {
+    async deleteAddressServiceAsAdmin ({ uuid_address_service }) {
 
         try {
             const result = await prisma.$transaction(async (prisma) => {
-                return await this.AddressServiceRepository.deleteAsAdminAddressService(
+                return await this.AddressServiceRepository.deleteAddressServiceAsAdmin(
                     prisma, uuid_address_service
                 );  
             });
@@ -72,48 +50,17 @@ class AddressServiceService {
             return result;
         
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressServiceService' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to delete an address service as an admin user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when created an delete service as an admin user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when created an delete service as an admin user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
+            ErrorServiceHandler._handleError(error, 'Error when trying to hard delete a service address.', 'AddressUserLogger');
             
         }
         
     }
 
-    async deleteAsUserAddressService ({ uuid_address_service }) {
+    async deleteAddressServiceAsUser ({ uuid_address_service }) {
 
         try {
             const result = await prisma.$transaction(async (prisma) => {
-                return await this.AddressServiceRepository.deleteAsUserAddressService(
+                return await this.AddressServiceRepository.deleteAddressServiceAsUser(
                     prisma, uuid_address_service
                 );
                 
@@ -122,38 +69,7 @@ class AddressServiceService {
             return result;
 
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressServiceService' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to delete an address service as a seller user`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when delete an address service as a seller user`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when delete an address service as a seller user`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
+            ErrorServiceHandler._handleError(error, 'Error when trying to soft delete a service address.', 'AddressServiceService');
             
         }
         
@@ -172,38 +88,7 @@ class AddressServiceService {
             return result;
 
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressServiceService' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to update an address service`,{
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when update an address service`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when update an address service`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
+            ErrorServiceHandler._handleError(error, 'Error when trying to update a service address.', 'AddressServiceService');
             
         }
         
@@ -214,43 +99,24 @@ class AddressServiceService {
         try {
             const skip = ( page - 1 ) * size;
 
+            // * Create field mappings to handle both orderBy and filter cases
+            const validFields = {
+                street: "street",
+                city: "city",
+                state: "state",
+                country: "country",
+                zip_code: "zip_code"
+            }
+
+            const orderByAdapter = FilterOrOrderAdapter.buildOrderBy(validFields, orderBy);
+            const filterAdapter = FilterOrOrderAdapter.buildFilter(validFields, filter);
+
             return await this.AddressServiceRepository.getAddressService(
-                skip, size, orderBy, filter
+                skip, size, orderByAdapter, filterAdapter
             );
 
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressServiceService' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to paginated an address service list`, {
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when paginated an address service list`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when paginated an address service list`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
+            ErrorServiceHandler._handleError(error, 'Error when trying to paginated a service address list.', 'AddressServiceService');
             
         }
         
@@ -264,38 +130,7 @@ class AddressServiceService {
             );
 
         } catch ( error ) {
-            const logger = winston.loggers.get( 'AddressServiceService' );
-
-            if( error instanceof PrismaError ) {
-                const { code, meta, message, clientVersion, typeErrorPrisma } = error;
-
-                logger.error(`Error in the database when try to created an address service`, {
-                    prismaErrorType: typeErrorPrisma,
-                    prismaCode: code,
-                    prismaMeta: meta,
-                    prismaMessage: message,
-                    prismaClientVersion: clientVersion
-                });
-
-                throw new PrismaError( code, meta, message, clientVersion, typeErrorPrisma );
-
-            } else if( error instanceof Error ) {
-                logger.error(`Error when created an address service`, {
-                    genericName: error.name,
-                    genericMessage: error.message,
-                    genericStack: error.stack
-                });
-
-                throw new Error( error );
-
-            } else {
-                logger.error(`Error when created an address service`, {
-                    genericError: error,
-                });
-
-                throw new Error( error );
-
-            }
+            ErrorServiceHandler._handleError(error, 'Error when trying to get a service address by uuid.', 'AddressServiceService');
             
         }
         

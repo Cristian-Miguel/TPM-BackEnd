@@ -3,7 +3,7 @@ const ErrorServiceHandler = require( '../../../Shared/domain/Handler/ErrorServic
 const FilterOrOrderAdapter = require( '../../../Shared/domain/Handler/FilterOrOrderAdapter' );
 
 /**
- * * Service class for managin user addresses.
+ * * Service class for manage user addresses
  *  Provides methods to create, delete , update and retrieve user addresses.
  * @class AddressUserService
  */

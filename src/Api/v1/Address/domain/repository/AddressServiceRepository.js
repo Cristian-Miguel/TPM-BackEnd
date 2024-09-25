@@ -4,11 +4,11 @@ class AddressServiceRepository {
         throw new Error('Method not implemented.');
     }
 
-    async deleteAsAdminAddressService ( prismaSQL, uuid_address_service ) {
+    async deleteAddressServiceAsAdmin ( prismaSQL, uuid_address_service ) {
         throw new Error('Method not implemented.');
     }
 
-    async deleteAsUserAddressService ( prismaSQL, uuid_address_service ) {
+    async deleteAddressServiceAsUser ( prismaSQL, uuid_address_service ) {
         throw new Error('Method not implemented.');
     }
 
@@ -16,7 +16,7 @@ class AddressServiceRepository {
         throw new Error('Method not implemented.');
     }
 
-    async getAddressService ( skip, take, orderBy, filter ) {
+    async getAddressServicePagination ( skip, take, orderBy, filter ) {
         throw new Error('Method not implemented.');
     }
 
